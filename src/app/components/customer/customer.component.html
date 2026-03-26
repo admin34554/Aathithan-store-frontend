@@ -1,0 +1,134 @@
+<div class="container-fluid p-4">
+
+  <!-- Header -->
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h5>Master > <span class="text-primary">Customer Master</span></h5>
+    <button class="btn btn-primary">+ Add New</button>
+  </div>
+
+  <!-- Search -->
+  <div class="row mb-4">
+    <div class="col-md-4">
+      <input type="text" class="form-control" placeholder="Search Customer Name/Code">
+    </div>
+  </div>
+
+  <!-- Tabs -->
+  <ul class="nav nav-tabs mb-3">
+    <li class="nav-item">
+      <button class="nav-link"
+        [class.active]="activeTab==='details'"
+        (click)="activeTab='details'">
+        Customer Details
+      </button>
+    </li>
+
+    <li class="nav-item">
+      <button class="nav-link"
+        [class.active]="activeTab==='address'"
+        (click)="activeTab='address'">
+        Address
+      </button>
+    </li>
+  </ul>
+
+<form [formGroup]="customerform" (ngSubmit)="submitForm()">
+
+<!-- CUSTOMER DETAILS TAB -->
+
+<div *ngIf="activeTab==='details'">
+
+  <div class="mb-3">
+    <label class="me-3">Type :</label>
+
+    <input type="radio" value="BLedger" formControlName="type"> Ledger
+    <input type="radio" value="OtherParty" class="ms-3" formControlName="type"> Other Party
+  </div>
+
+  <div class="row">
+
+    <div class="col-md-6 mb-3">
+      <input class="form-control" placeholder="Aadhar No" formControlName="aadhar">
+    </div>
+
+    <div class="col-md-6 mb-3">
+      <input class="form-control" placeholder="Full Name" formControlName="fullName">
+    </div>
+
+    <div class="col-md-6 mb-3">
+      <input class="form-control" placeholder="GSTIN Number" formControlName="gstIn">
+    </div>
+
+    <div class="col-md-6 mb-3">
+      <input class="form-control" placeholder="Sugar License Number" formControlName="sugarLicense">
+    </div>
+
+    <div class="col-md-6 mb-3">
+      <input class="form-control" placeholder="Phone Number" formControlName="phone">
+    </div>
+
+    <div class="col-md-6 mb-3">
+      <input class="form-control" placeholder="Cell Number" formControlName="cell">
+    </div>
+
+    <div class="col-md-6 mb-3">
+      <input class="form-control" placeholder="Credit Period" formControlName="creditPeriod">
+    </div>
+
+    <div class="col-md-6 mb-3">
+      <input class="form-control" placeholder="Credit Limit" formControlName="creditLimit">
+    </div>
+
+  </div>
+
+  <div class="form-check mb-3">
+    <input type="checkbox" class="form-check-input">
+    <label class="form-check-label">Active</label>
+  </div>
+
+</div>
+
+
+<!-- ADDRESS TAB -->
+
+<div *ngIf="activeTab==='address'">
+
+  <div class="row">
+
+    <div class="col-md-6 mb-3">
+      <input class="form-control" placeholder="Door Number" formControlName="doorNo">
+    </div>
+
+    <div class="col-md-6 mb-3">
+      <input class="form-control" placeholder="Street" formControlName="street">
+    </div>
+
+    <div class="col-md-6 mb-3">
+      <input class="form-control" placeholder="Area">
+    </div>
+
+    <div class="col-md-6 mb-3">
+      <input class="form-control" placeholder="City" formControlName="city">
+    </div>
+
+    <div class="col-md-6 mb-3">
+      <input class="form-control" placeholder="State" formControlName="state">
+    </div>
+
+    <div class="col-md-6 mb-3">
+      <input class="form-control" placeholder="Pincode" formControlName="pinCode">
+    </div>
+
+  </div>
+
+</div>
+
+<!-- Buttons -->
+
+<div class="text-end mt-3">
+  <button type="button" class="btn btn-secondary me-2" (click)="resetForm()">Cancel</button>
+  <button type="submit" class="btn btn-primary">Save</button></div>
+
+</form>
+
+</div>

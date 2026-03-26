@@ -1,0 +1,20 @@
+table {
+background: white;
+}
+
+th {
+font-weight: 600;
+font-size: 14px;
+}
+
+td {
+font-size: 14px;
+}
+
+input.form-control {
+border-radius: 20px;
+}
+
+.btn-light {
+border: 1px solid #ddd;
+}

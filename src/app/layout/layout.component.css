@@ -1,0 +1,180 @@
+.app-container{
+  display:flex;
+  height:100vh;
+  font-family: Arial;
+  overflow: hidden;
+}
+
+/* SIDEBAR */
+
+.sidebar{
+  width:220px;
+  background:#1e6bd6;
+  color:white;
+  display:flex;
+  transition: 0.3s;
+  flex-direction:column;
+}
+
+.sidebar.collapsed{
+  width:60px;
+}
+
+.logo{
+  text-align:center;
+  padding:20px;
+}
+
+.profile{
+  width:60px;
+  border-radius:50%;
+}
+
+.store{
+  margin-top:10px;
+  font-weight:bold;
+}
+
+.menu{
+  list-style:none;
+  padding:0;
+}
+
+.menu li{
+  padding:15px 20px;
+  cursor:pointer;
+}
+
+.menu li:hover{
+  background:#1556b0;
+}
+
+.menu .active{
+  background:#1556b0;
+}
+
+/* MAIN */
+
+.main{
+  flex:1;
+  display:flex;
+  flex-direction:column;
+}
+
+/* TOPBAR */
+
+.topbar{
+  height:60px;
+  background:#f6f6f6;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:0 20px;
+}
+
+.search{
+  width:350px;
+  padding:8px 15px;
+  border-radius:20px;
+  border:1px solid #ddd;
+}
+
+
+
+.search-dropdown{
+  position: absolute;
+  top: 40px;
+  width: 100%;
+  background: white;
+  border: 1px solid #ddd;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  z-index: 1000;
+}
+
+.search-dropdown li{
+  padding: 10px;
+  cursor: pointer;
+}
+
+.search-dropdown li:hover{
+  background: #f2f2f2;
+}
+
+.user{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.avatar{
+  width:35px;
+  border-radius:50%;
+}
+
+/* CONTENT */
+
+.content{
+  padding:20px;
+  background:#fafafa;
+  flex:1;
+}
+
+.sub-sidebar{
+  width:0;
+  overflow:hidden;
+  background:#ffffff;
+  border-right:1px solid #ddd;
+  padding-top:20px;
+  transition: width 0.3s ease;
+}
+
+.sub-sidebar.open{
+  width:220px;
+}
+
+.sub-sidebar{
+  box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+}
+
+.sub-sidebar ul{
+  list-style:none;
+  padding:0;
+  margin:0;
+}
+
+.sub-sidebar li{
+  padding:12px 20px;
+  cursor:pointer;
+}
+
+.sub-sidebar li:hover{
+  background:#f5f5f5;
+}
+
+.search-box{
+  position: relative;
+}
+
+.search-results{
+  position: absolute;
+  background: white;
+  width: 250px;
+  border: 1px solid #ccc;
+  z-index: 10;
+}
+
+.result-item{
+  padding: 8px;
+  cursor: pointer;
+}
+
+.result-item:hover{
+  background:#f0f0f0;
+}
+
+.result-item.active {
+  background: #1e6bd6;
+  color: white;
+}

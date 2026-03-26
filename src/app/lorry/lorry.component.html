@@ -1,0 +1,172 @@
+<div class="container-fluid p-4">
+
+<!-- Header -->
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+
+  <h5>Master > <span class="text-primary">Lorry Master</span></h5>
+
+  <div>
+
+    <button class="btn btn-light me-2">
+      ✏
+    </button>
+
+    <button class="btn btn-light me-2">
+      🖨
+    </button>
+
+    <button class="btn btn-primary">
+      + Add New
+    </button>
+
+  </div>
+
+</div>
+
+
+<form [formGroup]="lorryForm">
+
+<div class="row g-4">
+
+<!-- Lorry Code -->
+
+<div class="col-md-6">
+<input
+type="text"
+class="form-control"
+placeholder="Lorry Code"
+formControlName="code"
+/>
+</div>
+
+<!-- Display Name -->
+
+<div class="col-md-6">
+<input
+type="text"
+class="form-control"
+placeholder="Lorry Name"
+formControlName="name"
+/>
+</div>
+
+<!-- Phone -->
+
+<div class="col-md-6">
+<input
+type="number"
+class="form-control"
+placeholder="Phone Number"
+formControlName="phoneNumber"
+/>
+</div>
+
+<!-- Surcharge -->
+
+<div class="col-md-6">
+<input
+type="number"
+class="form-control"
+placeholder="Mobile Number"
+formControlName="mobileNumber"
+/>
+</div>
+
+<!-- Group -->
+
+<div class="col-md-6">
+<input
+type="string"
+class="form-control"
+placeholder="Contact Person"
+formControlName="contactPerson"/>
+</div>
+
+<!-- Address -->
+
+<div class="col-md-6">
+<input
+type="string"
+class="form-control"
+placeholder="Address"
+formControlName="address"/>
+</div>
+
+<!-- Area Covering -->
+
+<div class="col-md-6">
+<input
+type="string"
+class="form-control"
+placeholder="Area Covering"
+formControlName="areaCovering"/>
+</div>
+
+<!-- Route Covered -->
+
+<div class="col-md-6">
+
+<label class="form-label">Route Covered</label>
+
+<div class="d-flex gap-3 mt-2">
+
+<div class="form-check">
+<input class="form-check-input" type="checkbox" value="L1" (change)="onRouteChange($event)">
+<label class="form-check-label">L1</label>
+</div>
+
+<div class="form-check">
+<input class="form-check-input" type="checkbox" value="L2" (change)="onRouteChange($event)">
+<label class="form-check-label">L2</label>
+</div>
+
+<div class="form-check">
+<input class="form-check-input" type="checkbox" value="L3" (change)="onRouteChange($event)">
+<label class="form-check-label">L3</label>
+</div>
+
+<div class="form-check">
+<input class="form-check-input" type="checkbox" value="L4" (change)="onRouteChange($event)">
+<label class="form-check-label">L4</label>
+</div>
+
+<div class="form-check">
+<input class="form-check-input" type="checkbox" value="L5" (change)="onRouteChange($event)">
+<label class="form-check-label">L5</label>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
+
+
+<!-- Buttons -->
+
+<div class="text-end mt-5">
+
+<button
+type="button"
+class="btn btn-secondary me-2"
+(click)="cancelForm()"
+>
+Cancel
+</button>
+
+<button
+type="button"
+class="btn btn-primary"
+(click)="saveLorry()"
+>
+Save
+</button>
+
+</div>
+
+</form>
+
+</div>

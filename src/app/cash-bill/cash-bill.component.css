@@ -1,0 +1,184 @@
+table {
+  background: white;
+}
+
+th {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+td input {
+  font-size: 13px;
+  padding: 4px;
+}
+
+textarea {
+  border-radius: 8px;
+}
+
+.table td, .table th {
+  vertical-align: middle;
+}
+
+/* Main container scrollable */
+:host {
+  display: block;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* Page container with flex layout */
+.page-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: #f8f9fa;
+}
+
+/* Content area that scrolls */
+.content-area {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: auto;
+  padding: 0 20px 20px 20px;
+}
+
+/* Style the main scrollbar */
+.content-area::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+.content-area::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 5px;
+}
+
+.content-area::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 5px;
+}
+
+.content-area::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+/* For Firefox */
+.content-area {
+  scrollbar-width: thin;
+  scrollbar-color: #888 #f1f1f1;
+}
+
+/* Form container */
+.form-wrapper {
+  min-width: fit-content;
+}
+
+/* Table responsive container */
+.table-responsive {
+  overflow-x: auto;
+  overflow-y: auto;
+  max-height: 350px;
+  border: 1px solid #dee2e6;
+  border-radius: 4px;
+  margin-bottom: 20px;
+  background: white;
+}
+
+/* Keep table header stable */
+.table thead th {
+  position: sticky;
+  top: 0;
+  background: #f8f9fa;
+  z-index: 10;
+  box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.1);
+}
+
+/* Style table scrollbar */
+.table-responsive::-webkit-scrollbar {
+  height: 8px;
+  width: 8px;
+}
+
+.table-responsive::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+.table-responsive::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+
+.table-responsive::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+/* For Firefox */
+.table-responsive {
+  scrollbar-width: thin;
+  scrollbar-color: #888 #f1f1f1;
+}
+
+/* Ensure table doesn't shrink too much */
+.table {
+  min-width: 1200px;
+  margin-bottom: 0;
+}
+
+/* Button section - now inside scrollable area */
+.button-section {
+  background: white;
+  padding: 20px;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  text-align: right;
+  margin-bottom: 20px;
+}
+
+.button-section .btn {
+  min-width: 100px;
+  padding: 8px 20px;
+}
+
+.button-section .btn-secondary {
+  margin-right: 10px;
+}
+
+/* Header padding */
+h5 {
+  padding-top: 20px;
+  margin-bottom: 0;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .table-responsive {
+    max-height: 250px;
+  }
+  
+  .content-area {
+    padding: 0 10px 10px 10px;
+  }
+  
+  .button-section {
+    padding: 15px;
+  }
+  
+  .button-section .btn {
+    min-width: 80px;
+    padding: 6px 15px;
+  }
+}
+
+/* Ensure buttons are always visible */
+.container-fluid {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.button-section {
+  margin-top: auto;
+}

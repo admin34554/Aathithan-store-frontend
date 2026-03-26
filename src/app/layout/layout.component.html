@@ -1,0 +1,128 @@
+<div class="app-container">
+
+  <!-- LEFT SIDEBAR -->
+  <div class="sidebar">
+
+    <div class="logo">
+      <img src="assets/user.png" class="profile"/>
+      <div class="store" (click)="navigate('/')">AATHITAN STORES</div>
+    </div>
+<ul class="menu">
+
+  <li (click)="selectMenu('accounts')">
+    📁
+    <span>Accounts</span>
+  </li>
+
+  <li (click)="selectMenu('master')">
+    📋
+    <span>Master</span>
+  </li>
+
+  <li (click)="selectMenu('inventory')">
+    📦
+    <span>Inventory</span>
+  </li>
+
+  <li (click)="selectMenu('report')">
+    📊
+    <span>Report</span>
+  </li>
+
+  <li (click)="selectMenu('utilities')">
+    ⚙
+    <span>Utilities</span>
+  </li>
+
+</ul>
+
+  </div>
+
+
+  <!-- SECOND SIDEBAR (MASTER MENU) -->
+
+  <div class="sub-sidebar" [class.open]="activeMenu === 'inventory'">
+
+      <ul>
+
+        <li (click)="navigate('/cash-bill')">Cash Bill</li>
+        <li (click)="navigate('/credit-bill')">Credit Bill</li>
+        <li (click)="navigate('/purchase-bill')">Purchase Bill</li>
+      </ul>
+
+  </div>
+
+
+  <div class="sub-sidebar" [class.open]="activeMenu === 'report'">
+
+      <ul>
+
+        <li (click)="navigate('/day-book')">Day Book</li>
+      </ul>
+
+  </div>
+
+  
+  <div class="sub-sidebar" [class.open]="activeMenu === 'master'">
+
+      <ul>
+
+        <li (click)="navigate('/supplier')">Supplier Master</li>
+        <li (click)="navigate('/customer')">Customer Master</li>
+        <li (click)="navigate('/company')">Company Master</li>
+        <li (click)="navigate('/product')">Product Master</li>
+        <li (click)="navigate('/lorry')">Lorry Master</li>
+        <li (click)="navigate('/broker')">Broker Master</li>
+        <li (click)="navigate('/tax')">Tax Master</li>
+        <li (click)="navigate('/accounts-master')">Accounts Master</li>
+      </ul>
+
+  </div>
+
+
+  <!-- MAIN AREA -->
+
+  <div class="main">
+
+    <div class="topbar">
+
+<div class="search-box">
+
+  <input
+    class="search"
+    placeholder="Search"
+    [(ngModel)]="searchText"
+    (input)="onSearch()"
+    (keydown)="handleKeyDown($event)";
+  />
+
+  <div class="search-results" *ngIf="results.length > 0">
+
+    <div
+      class="result-item"
+      *ngFor="let item of results; let i = index"
+      [class.active]="i === selectedIndex"
+      (click)="selectResult(item)"
+    >
+      {{item.name}}
+    </div>
+
+  </div>
+
+</div>
+
+      <div class="user">
+        ⚙
+        <img src="assets/user.png" class="avatar"/>
+        Admin
+      </div>
+
+    </div>
+
+    <div class="content">
+      <router-outlet></router-outlet>
+    </div>
+
+  </div>
+
+</div>

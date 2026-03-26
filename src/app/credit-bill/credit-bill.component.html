@@ -1,0 +1,178 @@
+<div class="page-container">
+  
+  <!-- Header (fixed) -->
+  <div style="padding: 20px 20px 0 20px; background: white; border-bottom: 1px solid #dee2e6;">
+    <h5>Inventory > <span class="text-primary">Credit Bill</span></h5>
+  </div>
+
+  <!-- Scrollable Content Area -->
+  <div class="content-area">
+    <div class="form-wrapper">
+      <form [formGroup]="creditBillForm">
+
+        <div class="container-fluid p-0 mt-3">
+          <!-- Top Form -->
+          <div class="row">
+            <div class="col-md-4">
+              <input class="form-control" placeholder="Name" formControlName="name">
+            </div>
+
+            <div class="col-md-4">
+              <select class="form-control" formControlName="lorry">
+              <option value=""disabled>Select Lorry</option>
+              <option *ngFor="let l of lorries" [value]="l.id">
+                {{ l.name }}
+              </option>
+              </select>
+            </div>
+
+            <div class="col-md-4">
+              <select class="form-control" formControlName="broker">
+                <option value=""disabled>Select Broker</option>
+                <option *ngFor="let b of brokers" [value]="b.id">
+                  {{ b.brokerName }}
+                </option>
+              </select>
+            </div>
+
+            <div class="col-md-4 mt-3">
+              <input class="form-control" placeholder="Bill Number" formControlName="billNo">
+            </div>
+
+            <div class="col-md-4 mt-3">
+              <input type="date" class="form-control" formControlName="billDate">
+            </div>
+          </div>
+
+          <!-- TABLE -->
+          <div class="table-responsive mt-4">
+            <table class="table table-bordered">
+              <thead class="table-light">
+                <tr>
+                  <th style="width: 60px;">S.No</th>
+                  <th>Product Code</th>
+                  <th>Item Name</th>
+                  <th>Tax Type</th>
+                  <th>Rate</th>
+                  <th>Qty</th>
+                  <th>Tax</th>
+                  <th>Total</th>
+                  <th>HSN No</th>
+                  <th>Sur.Ch</th>
+                  <th style="width: 80px;">Action</th>
+                </tr>
+              </thead>
+
+              <tbody formArrayName="items">
+                <tr *ngFor="let row of items.controls; let i = index" [formGroupName]="i">
+                  <td>{{ i + 1 }}</td>
+                  <td>
+                    <input class="form-control" formControlName="productCode">
+                  </td>
+                  <td>
+                    <input class="form-control" formControlName="itemName">
+                  </td>
+                  <td>
+                    <input class="form-control" formControlName="taxType">
+                  </td>
+                  <td>
+                    <input type="number" class="form-control" formControlName="rate">
+                  </td>
+                  <td>
+                    <input type="number" class="form-control" formControlName="quantity">
+                  </td>
+                  <td>
+                    <input type="number" class="form-control" formControlName="tax">
+                  </td>
+                  <td>
+                    <input type="number" class="form-control" formControlName="total">
+                  </td>
+                  <td>
+                    <input class="form-control" formControlName="brNo">
+                  </td>
+                  <td>
+                    <input type="number" class="form-control" formControlName="surCh">
+                  </td>
+                  <td class="text-center">
+                    <button 
+                      type="button" 
+                      class="btn btn-danger btn-sm"
+                      (click)="removeRow(i)">
+                      ✕
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+            <!-- Add Row Button -->
+            <button 
+              type="button" 
+              class="btn btn-primary btn-sm mt-2 mb-2"
+              (click)="addRow()">
+              + Add Row
+            </button>
+          </div>
+
+          <!-- Bottom Section -->
+          <div class="row mt-4">
+            <!-- Remarks -->
+            <div class="col-md-8">
+              <textarea 
+                class="form-control" 
+                rows="4" 
+                placeholder="Remarks"
+                formControlName="remarks">
+              </textarea>
+            </div>
+
+            <!-- Tax Summary -->
+            <div class="col-md-4">
+              <table class="table table-bordered">
+                <tr>
+                  <td>Sales Tax</td>
+                  <td>0.00</td>
+                </tr>
+                <tr>
+                  <td>Sur Charge</td>
+                  <td>0.00</td>
+                </tr>
+                <tr>
+                  <td class="text-primary">Add</td>
+                  <td>0.00</td>
+                </tr>
+                <tr>
+                  <td class="text-primary">Disc</td>
+                  <td>0.00</td>
+                </tr>
+                <tr>
+                  <td><b>Adjust Amount</b></td>
+                  <td><b>0.00</b></td>
+                </tr>
+              </table>
+            </div>
+          </div>
+
+          <!-- Buttons - Moved INSIDE the form and container -->
+          <div class="button-section mt-4">
+            <button 
+              type="button" 
+              class="btn btn-secondary me-2"
+              (click)="cancelForm()">
+              Cancel
+            </button>
+            <button 
+              type="button" 
+              class="btn btn-primary"
+              (click)="saveCreditBill()">
+              Save
+            </button>
+          </div>
+
+        </div> <!-- Close container-fluid -->
+
+      </form>
+    </div>
+  </div> <!-- Close content-area -->
+
+</div> <!-- Close page-container -->

@@ -1,0 +1,88 @@
+<div class="container-fluid p-4">
+
+<h5>Master > <span class="text-primary">Product Master</span></h5>
+
+<form [formGroup]="productForm" (ngSubmit)="saveProduct()">
+
+<div class="row mb-3">
+
+<div class="col-md-6">
+<input class="form-control" placeholder="Product Type" formControlName="type">
+</div>
+
+<div class="col-md-6">
+<input class="form-control" placeholder="Product Code" formControlName="code">
+</div>
+
+</div>
+
+
+<div class="row mb-3">
+
+<div class="col-md-6">
+<input class="form-control" placeholder="Name" formControlName="name">
+</div>
+
+<div class="col-md-6">
+<input class="form-control" placeholder="Brand Name" formControlName="brandName">
+</div>
+
+</div>
+
+
+<div class="row mb-3">
+
+<div class="col-md-6">
+<input class="form-control" placeholder="Weight" formControlName="weight">
+</div>
+
+<div class="col-md-6">
+<input class="form-control" placeholder="Retail Rate" formControlName="retailRate">
+</div>
+
+</div>
+
+
+<table class="table table-bordered mt-4">
+
+<thead>
+
+<tr>
+<th>TAX NAME</th>
+<th>OPTIONAL STOCK</th>
+<th>STOCK IN HAND</th>
+</tr>
+
+</thead>
+
+<tbody formArrayName="taxes">
+
+<tr *ngFor="let tax of taxList; let i=index" [formGroupName]="i">
+
+<td>{{tax.name}}</td>
+
+<td>
+<input class="form-control" formControlName="optionalStock">
+</td>
+
+<td>
+<input class="form-control" formControlName="stockInHand">
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+<div class="text-end mt-3">
+
+<button class="btn btn-secondary me-2">Cancel</button>
+
+<button class="btn btn-primary" type="submit">Save</button>
+
+</div>
+
+</form>
+
+</div>

@@ -1,0 +1,137 @@
+<div class="container-fluid p-4">
+
+<!-- Header -->
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+
+  <h5>Master > <span class="text-primary">Broker Master</span></h5>
+
+  <div>
+
+    <button class="btn btn-light me-2">
+      ✏
+    </button>
+
+    <button class="btn btn-light me-2">
+      🖨
+    </button>
+
+    <button class="btn btn-primary">
+      + Add New
+    </button>
+
+  </div>
+
+</div>
+
+
+<form [formGroup]="brokerForm">
+
+<div class="row g-4">
+
+<!-- Broker Code -->
+
+<div class="col-md-6">
+<input
+type="number"
+class="form-control"
+placeholder="Broker Code"
+formControlName="code"
+/>
+</div>
+
+<!-- Broker Name -->
+
+<div class="col-md-6">
+<input
+type="text"
+class="form-control"
+placeholder="Broker Name"
+formControlName="brokerName"
+/>
+</div>
+
+<!-- Phone Number -->
+
+<div class="col-md-6">
+<input
+type="number"
+class="form-control"
+placeholder="Phone Number"
+formControlName="phoneNo"
+/>
+</div>
+
+<!-- Mobile Number -->
+
+<div class="col-md-6">
+<input
+type="number"
+class="form-control"
+placeholder="Mobile Number"
+formControlName="mobileNo"
+/>
+</div>
+
+<!-- Local Comm -->
+
+<div class="col-md-6">
+<input
+type="double"
+class="form-control"
+placeholder="Loc.Comm"
+formControlName="localComm"/>
+</div>
+
+
+<!-- Out Comm -->
+
+<div class="col-md-6">
+<input
+type="double"
+class="form-control"
+placeholder="Out.Comm"
+formControlName="outComm"/>
+</div>
+
+<!-- Address -->
+
+<div class="col-md-6">
+<input
+type="double"
+class="form-control"
+placeholder="Address"
+formControlName="address"/>
+</div>
+
+
+</div>
+
+
+
+
+<!-- Buttons -->
+
+<div class="text-end mt-5">
+
+<button
+type="button"
+class="btn btn-secondary me-2"
+(click)="cancelForm()"
+>
+Cancel
+</button>
+
+<button
+type="button"
+class="btn btn-primary"
+(click)="saveBroker()"
+>
+Save
+</button>
+
+</div>
+
+</form>
+
+</div>

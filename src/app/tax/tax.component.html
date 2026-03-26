@@ -1,0 +1,130 @@
+<div class="container-fluid p-4">
+
+<!-- Header -->
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+
+  <h5>Master > <span class="text-primary">Tax Master</span></h5>
+
+  <div>
+
+    <button class="btn btn-light me-2">
+      ✏
+    </button>
+
+    <button class="btn btn-light me-2">
+      🖨
+    </button>
+
+    <button class="btn btn-primary">
+      + Add New
+    </button>
+
+  </div>
+
+</div>
+
+
+<form [formGroup]="taxForm">
+
+<div class="row g-4">
+
+<!-- Tax Code -->
+
+<div class="col-md-6">
+<input
+type="text"
+class="form-control"
+placeholder="Tax Code"
+formControlName="taxCode"
+/>
+</div>
+
+<!-- Display Name -->
+
+<div class="col-md-6">
+<input
+type="text"
+class="form-control"
+placeholder="Display Name"
+formControlName="name"
+/>
+</div>
+
+<!-- Sales Tax -->
+
+<div class="col-md-6">
+<input
+type="number"
+class="form-control"
+placeholder="Sales Tax Perc"
+formControlName="salestaxPercentage"
+/>
+</div>
+
+<!-- Surcharge -->
+
+<div class="col-md-6">
+<input
+type="number"
+class="form-control"
+placeholder="Sur Charge Perc"
+formControlName="chargePercentage"
+/>
+</div>
+
+<!-- Group -->
+
+<div class="col-md-6">
+<input
+type="string"
+class="form-control"
+placeholder="Group Name"
+formControlName="groupName"
+/>
+</div>
+
+</div>
+
+<!-- Active -->
+
+<div class="form-check mt-4">
+
+<input
+class="form-check-input"
+type="checkbox"
+formControlName="active"
+/>
+
+<label class="form-check-label">
+Active
+</label>
+
+</div>
+
+
+<!-- Buttons -->
+
+<div class="text-end mt-5">
+
+<button
+type="button"
+class="btn btn-secondary me-2"
+(click)="cancelForm()"
+>
+Cancel
+</button>
+
+<button
+type="button"
+class="btn btn-primary"
+(click)="saveTax()"
+>
+Save
+</button>
+
+</div>
+
+</form>
+
+</div>
