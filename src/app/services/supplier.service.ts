@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from '../../environment.prod';
 
 
 export interface Supplier {
@@ -26,7 +27,7 @@ export interface Supplier {
 })
 export class SupplierService {
 
-  private baseUrl = 'http://localhost:9090/api/v1/supplier-master';
+  private baseUrl = `${environment.apiUrl}/api/v1/supplier-master`;
 
   constructor(private http: HttpClient) { }
 

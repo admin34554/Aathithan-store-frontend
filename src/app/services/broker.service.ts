@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from '../../environment.prod';
 
 export interface Broker {
   id?: number;
@@ -19,7 +20,7 @@ export interface Broker {
 })
 export class BrokerService {
 
-  private baseUrl = 'http://localhost:9090/api/v1/broker-master';
+  private baseUrl = `${environment.apiUrl}/api/v1/broker-master`;
 
   constructor(private http: HttpClient) {}
 

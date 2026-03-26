@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from '../../environment';
 
 export interface Tax {
   id?: number;
@@ -17,7 +18,7 @@ export interface Tax {
 })
 export class TaxService {
 
-  private baseUrl = 'http://localhost:9090/api/v1/tax-master';
+  private baseUrl = `${environment.apiUrl}/api/v1/tax-master`;
 
   constructor(private http: HttpClient) {}
 

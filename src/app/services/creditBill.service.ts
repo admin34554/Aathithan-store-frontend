@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from '../../environment';
 
 export interface CreditBill {
   id?: number;
@@ -27,7 +28,7 @@ export interface CreditBill {
 })
 export class CreditBillService {
 
-  private baseUrl = 'http://localhost:9090/api/v1/credit-bill';
+  private baseUrl = `${environment.apiUrl}/api/v1/credit-bill`;
 
   constructor(private http: HttpClient) {}
 

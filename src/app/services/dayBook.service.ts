@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from '../../environment.prod';
 
 export interface DayBook {
   fromDate : Date;
@@ -12,7 +13,7 @@ export interface DayBook {
 })
 export class DayBookService {
 
-  private baseUrl = 'http://localhost:9090/api/v1/day-book';
+  private baseUrl = `${environment.apiUrl}/api/v1/day-book`;
 
   constructor(private http: HttpClient) {}
 

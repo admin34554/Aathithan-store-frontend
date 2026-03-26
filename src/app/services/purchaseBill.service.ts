@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from '../../environment.prod';
 
 export interface PurchaseBill {
   id?: number;
@@ -27,7 +28,7 @@ export interface PurchaseBill {
 })
 export class PurchaseBillService {
 
-  private baseUrl = 'http://localhost:9090/api/v1/purchase-bill';
+  private baseUrl = `${environment.apiUrl}/api/v1/purchase-bill`;
 
   constructor(private http: HttpClient) {}
 
