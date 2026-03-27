@@ -95,8 +95,8 @@
     (input)="onSearch()"
     (keydown)="handleKeyDown($event)";
   />
-
-  <div class="search-results" *ngIf="results.length > 0">
+<div class="search-box" #searchBox>
+  <div class="search-results" *ngIf="results.length > 0 && searchText">
 
     <div
       class="result-item"
@@ -106,7 +106,7 @@
     >
       {{item.name}}
     </div>
-
+  </div>
   </div>
 
 </div>

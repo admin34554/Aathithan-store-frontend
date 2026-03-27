@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, HostListener, ElementRef, ViewChild } from '@angular/core';
 import { Router, RouterOutlet, RouterModule } from "@angular/router";
 import { FormsModule } from "@angular/forms";
 import { CommonModule } from "@angular/common";
 import { SupplierService } from '../services/supplier.service';
+
 
 @Component({
   selector: 'app-layout',
@@ -12,44 +13,37 @@ import { SupplierService } from '../services/supplier.service';
   imports: [RouterOutlet, FormsModule, CommonModule, RouterModule]
 })
 export class LayoutComponent {
+  @ViewChild('searchBox') searchBox!: ElementRef;
 scrollToActive() {
   setTimeout(() => {
     const el = document.querySelector('.result-item.active');
     el?.scrollIntoView({ block: 'nearest' });
   });
-}onSearch() {
+}
 
+onSearch() {
   const value = this.searchText.toLowerCase();
 
   this.results = this.searchItems.filter(item =>
     item.name.toLowerCase().includes(value)
   );
 
-  this.selectedIndex = -1; // reset selection on new search
-
+  this.selectedIndex = -1;
 }
 selectResult(item: any) {
-
   if (item.api === 'master') {
-
     this.router.navigate([item.route]);
-
   }
 
   if (item.api === 'list-view') {
-
-    this.supplierService.getSuppliers().subscribe(res => {
-
-      console.log(res);
+    this.supplierService.getSuppliers().subscribe(() => {
       this.router.navigate([item.route]);
-
     });
-
   }
 
   this.results = [];
   this.searchText = '';
-
+  this.selectedIndex = -1;
 }
 
   searchText = '';
@@ -79,7 +73,8 @@ selectResult(item: any) {
 
 constructor(
   private router: Router,
-  private supplierService: SupplierService
+  private supplierService: SupplierService,
+  private eRef: ElementRef
 ) {}
 
   toggleSidebar() {
@@ -117,6 +112,20 @@ selectMenu(menu: string) {
 navigate(route: string) {
   this.router.navigate([route]);
   this.activeMenu = ''; // collapse menu after navigation
+}
+
+@HostListener('document:click', ['$event'])
+handleClickOutside(event: MouseEvent) {
+  if (this.searchBox && !this.searchBox.nativeElement.contains(event.target)) {
+    this.results = [];
+    this.selectedIndex = -1;
+  }
+}
+
+@HostListener('document:keydown.escape')
+handleEscape() {
+  this.results = [];
+  this.selectedIndex = -1;
 }
 
 handleKeyDown(event: KeyboardEvent) {
