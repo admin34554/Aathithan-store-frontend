@@ -39,7 +39,8 @@ constructor(
     sugarLicense: [''],
     creditPeriod: [''],
     creditLimit: [''],
-    type: ['', Validators.required]
+    type: ['', Validators.required],
+    active: [false]
   });
 }
   ngOnInit(): void {

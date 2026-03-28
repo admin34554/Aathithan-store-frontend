@@ -19,7 +19,7 @@ export interface Supplier {
   aadhar: number;
   creditPeriod: number;
   type: string;
-
+  active: boolean;
 
 }
 @Injectable({

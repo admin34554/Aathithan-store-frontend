@@ -22,6 +22,7 @@ export interface Customer {
   creditPeriod: number;
   creditLimit: number;
   type: string;
+  active: boolean;
 
 
 }

@@ -36,7 +36,8 @@ constructor(
     gstIn: [''],
     aadhar: [''],
     creditPeriod: [''],
-    type: ['', Validators.required]
+    type: ['', Validators.required],
+    active: [false]
   });
 }
   ngOnInit(): void {
