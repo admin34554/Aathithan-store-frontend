@@ -1,0 +1,28 @@
+<div class="container-fluid p-4">
+
+<h5>Master > <span class="text-primary">Product Type Master</span></h5>
+
+<form [formGroup]="productTypeForm" (ngSubmit)="saveProductType()">
+
+<div class="row mb-3">
+
+<div class="col-md-6">
+<input class="form-control" placeholder="Product Type" formControlName="type">
+</div>
+
+<div class="col-md-6">
+<input class="form-control" placeholder="Product Code" formControlName="code">
+</div>
+</div>
+
+<div class="text-end mt-3">
+
+<button class="btn btn-secondary me-2">Cancel</button>
+
+<button class="btn btn-primary" type="submit">Save</button>
+
+</div>
+
+</form>
+
+</div>

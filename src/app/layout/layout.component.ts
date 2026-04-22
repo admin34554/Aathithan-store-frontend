@@ -57,6 +57,7 @@ selectResult(item: any) {
     { name: 'Customer Master', route: '/customer' },
     { name: 'Company Master', route: '/company' },
     { name: 'Product Master', route: '/product' },
+    {name: 'Product Type Master', route: '/product-type' },
     { name: 'Lorry Master', route: '/lorry' },
     { name: 'Broker Master', route: '/broker' },
     { name: 'Tax Master', route: '/tax' },
@@ -77,9 +78,6 @@ constructor(
   private eRef: ElementRef
 ) {}
 
-  toggleSidebar() {
-    this.isCollapsed = !this.isCollapsed;
-  }
 
   toggleMenu(menu: string) {
     this.openMenu = this.openMenu === menu ? '' : menu;
@@ -161,6 +159,12 @@ handleKeyDown(event: KeyboardEvent) {
   }
 }
 
+isSidebarCollapsed = true;
+
+toggleSidebar() {
+  this.isSidebarCollapsed = !this.isSidebarCollapsed;
+}
+
 selectedIndex: number = -1;
 
 results: any[] = [];
@@ -225,6 +229,10 @@ searchItems = [
     name: 'Product List',
     route: '/product-list',
     api: 'list-view'
+  },
+  { name: 'Product Type Master',
+    route: '/product-type',
+    api: 'master'
   },
   { name: 'Accounts Master',
     route: '/accounts-master',

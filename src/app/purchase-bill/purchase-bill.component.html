@@ -13,9 +13,30 @@
         <div class="container-fluid p-0 mt-3">
           <!-- Top Form -->
           <div class="row">
-            <div class="col-md-4">
-              <input class="form-control" placeholder="Name" formControlName="name">
-            </div>
+                        <div class="col-md-4 position-relative">
+
+  <!-- ✅ ONLY ONE INPUT -->
+  <input 
+    class="form-control" 
+    placeholder="Name" 
+    formControlName="name"
+    (blur)="onCustomerBlur()"
+    (keydown)="onKeyDown($event)"
+    autocomplete="off"
+  >
+
+  <!-- ✅ DROPDOWN -->
+  <ul *ngIf="customers.length > 0" class="dropdown-list">
+    <li 
+      *ngFor="let c of customers; let i = index"
+      (mousedown)="selectCustomer(c)"
+      [class.active]="i === customerSelectedIndex"
+    >
+      {{ c.fullName }} ({{ c.code }})
+    </li>
+  </ul>
+
+</div>
 
             <div class="col-md-4">
               <input class="form-control" placeholder="Tax Type" formControlName="taxType">
@@ -26,16 +47,22 @@
             </div>
 
             <div class="col-md-4 mt-3">
-              <input class="form-control" placeholder="Purchase Bill Number" formControlName="purchaseBillNo">
+              <input class="form-control" placeholder="Purchase Bill Number" formControlName="purchaseBillNo" readonly>
             </div>
 
             <div class="col-md-4 mt-3">
               <input class="form-control" placeholder="PO Number" formControlName="poNo">
             </div>
 
-            <div class="col-md-4 mt-3">
-              <input class="form-control" placeholder="Broker" formControlName="brokerId">
-            </div>
+<div class="col-md-4 position-relative">
+  <label></label>
+  <select class="form-control" formControlName="brokerId">
+    <option [ngValue]="null" disabled>Select Broker</option>
+    <option *ngFor="let b of brokers" [ngValue]="b.id">
+      {{ b.brokerName }}
+    </option>
+  </select>
+</div>
 
             <div class="col-md-4 mt-3">
                 <label>Purchase Bill Date</label>
@@ -69,30 +96,54 @@
               <tbody formArrayName="items">
                 <tr *ngFor="let row of items.controls; let i = index" [formGroupName]="i">
                   <td>{{ i + 1 }}</td>
-                  <td>
-                    <input class="form-control" formControlName="productCode">
-                  </td>
-                  <td>
-                    <input class="form-control" formControlName="itemName">
-                  </td>
-                  <td>
-                    <input type="number" class="form-control" formControlName="pRate">
-                  </td>
-                  <td>
-                    <input type="number" class="form-control" formControlName="balanceQuantity">
-                  </td>
-                  <td>
-                    <input type="number" class="form-control" formControlName="quantity">
-                  </td>
-                  <td>
-                    <input type="number" class="form-control" formControlName="rate">
-                  </td>
-                  <td>
-                    <input type="number" class="form-control" formControlName="brComm">
-                  </td>
-                  <td>
-                    <input class="form-control" formControlName="brTotal">
-                  </td>
+                                    <td class="position-relative">
+  <input 
+    class="form-control" 
+    formControlName="productCode"
+    (input)="onProductSearch($event, i)"
+    (keydown)="onProductKeyDown($event, i)"
+    (blur)="onProductBlur(i)"
+    autocomplete="off"
+  >
+
+  <!-- Dropdown -->
+  <ul *ngIf="filteredProducts[i] && filteredProducts[i].length > 0" class="dropdown-list">
+    <li 
+      *ngFor="let p of filteredProducts[i]; let j = index"
+      (mousedown)="selectProduct(p, i)"
+      [class.active]="productSelectedIndex[i] === j"
+    >
+      {{ p.name }} ({{ p.code }})
+    </li>
+  </ul>
+</td>
+                <td>
+  <input class="form-control" formControlName="itemName">
+</td>
+
+<td>
+  <input type="number" class="form-control" formControlName="pRate">
+</td>
+
+<td>
+  <input type="number" class="form-control" formControlName="balanceQuantity">
+</td>
+
+<td>
+  <input type="number" class="form-control" formControlName="quantity">
+</td>
+
+<td>
+  <input type="number" class="form-control" formControlName="rate">
+</td>
+
+<td>
+  <input type="number" class="form-control" formControlName="brComm">
+</td>
+
+<td>
+  <input type="number" class="form-control" formControlName="brTotal">
+</td>
                   <td class="text-center">
                     <button 
                       type="button" 

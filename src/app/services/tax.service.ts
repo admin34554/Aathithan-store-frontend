@@ -42,4 +42,10 @@ export class TaxService {
     return this.http.delete<void>(`${this.baseUrl}/${id}`);
   }
 
+  searchTax(name: string): Observable<any[]> {
+  return this.http.get<any[]>(
+    `${environment.apiUrl}/api/v1/tax-master/list-view?name=${name}`
+  );
+}
+
 }

@@ -103,6 +103,12 @@ export const routes: Routes = [
           .then(m => m.CreditBillComponent)
     },
     {
+      path: 'product-type',
+      loadComponent: () =>
+        import('./product-type/product-type.component')
+          .then(m => m.ProductTypeComponent)
+    },
+    {
       path: 'layout',
       loadComponent: () =>
         import('./layout/layout.component')

@@ -26,7 +26,9 @@ constructor(
   this.customerform = this.fb.group({
     id: [''],
     fullName: ['', Validators.required],
+    code: [''],
     doorNo: [''],
+    area: [''],
     street: [''], 
     city: [''],
     state: [''],

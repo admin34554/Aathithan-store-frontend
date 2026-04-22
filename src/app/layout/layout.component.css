@@ -7,18 +7,30 @@
 
 /* SIDEBAR */
 
-.sidebar{
-  width:220px;
-  background:#1e6bd6;
-  color:white;
-  display:flex;
-  transition: 0.3s;
-  flex-direction:column;
+.sidebar {
+  width: 220px;
+  background: #1e6bd6;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  transition: width 0.3s ease;
 }
 
-.sidebar.collapsed{
-  width:60px;
+/* COLLAPSED */
+.sidebar.collapsed {
+  width: 60px;
 }
+
+.sidebar.collapsed .store,
+.sidebar.collapsed span {
+  display: none;
+}
+
+/* Center icons when collapsed */
+.sidebar.collapsed .menu li {
+  text-align: center;
+}
+
 
 .logo{
   text-align:center;
@@ -71,6 +83,16 @@
   align-items:center;
   padding:0 20px;
 }
+
+.toggle-btn {
+  background: #1e6bd6;
+  color: white;
+  border: none;
+  padding: 6px 10px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
 
 .search{
   width:350px;

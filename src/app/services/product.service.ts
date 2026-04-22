@@ -45,5 +45,8 @@ export class ProductService {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
 
+  searchProducts(value: string) {
+  return this.http.get<any[]>(`${this.apiUrl}/search?code=${value}`);
+}
 
 }

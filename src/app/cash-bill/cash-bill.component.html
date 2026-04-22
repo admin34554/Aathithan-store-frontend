@@ -13,9 +13,30 @@
         <div class="container-fluid p-0 mt-3">
           <!-- Top Form -->
           <div class="row">
-            <div class="col-md-4">
-              <input class="form-control" placeholder="Name" formControlName="name">
-            </div>
+            <div class="col-md-4 position-relative">
+
+  <!-- ✅ ONLY ONE INPUT -->
+  <input 
+    class="form-control" 
+    placeholder="Name" 
+    formControlName="name"
+    (blur)="onCustomerBlur()"
+    (keydown)="onKeyDown($event)"
+    autocomplete="off"
+  >
+
+  <!-- ✅ DROPDOWN -->
+  <ul *ngIf="customers.length > 0" class="dropdown-list">
+    <li 
+      *ngFor="let c of customers; let i = index"
+      (mousedown)="selectCustomer(c)"
+      [class.active]="i === customerSelectedIndex"
+    >
+      {{ c.fullName }} ({{ c.code }})
+    </li>
+  </ul>
+
+</div>
 
             <div class="col-md-4">
               <select class="form-control" formControlName="lorry">
@@ -36,7 +57,7 @@
             </div>
 
             <div class="col-md-4 mt-3">
-              <input class="form-control" placeholder="Bill Number" formControlName="billNo">
+              <input class="form-control" placeholder="Bill Number" formControlName="billNo" readonly>
             </div>
 
             <div class="col-md-4 mt-3">
@@ -66,14 +87,50 @@
               <tbody formArrayName="items">
                 <tr *ngFor="let row of items.controls; let i = index" [formGroupName]="i">
                   <td>{{ i + 1 }}</td>
-                  <td>
-                    <input class="form-control" formControlName="productCode">
-                  </td>
+                  <td class="position-relative">
+  <input 
+    class="form-control" 
+    formControlName="productCode"
+    (input)="onProductSearch($event, i)"
+    (keydown)="onProductKeyDown($event, i)"
+    (blur)="onProductBlur(i)"
+    autocomplete="off"
+  >
+
+  <!-- Dropdown -->
+  <ul *ngIf="filteredProducts[i] && filteredProducts[i].length > 0" class="dropdown-list">
+    <li 
+      *ngFor="let p of filteredProducts[i]; let j = index"
+      (mousedown)="selectProduct(p, i)"
+      [class.active]="productSelectedIndex[i] === j"
+    >
+      {{ p.name }} ({{ p.code }})
+    </li>
+  </ul>
+</td>
                   <td>
                     <input class="form-control" formControlName="itemName">
                   </td>
                   <td>
-                    <input class="form-control" formControlName="taxType">
+                      <input 
+    class="form-control" 
+    formControlName="taxType"
+    (input)="onTaxSearch($event, i)"
+    (keydown)="onTaxKeyDown($event, i)"
+    (blur)="onTaxBlur(i)"
+    autocomplete="off"
+  >
+
+    <!-- Dropdown -->
+  <ul *ngIf="filteredTaxes[i] && filteredTaxes[i].length > 0" class="dropdown-list">
+    <li 
+      *ngFor="let t of filteredTaxes[i]; let j = index"
+      (mousedown)="selectTax(t, i)"
+      [class.active]="taxSelectedIndex[i] === j"
+    >
+      {{ t.name }} ({{ t.code }})
+    </li>
+  </ul>
                   </td>
                   <td>
                     <input type="number" class="form-control" formControlName="rate">

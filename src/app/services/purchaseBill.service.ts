@@ -11,6 +11,7 @@ export interface PurchaseBill {
   purchaseType: string;
   poNo: string;
   purchaseBillDate: Date;
+  purchaseBillNo: string;
   custBillDate: Date;
   productCode: string;
   itemName: string;

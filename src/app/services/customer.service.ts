@@ -10,6 +10,7 @@ export interface Customer {
   fullName: string;
   doorNo: string;
   street: string;
+  area: string;
   city: string;
   state: string;
   pinCode: number;
@@ -54,5 +55,11 @@ export class CustomerService {
   getCustomerById(id: number): Observable<Customer> {
     return this.http.get<Customer>(`${this.baseUrl}/${id}`);
   }
+
+searchCustomers(name: string): Observable<any[]> {
+  return this.http.get<any[]>(
+    `${environment.apiUrl}/api/v1/customer-master/list-view?name=${name}`
+  );
+}
   
 }

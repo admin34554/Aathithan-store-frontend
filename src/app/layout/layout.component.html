@@ -1,8 +1,7 @@
 <div class="app-container">
 
   <!-- LEFT SIDEBAR -->
-  <div class="sidebar">
-
+<div class="sidebar" [class.collapsed]="isSidebarCollapsed">
     <div class="logo">
       <img src="assets/user.png" class="profile"/>
       <div class="store" (click)="navigate('/')">AATHITAN STORES</div>
@@ -36,12 +35,16 @@
 
 </ul>
 
+<button class="toggle-btn" (click)="toggleSidebar()">
+  {{ isSidebarCollapsed ? '➡' : '⬅' }}
+</button>
+
   </div>
 
 
   <!-- SECOND SIDEBAR (MASTER MENU) -->
 
-  <div class="sub-sidebar" [class.open]="activeMenu === 'inventory'">
+  <div class="sub-sidebar" [class.open]="activeMenu === 'inventory' && !isSidebarCollapsed">
 
       <ul>
 
@@ -71,6 +74,7 @@
         <li (click)="navigate('/customer')">Customer Master</li>
         <li (click)="navigate('/company')">Company Master</li>
         <li (click)="navigate('/product')">Product Master</li>
+        <li (click)="navigate('/product-type')">Product Type Master</li>
         <li (click)="navigate('/lorry')">Lorry Master</li>
         <li (click)="navigate('/broker')">Broker Master</li>
         <li (click)="navigate('/tax')">Tax Master</li>

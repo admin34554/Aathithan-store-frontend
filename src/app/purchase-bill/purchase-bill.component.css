@@ -12,6 +12,10 @@ td input {
   padding: 4px;
 }
 
+td {
+  position: relative;
+}
+
 textarea {
   border-radius: 8px;
 }
@@ -39,7 +43,7 @@ textarea {
 .content-area {
   flex: 1;
   overflow-y: auto;
-  overflow-x: auto;
+  overflow-x: visible;
   padding: 0 20px 20px 20px;
 }
 
@@ -181,4 +185,43 @@ h5 {
 
 .button-section {
   margin-top: auto;
+}
+
+.col-md-4 {
+  position: relative;
+}
+
+select.form-control {
+  width: 100%;
+  height: 38px;
+  padding: 6px 12px;
+  appearance: auto; /* ✅ reset browser style */
+}
+
+.dropdown-list {
+  position: absolute;
+  width: 100%;
+  max-width: 250px;
+  background: white;
+  border: 1px solid #ccc;
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 99999;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.dropdown-list li {
+  padding: 8px;
+  cursor: pointer;
+}
+
+.dropdown-list li:hover {
+  background-color: #f1f1f1;
+}
+
+.dropdown-list li.active {
+  background-color: #007bff;
+  color: white;
 }
