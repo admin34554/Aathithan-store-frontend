@@ -42,6 +42,10 @@ export class CashBillService {
     return this.http.post<CashBill>(this.baseUrl, cashBill);
   }
 
+  getCashBillByCashBillId(billNo: String): Observable<CashBill> {
+    return this.http.get<CashBill>(`${this.baseUrl}/bill-no/${billNo}`);
+  }
+
   // UPDATE
   updateCashBill(id: number, cashBill: CashBill): Observable<CashBill> {
     return this.http.put<CashBill>(`${this.baseUrl}/${id}`, cashBill);

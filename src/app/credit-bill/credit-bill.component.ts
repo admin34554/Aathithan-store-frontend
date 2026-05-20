@@ -54,8 +54,9 @@ selectCustomer(customer: any) {
   this.customerSelectedIndex = -1;
 
   setTimeout(() => {
-    (document.activeElement as HTMLElement)?.blur();
-  });
+    const input = document.querySelector('input[formControlName="name"]') as HTMLElement;
+    input.blur();
+  }, 0);
 }
 
   creditBillForm: FormGroup;
@@ -139,6 +140,15 @@ constructor(
     return;
   }
 
+ const selectedCustomer = this.customers.find(
+    c => c.fullName === name
+  );
+
+  if (selectedCustomer) {
+    this.customers = [];
+    return;
+  }
+  
   this.customerService.searchCustomers(name).subscribe(res => {
     this.customers = res;
   });
@@ -184,6 +194,90 @@ onProductKeyDown(event: KeyboardEvent, rowIndex: number) {
   }
 }
 
+  loadBillByBillNo() {
+
+  const billNo = this.creditBillForm.get('billNo')?.value;
+
+  if (!billNo) return;
+
+  this.creditBillService.getCreditBillByCreditBillId(billNo).subscribe({
+
+    next: (res: any) => {
+
+      console.log("Fetched Bill", res);
+
+      // ✅ Clear existing rows
+      this.items.clear();
+
+      // ✅ Bind top fields
+      this.creditBillForm.patchValue({
+        name: res.name,
+        billNo: res.billNo,
+        billDate: res.billDate?.substring(0, 10),
+        remarks: res.remarks,
+        lorry: res.lorry?.id,
+        broker: res.broker?.id
+      });
+
+      // ✅ Bind item rows
+      if (res.items && res.items.length > 0) {
+
+        res.items.forEach((item: any) => {
+
+          const row = this.createItem();
+
+          row.patchValue({
+            productCode: item.productCode,
+            itemName: item.itemName,
+            taxType: item.tax,
+            rate: item.rate,
+            quantity: item.quantity,
+            tax: item.tax,
+            total: item.total,
+            brNo: item.brNo,
+            surCh: item.surCh
+          });
+
+          // ✅ Recalculate total on changes
+          row.valueChanges.subscribe(val => {
+
+            const rate = Number(val.rate) || 0;
+            const qty = Number(val.quantity) || 0;
+            const taxPerc = Number(val.tax) || 0;
+
+            const amount = rate * qty;
+            const taxAmount = amount * taxPerc / 100;
+
+            row.patchValue({
+              total: (amount + taxAmount).toFixed(2)
+            }, { emitEvent: false });
+
+          });
+
+          this.items.push(row);
+
+          this.filteredProducts.push([]);
+          this.productSelectedIndex.push(-1);
+
+        });
+
+      } else {
+
+        // ✅ If no items
+        this.addRow();
+
+      }
+
+    },
+
+    error: (err) => {
+      console.error("Bill not found", err);
+      alert("Bill not found");
+    }
+
+  });
+
+}
 selectProduct(product: any, rowIndex: number) {
 
   const row = this.items.at(rowIndex);
@@ -389,4 +483,27 @@ onProductBlur(i: number) {
     this.items.clear();
     this.addRow();
   }
+
+  printCreditBill() {
+
+  const billNo = this.creditBillForm.get('billNo')?.value;
+
+  if (!billNo) {
+    alert("Save bill first");
+    return;
+  }
+
+  const link = document.createElement('a');
+
+  link.href =
+    `https://aadhi-store-backend.onrender.com/api/v1/credit-bill/pdf/${billNo}`;
+
+  link.download = `creditBill-${billNo}.pdf`;
+
+  document.body.appendChild(link);
+
+  link.click();
+
+  document.body.removeChild(link);
+}
 }

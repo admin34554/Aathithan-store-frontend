@@ -18,6 +18,11 @@
     <span>Master</span>
   </li>
 
+   <li (click)="selectMenu('sales')">
+    🛒
+    <span>Sales</span>
+  </li>
+
   <li (click)="selectMenu('inventory')">
     📦
     <span>Inventory</span>
@@ -47,10 +52,17 @@
   <div class="sub-sidebar" [class.open]="activeMenu === 'inventory' && !isSidebarCollapsed">
 
       <ul>
+        <li (click)="navigate('/purchase-bill')">Purchase Bill</li>
+      </ul>
+
+  </div>
+
+    <div class="sub-sidebar" [class.open]="activeMenu === 'sales' && !isSidebarCollapsed">
+
+      <ul>
 
         <li (click)="navigate('/cash-bill')">Cash Bill</li>
         <li (click)="navigate('/credit-bill')">Credit Bill</li>
-        <li (click)="navigate('/purchase-bill')">Purchase Bill</li>
       </ul>
 
   </div>

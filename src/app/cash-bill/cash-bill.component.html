@@ -1,9 +1,24 @@
 <div class="page-container">
   
   <!-- Header (fixed) -->
-  <div style="padding: 20px 20px 0 20px; background: white; border-bottom: 1px solid #dee2e6;">
-    <h5>Inventory > <span class="text-primary">Cash Bill</span></h5>
-  </div>
+<!-- Header -->
+<div class="page-header">
+
+  <h5>
+    Sales > <span class="text-primary">Cash Bill</span>
+  </h5>
+
+  <!-- PRINT BUTTON -->
+  <button
+    type="button"
+    class="btn btn-dark print-btn"
+    (click)="printBill()">
+
+    🖨 Print
+
+  </button>
+
+</div>
 
   <!-- Scrollable Content Area -->
   <div class="content-area">
@@ -57,7 +72,7 @@
             </div>
 
             <div class="col-md-4 mt-3">
-              <input class="form-control" placeholder="Bill Number" formControlName="billNo" readonly>
+              <input class="form-control" placeholder="Bill Number" formControlName="billNo" (keydown.enter)="loadBillByBillNo()">
             </div>
 
             <div class="col-md-4 mt-3">

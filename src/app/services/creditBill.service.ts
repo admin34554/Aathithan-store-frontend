@@ -42,6 +42,10 @@ export class CreditBillService {
     return this.http.post<CreditBill>(this.baseUrl, creditBill);
   }
 
+   getCreditBillByCreditBillId(billNo: String): Observable<CreditBill> {
+      return this.http.get<CreditBill>(`${this.baseUrl}/bill-no/${billNo}`);
+    }
+
   // UPDATE
   updateCreditBill(id: number, creditBill: CreditBill): Observable<CreditBill> {
     return this.http.put<CreditBill>(`${this.baseUrl}/${id}`, creditBill);
