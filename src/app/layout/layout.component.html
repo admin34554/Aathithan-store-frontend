@@ -109,7 +109,7 @@
     placeholder="Search"
     [(ngModel)]="searchText"
     (input)="onSearch()"
-    (keydown)="handleKeyDown($event)";
+    (keydown)="handleKeyDown($event)"
   />
 <div class="search-box" #searchBox>
   <div class="search-results" *ngIf="results.length > 0 && searchText">
