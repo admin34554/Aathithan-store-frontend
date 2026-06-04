@@ -3,11 +3,12 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Customer, CustomerService } from '../../services/customer.service';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
+import { TranslateService, TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-customer',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, TranslateModule],
   templateUrl: './customer.component.html',
   styleUrls: ['./customer.component.css']})
 export class CustomerComponent implements OnInit {
@@ -20,9 +21,16 @@ activeTab: string = 'details';
 
 constructor(
   private customerService: CustomerService,
-  private fb: FormBuilder
+  private fb: FormBuilder,
+  private translate: TranslateService
 )
 {
+
+  const lang = localStorage.getItem('lang') || 'en';
+
+  this.translate.setDefaultLang('en');
+  this.translate.use(lang);
+
   this.customerform = this.fb.group({
     id: [''],
     fullName: ['', Validators.required],

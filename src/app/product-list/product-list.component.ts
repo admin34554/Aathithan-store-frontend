@@ -4,11 +4,12 @@ import { FormsModule } from '@angular/forms';
 import { ProductService } from '../services/product.service';
 import { Product } from '../services/product.service';
 import { RouterModule } from '@angular/router';
+import { TranslateService, TranslateModule } from '@ngx-translate/core';
 
 @Component({
-  selector: 'app-customer-list',
+  selector: 'app-product-list',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule],
+  imports: [CommonModule, FormsModule, RouterModule, TranslateModule],
   templateUrl: './product-list.component.html',
   styleUrls: ['./product-list.component.css']
 })
@@ -22,7 +23,12 @@ export class ProductListComponent implements OnInit {
   currentPage = 1;
   pageSize = 5;
 
-  constructor(private productService: ProductService) {}
+  constructor(private productService: ProductService, private translate: TranslateService) {
+     const lang = localStorage.getItem('lang') || 'en';
+
+  this.translate.setDefaultLang('en');
+  this.translate.use(lang);
+}
 
   ngOnInit(): void {
     this.loadProducts();

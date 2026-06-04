@@ -5,11 +5,12 @@ import { CustomerService } from '../services/customer.service';
 import { Customer } from '../services/customer.service';
 import { CustomerRoutingModule } from "../modules/customer/customer-routing.module";
 import { RouterModule } from '@angular/router';
+import { TranslateService, TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-customer-list',
   standalone: true,
-  imports: [CommonModule, FormsModule, CustomerRoutingModule, RouterModule],
+  imports: [CommonModule, FormsModule, CustomerRoutingModule, RouterModule, TranslateModule],
   templateUrl: './customer-list.component.html',
   styleUrls: ['./customer-list.component.css']
 })
@@ -23,7 +24,13 @@ export class CustomerListComponent implements OnInit {
   currentPage = 1;
   pageSize = 5;
 
-  constructor(private customerService: CustomerService) {}
+  constructor(private customerService: CustomerService, private translate: TranslateService) {
+
+      const lang = localStorage.getItem('lang') || 'en';
+
+  this.translate.setDefaultLang('en');
+  this.translate.use(lang);
+  }
 
   ngOnInit(): void {
     this.loadCustomers();

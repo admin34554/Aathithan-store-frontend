@@ -4,7 +4,7 @@
 
 <div class="d-flex justify-content-between align-items-center mb-4">
 
-  <h5>Master > <span class="text-primary">Tax Master</span></h5>
+  <h5>{{ 'Master' | translate }} > <span class="text-primary">{{ 'TaxMaster' | translate }}</span></h5>
 
   <div>
 
@@ -35,7 +35,7 @@
 <input
 type="text"
 class="form-control"
-placeholder="Tax Code"
+placeholder="{{ 'Tax Code' | translate }}"
 formControlName="taxCode"
 />
 </div>
@@ -46,7 +46,7 @@ formControlName="taxCode"
 <input
 type="text"
 class="form-control"
-placeholder="Display Name"
+placeholder="{{ 'Display Name' | translate }}"
 formControlName="name"
 />
 </div>
@@ -54,12 +54,7 @@ formControlName="name"
 <!-- Sales Tax -->
 
 <div class="col-md-6">
-<input
-type="number"
-class="form-control"
-placeholder="Sales Tax Perc"
-formControlName="salestaxPercentage"
-/>
+<input type="number" class="form-control" placeholder="{{ 'Sales Tax Perc' | translate }}" formControlName="salestaxPercentage"/>
 </div>
 
 <!-- Surcharge -->
@@ -68,7 +63,7 @@ formControlName="salestaxPercentage"
 <input
 type="number"
 class="form-control"
-placeholder="Sur Charge Perc"
+placeholder="{{ 'Sur Charge Perc' | translate }}"
 formControlName="chargePercentage"
 />
 </div>
@@ -79,7 +74,7 @@ formControlName="chargePercentage"
 <input
 type="string"
 class="form-control"
-placeholder="Group Name"
+placeholder="{{ 'Group Name' | translate }}"
 formControlName="groupName"
 />
 </div>
@@ -97,7 +92,7 @@ formControlName="active"
 />
 
 <label class="form-check-label">
-Active
+{{ 'Active' | translate }}
 </label>
 
 </div>
@@ -112,7 +107,7 @@ type="button"
 class="btn btn-secondary me-2"
 (click)="cancelForm()"
 >
-Cancel
+{{ 'Cancel' | translate }}
 </button>
 
 <button
@@ -120,7 +115,7 @@ type="button"
 class="btn btn-primary"
 (click)="saveTax()"
 >
-Save
+{{ 'Save' | translate }}
 </button>
 
 </div>

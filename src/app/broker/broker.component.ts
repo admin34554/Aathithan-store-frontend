@@ -2,11 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { BrokerService } from '../services/broker.service';
+import { TranslateService, TranslateModule } from '@ngx-translate/core';
+
 
 @Component({
   selector: 'app-broker-master',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule,TranslateModule],
   templateUrl: './broker.component.html',
   styleUrls: ['./broker.component.css']
 })
@@ -19,8 +21,14 @@ groups: any;
 
   constructor(
     private fb: FormBuilder,
-    private brokerService: BrokerService
+    private brokerService: BrokerService,
+    private translate: TranslateService
+
   ) {
+    const lang = localStorage.getItem('lang') || 'en';
+
+  this.translate.setDefaultLang('en');
+  this.translate.use(lang);
 
     this.brokerForm = this.fb.group({
       code: [''],

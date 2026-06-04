@@ -3,11 +3,12 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Broker, BrokerService } from '../services/broker.service';
 import { RouterModule } from '@angular/router';
+import { TranslateService, TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-broker-list',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule],
+  imports: [CommonModule, FormsModule, RouterModule, TranslateModule],
   templateUrl: './broker-list.component.html',
   styleUrls: ['./broker-list.component.css']
 })
@@ -21,7 +22,15 @@ export class BrokerListComponent implements OnInit {
   currentPage = 1;
   pageSize = 5;
 
-  constructor(private brokerService: BrokerService) {}
+  constructor(private brokerService: BrokerService, 
+    private translate: TranslateService) {
+
+  const lang = localStorage.getItem('lang') || 'en';
+
+  this.translate.setDefaultLang('en');
+  this.translate.use(lang);
+    
+  }
 
   ngOnInit(): void {
     this.loadBroker();

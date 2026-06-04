@@ -2,7 +2,7 @@
   
   <!-- Header (fixed) -->
   <div style="padding: 20px 20px 0 20px; background: white; border-bottom: 1px solid #dee2e6;">
-    <h5>Inventory > <span class="text-primary">Purchase Bill</span></h5>
+    <h5>{{ 'Inventory' | translate }} > <span class="text-primary">{{ 'Purchase Bill' | translate }}</span></h5>
   </div>
 
   <!-- Scrollable Content Area -->
@@ -18,7 +18,7 @@
   <!-- ✅ ONLY ONE INPUT -->
   <input 
     class="form-control" 
-    placeholder="Name" 
+    placeholder="{{ 'Name' | translate }}" 
     formControlName="name"
     (blur)="onCustomerBlur()"
     (keydown)="onKeyDown($event)"
@@ -39,25 +39,25 @@
 </div>
 
             <div class="col-md-4">
-              <input class="form-control" placeholder="Tax Type" formControlName="taxType">
+              <input class="form-control" placeholder="{{ 'Tax Type' | translate }}" formControlName="taxType">
             </div>
 
             <div class="col-md-4">
-              <input class="form-control" placeholder="Purchase Type" formControlName="purchaseType">
+              <input class="form-control" placeholder="{{ 'Purchase Type' | translate }}" formControlName="purchaseType">
             </div>
 
             <div class="col-md-4 mt-3">
-              <input class="form-control" placeholder="Purchase Bill Number" formControlName="purchaseBillNo" readonly>
+              <input class="form-control" placeholder="{{ 'Purchase Bill Number' | translate }}" formControlName="purchaseBillNo" readonly>
             </div>
 
             <div class="col-md-4 mt-3">
-              <input class="form-control" placeholder="PO Number" formControlName="poNo">
+              <input class="form-control" placeholder="{{ 'PO Number' | translate }}" formControlName="poNo">
             </div>
 
 <div class="col-md-4 position-relative">
   <label></label>
   <select class="form-control" formControlName="brokerId">
-    <option [ngValue]="null" disabled>Select Broker</option>
+    <option [ngValue]="null" disabled>{{ 'Select Broker' | translate }}</option>
     <option *ngFor="let b of brokers" [ngValue]="b.id">
       {{ b.brokerName }}
     </option>
@@ -65,13 +65,13 @@
 </div>
 
             <div class="col-md-4 mt-3">
-                <label>Purchase Bill Date</label>
-              <input type="date" class="form-control" placeholder="Purchase Bill Date" formControlName="purchaseBillDate">
+                <label>{{ 'Purchase Bill Date' | translate }}</label>
+              <input type="date" class="form-control" placeholder="{{ 'Purchase Bill Date' | translate }}" formControlName="purchaseBillDate">
             </div>
 
             <div class="col-md-4 mt-3">
-                <label>Customer Bill Date</label>
-              <input type="date" class="form-control" placeholder="Customer Bill Date" formControlName="custBillDate">
+                <label>{{ 'Customer Bill Date' | translate }}</label>
+              <input type="date" class="form-control" placeholder="{{ 'Customer Bill Date' | translate }}" formControlName="custBillDate">
             </div>
           </div>
 
@@ -80,16 +80,16 @@
             <table class="table table-bordered">
               <thead class="table-light">
                 <tr>
-                  <th style="width: 60px;">S.No</th>
-                  <th>Product Code</th>
-                  <th>Item Name</th>
-                  <th>PO.L.P Rate</th>
-                  <th>Balance Quantity</th>
-                  <th>Quantity</th>
-                  <th>Rate</th>
-                  <th>Br.Comm</th>
-                  <th>Br.Total</th>
-                  <th style="width: 80px;">Action</th>
+                  <th style="width: 60px;">{{ 'S.No' | translate }}</th>
+                  <th>{{ 'Product Code' | translate }}</th>
+                  <th>{{ 'Item Name' | translate }}</th>
+                  <th>{{ 'PO.L.P Rate' | translate }}</th>
+                  <th>{{ 'Balance Quantity' | translate }}</th>
+                  <th>{{ 'Quantity' | translate }}</th>
+                  <th>{{ 'Rate' | translate }}</th>
+                  <th>{{ 'Broker Commission' | translate }}</th>
+                  <th>{{ 'Broker Total' | translate }}</th>
+                  <th style="width: 80px;">{{ 'Action' | translate }}</th>
                 </tr>
               </thead>
 
@@ -161,7 +161,7 @@
               type="button" 
               class="btn btn-primary btn-sm mt-2 mb-2"
               (click)="addRow()">
-              + Add Row
+              {{ 'Add Row' | translate }}
             </button>
           </div>
 
@@ -172,7 +172,7 @@
               <textarea 
                 class="form-control" 
                 rows="4" 
-                placeholder="Remarks"
+                placeholder="{{ 'Remarks' | translate }}"
                 formControlName="remarks">
               </textarea>
             </div>
@@ -184,13 +184,13 @@
               type="button" 
               class="btn btn-secondary me-2"
               (click)="cancelForm()">
-              Cancel
+              {{ 'Cancel' | translate }}
             </button>
             <button 
               type="button" 
               class="btn btn-primary"
               (click)="savePurchaseBill()">
-              Save
+              {{ 'Save' | translate }}
             </button>
           </div>
 

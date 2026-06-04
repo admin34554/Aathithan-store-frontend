@@ -3,11 +3,12 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Supplier, SupplierService } from '../services/supplier.service';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
+import { TranslateService, TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-supplier',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, TranslateModule],
   templateUrl: './supplier.component.html',
   styleUrls: ['./supplier.component.css']})
 export class SupplierComponent implements OnInit {
@@ -20,9 +21,16 @@ activeTab: string = 'details';
 
 constructor(
   private supplierService: SupplierService,
-  private fb: FormBuilder
+  private fb: FormBuilder,
+  private translate: TranslateService
 )
 {
+
+    const lang = localStorage.getItem('lang') || 'en';
+
+  this.translate.setDefaultLang('en');
+  this.translate.use(lang);
+
   this.supplierform = this.fb.group({
     id: [''],
     doorNo: [''],

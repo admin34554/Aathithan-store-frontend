@@ -200,3 +200,43 @@
   background: #1e6bd6;
   color: white;
 }
+
+.settings-container {
+  position: relative;
+}
+
+.settings-icon {
+  cursor: pointer;
+  font-size: 20px;
+}
+
+.settings-menu {
+  position: absolute;
+  top: 40px;
+  right: 0;
+
+  background: white;
+  border: 1px solid #ddd;
+
+  width: 160px;
+  border-radius: 6px;
+
+  box-shadow: 0 2px 10px rgba(0,0,0,.15);
+
+  z-index: 1000;
+}
+
+.settings-title {
+  font-weight: 600;
+  padding: 10px;
+  border-bottom: 1px solid #eee;
+}
+
+.settings-menu div {
+  padding: 10px;
+  cursor: pointer;
+}
+
+.settings-menu div:hover {
+  background: #f5f5f5;
+}

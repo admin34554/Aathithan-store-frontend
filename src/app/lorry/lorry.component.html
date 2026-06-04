@@ -4,7 +4,7 @@
 
 <div class="d-flex justify-content-between align-items-center mb-4">
 
-  <h5>Master > <span class="text-primary">Lorry Master</span></h5>
+  <h5>{{ 'Master' | translate }} > <span class="text-primary">{{ 'LorryMaster' | translate }}</span></h5>
 
   <div>
 
@@ -35,7 +35,7 @@
 <input
 type="text"
 class="form-control"
-placeholder="Lorry Code"
+placeholder="{{ 'LorryCode' | translate }}"
 formControlName="code"
 />
 </div>
@@ -46,7 +46,7 @@ formControlName="code"
 <input
 type="text"
 class="form-control"
-placeholder="Lorry Name"
+placeholder="{{ 'LorryName' | translate }}"
 formControlName="name"
 />
 </div>
@@ -57,7 +57,7 @@ formControlName="name"
 <input
 type="number"
 class="form-control"
-placeholder="Phone Number"
+placeholder="{{ 'PhoneNo' | translate }}"
 formControlName="phoneNumber"
 />
 </div>
@@ -68,7 +68,7 @@ formControlName="phoneNumber"
 <input
 type="number"
 class="form-control"
-placeholder="Mobile Number"
+placeholder="{{ 'Mobile' | translate }}"
 formControlName="mobileNumber"
 />
 </div>
@@ -79,7 +79,7 @@ formControlName="mobileNumber"
 <input
 type="string"
 class="form-control"
-placeholder="Contact Person"
+placeholder="{{ 'ContactPerson' | translate }}"
 formControlName="contactPerson"/>
 </div>
 
@@ -89,7 +89,7 @@ formControlName="contactPerson"/>
 <input
 type="string"
 class="form-control"
-placeholder="Address"
+placeholder="{{ 'Address' | translate }}"
 formControlName="address"/>
 </div>
 
@@ -99,7 +99,7 @@ formControlName="address"/>
 <input
 type="string"
 class="form-control"
-placeholder="Area Covering"
+placeholder="{{ 'AreaCovering' | translate }}"
 formControlName="areaCovering"/>
 </div>
 
@@ -107,33 +107,33 @@ formControlName="areaCovering"/>
 
 <div class="col-md-6">
 
-<label class="form-label">Route Covered</label>
+<label class="form-label">{{ 'RouteCovered' | translate }}</label>
 
 <div class="d-flex gap-3 mt-2">
 
 <div class="form-check">
 <input class="form-check-input" type="checkbox" value="L1" (change)="onRouteChange($event)">
-<label class="form-check-label">L1</label>
+<label class="form-check-label">{{ 'L1' | translate }}</label>
 </div>
 
 <div class="form-check">
 <input class="form-check-input" type="checkbox" value="L2" (change)="onRouteChange($event)">
-<label class="form-check-label">L2</label>
+<label class="form-check-label">{{ 'L2' | translate }}</label>
 </div>
 
 <div class="form-check">
 <input class="form-check-input" type="checkbox" value="L3" (change)="onRouteChange($event)">
-<label class="form-check-label">L3</label>
+<label class="form-check-label">{{ 'L3' | translate }}</label>
 </div>
 
 <div class="form-check">
 <input class="form-check-input" type="checkbox" value="L4" (change)="onRouteChange($event)">
-<label class="form-check-label">L4</label>
+<label class="form-check-label">{{ 'L4' | translate }}</label>
 </div>
 
 <div class="form-check">
 <input class="form-check-input" type="checkbox" value="L5" (change)="onRouteChange($event)">
-<label class="form-check-label">L5</label>
+<label class="form-check-label">{{ 'L5' | translate }}</label>
 </div>
 
 </div>
@@ -154,7 +154,7 @@ type="button"
 class="btn btn-secondary me-2"
 (click)="cancelForm()"
 >
-Cancel
+{{ 'Cancel' | translate }}
 </button>
 
 <button
@@ -162,7 +162,7 @@ type="button"
 class="btn btn-primary"
 (click)="saveLorry()"
 >
-Save
+{{ 'Save' | translate }}
 </button>
 
 </div>

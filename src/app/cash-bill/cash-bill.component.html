@@ -5,7 +5,7 @@
 <div class="page-header">
 
   <h5>
-    Sales > <span class="text-primary">Cash Bill</span>
+    {{ 'Sales' | translate }} > <span class="text-primary">{{ 'Cash Bill' | translate }}</span>
   </h5>
 
   <!-- PRINT BUTTON -->
@@ -14,10 +14,13 @@
     class="btn btn-dark print-btn"
     (click)="printBill()">
 
-    🖨 Print
+    🖨 {{ 'Print' | translate }}
 
   </button>
 
+</div> 
+<div *ngIf="errorMessage" class="alert alert-danger">
+  {{ errorMessage }}
 </div>
 
   <!-- Scrollable Content Area -->
@@ -33,7 +36,7 @@
   <!-- ✅ ONLY ONE INPUT -->
   <input 
     class="form-control" 
-    placeholder="Name" 
+    placeholder="{{ 'Name' | translate }}" 
     formControlName="name"
     (blur)="onCustomerBlur()"
     (keydown)="onKeyDown($event)"
@@ -55,7 +58,7 @@
 
             <div class="col-md-4">
               <select class="form-control" formControlName="lorry">
-              <option value=""disabled>Select Lorry</option>
+              <option value=""disabled>{{ 'Select Lorry' | translate }}</option>
               <option *ngFor="let l of lorries" [value]="l.id">
                 {{ l.name }}
               </option>
@@ -64,7 +67,7 @@
 
             <div class="col-md-4">
               <select class="form-control" formControlName="broker">
-                <option value=""disabled>Select Broker</option>
+                <option value=""disabled>{{ 'Select Broker' | translate }}</option>
                 <option *ngFor="let b of brokers" [value]="b.id">
                   {{ b.brokerName }}
                 </option>
@@ -72,7 +75,7 @@
             </div>
 
             <div class="col-md-4 mt-3">
-              <input class="form-control" placeholder="Bill Number" formControlName="billNo" (keydown.enter)="loadBillByBillNo()">
+              <input class="form-control" placeholder="{{ 'Bill Number' | translate }}" formControlName="billNo" (keydown.enter)="loadBillByBillNo()">
             </div>
 
             <div class="col-md-4 mt-3">
@@ -85,17 +88,17 @@
             <table class="table table-bordered">
               <thead class="table-light">
                 <tr>
-                  <th style="width: 60px;">S.No</th>
-                  <th>Product Code</th>
-                  <th>Item Name</th>
-                  <th>Tax Type</th>
-                  <th>Rate</th>
-                  <th>Qty</th>
-                  <th>Tax</th>
-                  <th>Total</th>
-                  <th>HSN No</th>
-                  <th>Sur.Ch</th>
-                  <th style="width: 80px;">Action</th>
+                  <th style="width: 60px;">{{ 'S.No' | translate }}</th>
+                  <th>{{ 'Product Code' | translate }}</th>
+                  <th>{{ 'Item Name' | translate }}</th>
+                  <th>{{ 'Tax Type' | translate }}</th>
+                  <th>{{ 'Rate' | translate }}</th>
+                  <th>{{ 'Quantity' | translate }}</th>
+                  <th>{{ 'Tax' | translate }}</th>
+                  <th>{{ 'Total' | translate }}</th>
+                  <th>{{ 'HSN No' | translate }}</th>
+                  <th>{{ 'SurCharge' | translate }}</th>
+                  <th style="width: 80px;">{{ 'Action' | translate }}</th>
                 </tr>
               </thead>
 
@@ -175,6 +178,31 @@
                   </td>
                 </tr>
               </tbody>
+              <tfoot>
+  <tr class="table-secondary fw-bold">
+    <td colspan="4" class="text-end">
+      
+    </td>
+
+    <td>
+      {{ getTotalRate() | number:'1.2-2' }}
+    </td>
+
+    <td>
+      {{ getTotalQuantity() }}
+    </td>
+
+    <td>
+      {{ getTotalTax() | number:'1.2-2' }}
+    </td>
+
+    <td>
+      {{ getGrandTotal() | number:'1.2-2' }}
+    </td>
+
+    <td colspan="3"></td>
+  </tr>
+</tfoot>
             </table>
 
             <!-- Add Row Button -->
@@ -182,7 +210,7 @@
               type="button" 
               class="btn btn-primary btn-sm mt-2 mb-2"
               (click)="addRow()">
-              + Add Row
+              {{ 'Add Row' | translate }}
             </button>
           </div>
 
@@ -192,8 +220,8 @@
             <div class="col-md-8">
               <textarea 
                 class="form-control" 
-                rows="4" 
-                placeholder="Remarks"
+                rows="1" 
+                placeholder="{{ 'Remarks' | translate }}"
                 formControlName="remarks">
               </textarea>
             </div>
@@ -205,13 +233,13 @@
               type="button" 
               class="btn btn-secondary me-2"
               (click)="cancelForm()">
-              Cancel
+              {{ 'Cancel' | translate }}
             </button>
             <button 
               type="button" 
               class="btn btn-primary"
               (click)="saveCashBill()">
-              Save
+              {{ 'Save' | translate }}
             </button>
           </div>
 

@@ -3,14 +3,14 @@ import { Router, RouterOutlet, RouterModule } from "@angular/router";
 import { FormsModule } from "@angular/forms";
 import { CommonModule } from "@angular/common";
 import { SupplierService } from '../services/supplier.service';
-
+import { TranslateService, TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-layout',
   standalone: true,
   templateUrl: './layout.component.html',
   styleUrl: './layout.component.css',
-  imports: [RouterOutlet, FormsModule, CommonModule, RouterModule]
+  imports: [RouterOutlet, FormsModule, CommonModule, RouterModule, TranslateModule]
 })
 export class LayoutComponent {
   @ViewChild('searchBox') searchBox!: ElementRef;
@@ -20,6 +20,8 @@ scrollToActive() {
     el?.scrollIntoView({ block: 'nearest' });
   });
 }
+
+  showSettings = false;
 
 onSearch() {
   const value = this.searchText.toLowerCase();
@@ -75,8 +77,37 @@ selectResult(item: any) {
 constructor(
   private router: Router,
   private supplierService: SupplierService,
-  private eRef: ElementRef
-) {}
+  private eRef: ElementRef,
+  private translate: TranslateService
+) {  
+  const lang = localStorage.getItem('lang') || 'en';
+
+  this.translate.setDefaultLang('en');
+  this.translate.use(lang);
+  
+  }
+
+   toggleSettings() {
+    this.showSettings = !this.showSettings;
+  }
+
+  changeLanguage(lang: string) {
+
+  this.translate.use(lang);
+
+  localStorage.setItem('lang', lang);
+
+  this.showSettings = false;
+}
+@HostListener('document:click', ['$event'])
+onDocumentClick(event: MouseEvent) {
+
+  const target = event.target as HTMLElement;
+
+  if (!target.closest('.settings-container')) {
+    this.showSettings = false;
+  }
+}
 
 
   toggleMenu(menu: string) {

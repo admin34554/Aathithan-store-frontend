@@ -1,17 +1,17 @@
 <div class="container-fluid p-4">
 
-<h5>Master > <span class="text-primary">Product Master</span></h5>
+<h5>{{ 'Master' | translate }} > <span class="text-primary">{{ 'Product Master' | translate }}</span></h5>
 
 <form [formGroup]="productForm" (ngSubmit)="saveProduct()">
 
 <div class="row mb-3">
 
 <div class="col-md-6">
-<input class="form-control" placeholder="Product Type" formControlName="type">
+<input class="form-control" placeholder="{{ 'Product Type' | translate }}" formControlName="type">
 </div>
 
 <div class="col-md-6">
-<input class="form-control" placeholder="Product Code" formControlName="code">
+<input class="form-control" placeholder="{{ 'Product Code' | translate }}" formControlName="code">
 </div>
 
 </div>
@@ -20,11 +20,11 @@
 <div class="row mb-3">
 
 <div class="col-md-6">
-<input class="form-control" placeholder="Name" formControlName="name">
+<input class="form-control" placeholder="{{ 'Product Name' | translate }}" formControlName="name">
 </div>
 
 <div class="col-md-6">
-<input class="form-control" placeholder="Brand Name" formControlName="brandName">
+<input class="form-control" placeholder="{{ 'Brand Name' | translate }}" formControlName="brandName">
 </div>
 
 </div>
@@ -33,11 +33,11 @@
 <div class="row mb-3">
 
 <div class="col-md-6">
-<input class="form-control" placeholder="Weight" formControlName="weight">
+<input class="form-control" placeholder="{{ 'Weight' | translate }}" formControlName="weight">
 </div>
 
 <div class="col-md-6">
-<input class="form-control" placeholder="Retail Rate" formControlName="retailRate">
+<input class="form-control" placeholder="{{ 'Retail Rate' | translate }}" formControlName="retailRate">
 </div>
 
 </div>
@@ -48,9 +48,9 @@
 <thead>
 
 <tr>
-<th>TAX NAME</th>
-<th>OPTIONAL STOCK</th>
-<th>STOCK IN HAND</th>
+<th>{{ 'TAX NAME' | translate }}</th>
+<th>{{ 'OPTIONAL STOCK' | translate }}</th>
+<th>{{ 'STOCK IN HAND' | translate }}</th>
 </tr>
 
 </thead>
@@ -77,9 +77,9 @@
 
 <div class="text-end mt-3">
 
-<button class="btn btn-secondary me-2">Cancel</button>
+<button class="btn btn-secondary me-2" type="button">{{ 'Cancel' | translate }}</button>
 
-<button class="btn btn-primary" type="submit">Save</button>
+<button class="btn btn-primary" type="submit">{{ 'Save' | translate }}</button>
 
 </div>
 

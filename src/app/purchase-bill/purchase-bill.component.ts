@@ -8,11 +8,12 @@ import { ProductTypeService } from '../services/productType.service';
 import { ProductService } from '../services/product.service';
 import { TaxService } from '../services/tax.service';
 import { BrokerService } from '../services/broker.service';
+import { TranslateService, TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-purchase-bill',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, TranslateModule],
   templateUrl: './purchase-bill.component.html',
   styleUrls: ['./purchase-bill.component.css']
 })
@@ -77,8 +78,15 @@ productSelectedIndex: number[] = [];
         private customerService: CustomerService,
         private productTypeService: ProductTypeService,
         private productService: ProductService,
-        private taxService: TaxService
+        private taxService: TaxService,
+        private translate: TranslateService
   ) {
+
+    const lang = localStorage.getItem('lang') || 'en';
+
+  this.translate.setDefaultLang('en');
+  this.translate.use(lang);
+
     this.purchaseBillForm = this.fb.group({
       name: [''],
       taxType: [''],

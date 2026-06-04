@@ -3,11 +3,12 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Supplier, SupplierService } from '../services/supplier.service';
 import { RouterModule } from '@angular/router';
+import { TranslateService, TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-supplier-list',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule],
+  imports: [CommonModule, FormsModule, RouterModule, TranslateModule],
   templateUrl: './supplier-list.component.html',
   styleUrls: ['./supplier-list.component.css']
 })
@@ -21,7 +22,13 @@ export class SupplierListComponent implements OnInit {
   currentPage = 1;
   pageSize = 5;
 
-  constructor(private supplierService: SupplierService) {}
+  constructor(private supplierService: SupplierService, private translate: TranslateService) {
+
+        const lang = localStorage.getItem('lang') || 'en';
+
+  this.translate.setDefaultLang('en');
+  this.translate.use(lang);
+  }
 
   ngOnInit(): void {
     this.loadSupplier();

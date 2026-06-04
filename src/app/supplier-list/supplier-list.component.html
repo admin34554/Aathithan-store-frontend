@@ -1,7 +1,7 @@
 <div class="container-fluid p-4">
 
     <div class="d-flex justify-content-between align-items-center mb-3">
-        <h5>Master > <span class="text-primary">Supplier List</span></h5>
+        <h5>{{ 'Master' | translate }} > <span class="text-primary">{{ 'SupplierList' | translate }}</span></h5>
 
     <div>
         <button class="btn btb-light me-2">
@@ -18,8 +18,8 @@
 
 <div class="row mb-3">
     <div class="col-md-4 d-flex align-items-center">
-        <label class="me-2">Search By</label>
-        <input type="text" class="form-control" placeholder="Supplier Name" 
+        <label class="me-2">{{ 'Search Supplier Name' | translate }}</label>
+        <input type="text" class="form-control" placeholder="{{ 'Search Supplier Name' | translate }}" 
         [(ngModel)]="searchText" (input)="searchSupplier()"/>    
     </div>
 </div>
@@ -28,9 +28,9 @@
     <table class="table table-bordered">
         <thead class="table-light">
             <tr>
-                <th style="width: 100px;">S.No</th>
-                <th>Supplier Name</th>
-                <th>Type</th>
+                <th style="width: 100px;">{{ 'S.No' | translate }}</th>
+                <th>{{ 'Supplier Name' | translate }}</th>
+                <th>{{ 'Type' | translate }}</th>
             </tr>
         </thead>
         <tbody>
@@ -48,7 +48,7 @@
 
 <div class="d-flex justify-content-end align-items-center mt-3">
     <button class="btn btn-light me-2" (click)="prevPage()">Previous</button>
-    <span class="me-2">Page {{ currentPage }}</span>
+    <span class="me-2">{{ 'Page' | translate }} {{ currentPage }}</span>
     <button class="btn btn-light ms-2" (click)="nextPage()">Next</button>
 </div>
 </div>

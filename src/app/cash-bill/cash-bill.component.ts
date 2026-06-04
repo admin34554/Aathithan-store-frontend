@@ -9,11 +9,12 @@ import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { ProductTypeService } from '../services/productType.service';
 import { ProductService } from '../services/product.service';
 import { TaxService } from '../services/tax.service';
+import { TranslateService, TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-cash-bill',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, TranslateModule],
   templateUrl: './cash-bill.component.html',
   styleUrls: ['./cash-bill.component.css']
 })
@@ -80,14 +81,20 @@ productSelectedIndex: number[] = [];
     private customerService: CustomerService,
     private productTypeService: ProductTypeService,
     private productService: ProductService,
-    private taxService: TaxService
+    private taxService: TaxService,
+    private translate: TranslateService
   ) {
+
+      const lang = localStorage.getItem('lang') || 'en';
+
+  this.translate.setDefaultLang('en');
+  this.translate.use(lang);
     this.cashBillForm = this.fb.group({
       name: [''],
       lorry: [''],
       broker: [''],
       billNo: [''],
-      billDate: [''],
+      billDate: [new Date().toISOString().split('T')[0]],
       remarks: [''],
       items: this.fb.array([]) // ✅ IMPORTANT
     });
@@ -407,6 +414,30 @@ onCustomerBlur() {
   }, 200);
 }
 
+getTotalRate(): number {
+  return this.items.controls.reduce((sum, row) => {
+    return sum + (Number(row.get('rate')?.value) || 0);
+  }, 0);
+}
+
+getTotalQuantity(): number {
+  return this.items.controls.reduce((sum, row) => {
+    return sum + (Number(row.get('quantity')?.value) || 0);
+  }, 0);
+}
+
+getTotalTax(): number {
+  return this.items.controls.reduce((sum, row) => {
+    return sum + (Number(row.get('tax')?.value) || 0);
+  }, 0);
+}
+
+getGrandTotal(): number {
+  return this.items.controls.reduce((sum, row) => {
+    return sum + (Number(row.get('total')?.value) || 0);
+  }, 0);
+}
+
 onTaxBlur(i: number) {
   setTimeout(() => {
 
@@ -435,7 +466,9 @@ onProductBlur(i: number) {
 }
 
   // SAVE
-  saveCashBill() {
+errorMessage = '';
+
+saveCashBill() {
 
   if (this.cashBillForm.invalid) {
     return;
@@ -456,23 +489,28 @@ onProductBlur(i: number) {
  this.cashBillService.addCashBill(payload).subscribe({
 
     next: (res) => {
-      console.log("Cash Bill Saved", res);
+
+      this.errorMessage = '';
 
       this.cashBillForm.patchValue({
         billNo: res.billNo
       });
 
       alert("Saved: " + res.billNo);
-
-      setTimeout(() => {
-        this.cashBillForm.reset();
-        this.addRow();
-      }, 5000);
     },
 
     error: (err) => {
-      console.error("Error saving cash bill", err);
-    }
+
+  const productName = err.error.replace(
+    'Insufficient stock for product ',
+    ''
+  );
+
+  this.translate.get('insufficientStock').subscribe(msg => {
+    this.errorMessage = `${msg} ${productName}`;
+  });
+
+}
 
   });
 

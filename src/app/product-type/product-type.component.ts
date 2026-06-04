@@ -3,11 +3,12 @@ import { FormBuilder, FormGroup, FormArray, ReactiveFormsModule } from '@angular
 import { CommonModule } from '@angular/common';
 import { TaxService, Tax } from '../services/tax.service';
 import { ProductTypeService } from '../services/productType.service';
+import { TranslateService, TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-product',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, TranslateModule],
   templateUrl: './product-type.component.html'
 
 })
@@ -19,8 +20,14 @@ export class ProductTypeComponent {
   constructor(
     private fb:FormBuilder,
     private productServiceType:ProductTypeService,
-    private taxService:TaxService
-  ){}
+    private taxService:TaxService,
+    private translate: TranslateService
+  ){
+    const lang = localStorage.getItem('lang') || 'en';
+
+  this.translate.setDefaultLang('en');
+  this.translate.use(lang);
+  }
   
   ngOnInit(){
   

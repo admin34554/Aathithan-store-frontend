@@ -20,6 +20,17 @@ textarea {
   vertical-align: middle;
 }
 
+tfoot tr {
+  font-weight: 600;
+}
+
+tfoot td {
+  position: sticky;
+  bottom: 0;
+  font-size: 12px;
+  z-index: 5;
+}
+
 .page-header {
   display: flex;
   justify-content: space-between;

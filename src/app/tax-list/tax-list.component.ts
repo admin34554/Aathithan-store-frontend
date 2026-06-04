@@ -3,11 +3,12 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Tax, TaxService } from '../services/tax.service';
 import { RouterModule } from '@angular/router';
+import { TranslateService, TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-tax-list',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule],
+  imports: [CommonModule, FormsModule, RouterModule, TranslateModule],
   templateUrl: './tax-list.component.html',
   styleUrls: ['./tax-list.component.css']
 })
@@ -21,7 +22,13 @@ export class TaxListComponent implements OnInit {
   currentPage = 1;
   pageSize = 5;
 
-  constructor(private taxService: TaxService) {}
+  constructor(private taxService: TaxService, private translate: TranslateService) {
+
+              const lang = localStorage.getItem('lang') || 'en';
+
+  this.translate.setDefaultLang('en');
+  this.translate.use(lang);
+  }
 
   ngOnInit(): void {
     this.loadTax();

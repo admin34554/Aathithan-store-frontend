@@ -9,11 +9,12 @@ import { CustomerService } from '../services/customer.service';
 import { ProductTypeService } from '../services/productType.service';
 import { ProductService } from '../services/product.service';
 import { TaxService } from '../services/tax.service';
+import { TranslateService, TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-credit-bill',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, TranslateModule],
   templateUrl: './credit-bill.component.html',
   styleUrls: ['./credit-bill.component.css']
   
@@ -73,6 +74,10 @@ customerSelectedIndex: number = -1;
 
 // ✅ Product dropdown (per row)
 productSelectedIndex: number[] = [];  
+
+errorMessage = '';
+
+
 constructor(
     private fb: FormBuilder,
     private creditBillService: CreditBillService,
@@ -81,14 +86,20 @@ constructor(
     private customerService: CustomerService,
     private productTypeService: ProductTypeService,
     private productService: ProductService,
-    private taxService: TaxService
+    private taxService: TaxService,
+    private translate: TranslateService
     ) {
+
+        const lang = localStorage.getItem('lang') || 'en';
+
+  this.translate.setDefaultLang('en');
+  this.translate.use(lang);
     this.creditBillForm = this.fb.group({
       name: [''],
       lorry: [''],
       broker: [''],
       billNo: [''],
-      billDate: [''],
+      billDate: [new Date().toISOString().split('T')[0]],
       remarks: [''],
       items: this.fb.array([]) // ✅ IMPORTANT
     });
@@ -350,6 +361,31 @@ selectTax(tax: any, rowIndex: number) {
     return this.creditBillForm.get('items') as FormArray;
   }
 
+
+getTotalRate(): number {
+  return this.items.controls.reduce((sum, row) => {
+    return sum + (Number(row.get('rate')?.value) || 0);
+  }, 0);
+}
+
+getTotalQuantity(): number {
+  return this.items.controls.reduce((sum, row) => {
+    return sum + (Number(row.get('quantity')?.value) || 0);
+  }, 0);
+}
+
+getTotalTax(): number {
+  return this.items.controls.reduce((sum, row) => {
+    return sum + (Number(row.get('tax')?.value) || 0);
+  }, 0);
+}
+
+getGrandTotal(): number {
+  return this.items.controls.reduce((sum, row) => {
+    return sum + (Number(row.get('total')?.value) || 0);
+  }, 0);
+}
+
   // ✅ CREATE ROW
   createItem(): FormGroup {
     return this.fb.group({
@@ -453,26 +489,30 @@ onProductBlur(i: number) {
 
   console.log("FINAL PAYLOAD", payload);
 
- this.creditBillService.addCreditBill(payload).subscribe({
+this.creditBillService.addCreditBill(payload).subscribe({
 
     next: (res) => {
-      console.log("Credit Bill Saved", res);
+
+      this.errorMessage = '';
 
       this.creditBillForm.patchValue({
         billNo: res.billNo
       });
 
       alert("Saved: " + res.billNo);
-
-      setTimeout(() => {
-        this.creditBillForm.reset();
-        this.addRow();
-      }, 5000);
     },
 
-    error: (err) => {
-      console.error("Error saving credit bill", err);
-    }
+error: (err) => {
+
+  const errorMsg = err.error as string;
+
+  const productName = errorMsg.split('Product').pop()?.trim() || '';
+
+  this.translate.get('insufficientStock').subscribe(msg => {
+    this.errorMessage = `${msg} ${productName}`;
+  });
+
+}
 
   });
 

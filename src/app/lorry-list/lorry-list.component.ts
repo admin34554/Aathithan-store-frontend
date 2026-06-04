@@ -3,11 +3,12 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Lorry, LorryService } from '../services/lorry.service';
 import { RouterModule } from '@angular/router';
+import { TranslateService, TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-lorry-list',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule],
+  imports: [CommonModule, FormsModule, RouterModule, TranslateModule],
   templateUrl: './lorry-list.component.html',
   styleUrls: ['./lorry-list.component.css']
 })
@@ -21,7 +22,13 @@ export class LorryListComponent implements OnInit {
   currentPage = 1;
   pageSize = 5;
 
-  constructor(private lorryService: LorryService) {}
+  constructor(private lorryService: LorryService, private translate: TranslateService) {
+        const lang = localStorage.getItem('lang') || 'en';
+
+  this.translate.setDefaultLang('en');
+  this.translate.use(lang);
+
+  }
 
   ngOnInit(): void {
     this.loadLorry();

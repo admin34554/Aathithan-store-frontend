@@ -2,14 +2,14 @@
 
   <!-- Header -->
   <div class="d-flex justify-content-between align-items-center mb-3">
-    <h5>Master > <span class="text-primary">Supplier Master</span></h5>
+        <h5>{{ 'Master' | translate }} > <span class="text-primary">{{ 'SupplierMaster' | translate }}</span></h5>
     <button class="btn btn-primary">+ Add New</button>
   </div>
 
   <!-- Search -->
   <div class="row mb-4">
     <div class="col-md-4">
-      <input type="text" class="form-control" placeholder="Search Supplier Name">
+      <input type="text" class="form-control" placeholder="{{ 'Search Supplier Name' | translate }}">
     </div>
   </div>
 
@@ -19,7 +19,7 @@
       <button class="nav-link"
         [class.active]="activeTab==='details'"
         (click)="activeTab='details'">
-        Supplier Details
+        {{ 'Supplier Details' | translate }}
       </button>
     </li>
 
@@ -27,7 +27,7 @@
       <button class="nav-link"
         [class.active]="activeTab==='address'"
         (click)="activeTab='address'">
-        Address
+        {{ 'Address' | translate }}
       </button>
     </li>
   </ul>
@@ -41,45 +41,45 @@
   <div class="mb-3">
     <label class="me-3">Type :</label>
 
-    <input type="radio" value="BLedger" formControlName="type"> Ledger
-    <input type="radio" value="OtherSupplier" class="ms-3" formControlName="type"> Other Supplier
+    <input type="radio" value="BLedger" formControlName="type"> {{ 'Ledger' | translate }}
+    <input type="radio" value="OtherSupplier" class="ms-3" formControlName="type"> {{ 'Other Supplier' | translate }}
   </div>
 
   <div class="row">
 
     <div class="col-md-6 mb-3">
-      <input class="form-control" placeholder="Contact Person Name" formControlName="contact">
+      <input class="form-control" placeholder="{{ 'Contact Person Name' | translate }}" formControlName="contact">
     </div>
 
     <div class="col-md-6 mb-3">
-      <input class="form-control" placeholder="Aadhar No" formControlName="aadharNo">
+      <input class="form-control" placeholder="{{ 'AadharNo' | translate }}" formControlName="aadharNo">
     </div>
 
     <div class="col-md-6 mb-3">
-      <input class="form-control" placeholder="GSTIN Number" formControlName="gstIn">
+      <input class="form-control" placeholder="{{ 'GSTIN' | translate }}" formControlName="gstIn">
     </div>
 
     <div class="col-md-6 mb-3">
-      <input class="form-control" placeholder="PAN Number" formControlName="panNo">
+      <input class="form-control" placeholder="{{ 'PanNo' | translate }}" formControlName="panNo">
     </div>
 
     <div class="col-md-6 mb-3">
-      <input class="form-control" placeholder="Phone Number" formControlName="phone">
+      <input class="form-control" placeholder="{{ 'PhoneNo' | translate }}" formControlName="phone">
     </div>
 
     <div class="col-md-6 mb-3">
-      <input class="form-control" placeholder="Cell Number" formControlName="mobile">
+      <input class="form-control" placeholder="{{ 'Mobile' | translate }}" formControlName="mobile">
     </div>
 
     <div class="col-md-6 mb-3">
-      <input class="form-control" placeholder="Credit Period" formControlName="creditPeriod">
+      <input class="form-control" placeholder="{{ 'CreditPeriod' | translate }}" formControlName="creditPeriod">
     </div>
 
   </div>
 
   <div class="form-check mb-3">
     <input type="checkbox" class="form-check-input" formControlName="active">
-    <label class="form-check-label">Active</label>
+    <label class="form-check-label">{{ 'Active' | translate }}</label>
   </div>
 
 </div>
@@ -92,27 +92,27 @@
   <div class="row">
 
     <div class="col-md-6 mb-3">
-      <input class="form-control" placeholder="Door Number" formControlName="doorNo">
+      <input class="form-control" placeholder="{{ 'DoorNo' | translate }}" formControlName="doorNo">
     </div>
 
     <div class="col-md-6 mb-3">
-      <input class="form-control" placeholder="Street" formControlName="street">
+      <input class="form-control" placeholder="{{ 'Street' | translate }}" formControlName="street">
     </div>
 
     <div class="col-md-6 mb-3">
-      <input class="form-control" placeholder="Area" formControlName="area">
+      <input class="form-control" placeholder="{{ 'Area' | translate }}" formControlName="area">
     </div>
 
     <div class="col-md-6 mb-3">
-      <input class="form-control" placeholder="City" formControlName="city">
+      <input class="form-control" placeholder="{{ 'City' | translate }}" formControlName="city">
     </div>
 
     <div class="col-md-6 mb-3">
-      <input class="form-control" placeholder="State" formControlName="state">
+      <input class="form-control" placeholder="{{ 'State' | translate }}" formControlName="state">
     </div>
 
     <div class="col-md-6 mb-3">
-      <input class="form-control" placeholder="Pincode" formControlName="pinCode">
+      <input class="form-control" placeholder="{{ 'PinCode' | translate }}" formControlName="pinCode">
     </div>
 
 
@@ -124,8 +124,9 @@
 <!-- Buttons -->
 
 <div class="text-end mt-3">
-  <button type="button" class="btn btn-secondary me-2" (click)="resetForm()">Cancel</button>
-  <button type="submit" class="btn btn-primary">Save</button></div>
+  <button type="button" class="btn btn-secondary me-2" (click)="resetForm()">{{ 'Cancel' | translate }}</button>
+  <button type="submit" class="btn btn-primary">{{ 'Save' | translate }}</button>
+</div>
 
 </form>
 

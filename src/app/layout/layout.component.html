@@ -10,32 +10,31 @@
 
   <li (click)="selectMenu('accounts')">
     📁
-    <span>Accounts</span>
-  </li>
+   <span>{{ 'Accounts' | translate }}</span>  </li>
 
   <li (click)="selectMenu('master')">
     📋
-    <span>Master</span>
+    <span>{{ 'Master' | translate }}</span>
   </li>
 
    <li (click)="selectMenu('sales')">
     🛒
-    <span>Sales</span>
+    <span>{{ 'Sales' | translate }}</span>
   </li>
 
   <li (click)="selectMenu('inventory')">
     📦
-    <span>Inventory</span>
+    <span>{{ 'Inventory' | translate }}</span>
   </li>
 
   <li (click)="selectMenu('report')">
     📊
-    <span>Report</span>
+    <span>{{ 'Report' | translate }}</span>
   </li>
 
   <li (click)="selectMenu('utilities')">
     ⚙
-    <span>Utilities</span>
+    <span>{{ 'Utilities' | translate }}</span>
   </li>
 
 </ul>
@@ -52,7 +51,7 @@
   <div class="sub-sidebar" [class.open]="activeMenu === 'inventory' && !isSidebarCollapsed">
 
       <ul>
-        <li (click)="navigate('/purchase-bill')">Purchase Bill</li>
+        <li (click)="navigate('/purchase-bill')">{{ 'PurchaseBill' | translate }}</li>
       </ul>
 
   </div>
@@ -61,8 +60,8 @@
 
       <ul>
 
-        <li (click)="navigate('/cash-bill')">Cash Bill</li>
-        <li (click)="navigate('/credit-bill')">Credit Bill</li>
+        <li (click)="navigate('/cash-bill')">{{ 'CashBill' | translate }}</li>
+        <li (click)="navigate('/credit-bill')">{{ 'CreditBill' | translate }}</li>
       </ul>
 
   </div>
@@ -72,7 +71,7 @@
 
       <ul>
 
-        <li (click)="navigate('/day-book')">Day Book</li>
+        <li (click)="navigate('/day-book')">{{ 'DayBook' | translate }}</li>
       </ul>
 
   </div>
@@ -82,15 +81,15 @@
 
       <ul>
 
-        <li (click)="navigate('/supplier')">Supplier Master</li>
-        <li (click)="navigate('/customer')">Customer Master</li>
-        <li (click)="navigate('/company')">Company Master</li>
-        <li (click)="navigate('/product')">Product Master</li>
-        <li (click)="navigate('/product-type')">Product Type Master</li>
-        <li (click)="navigate('/lorry')">Lorry Master</li>
-        <li (click)="navigate('/broker')">Broker Master</li>
-        <li (click)="navigate('/tax')">Tax Master</li>
-        <li (click)="navigate('/accounts-master')">Accounts Master</li>
+        <li (click)="navigate('/supplier')">{{ 'SupplierMaster' | translate }}</li>
+        <li (click)="navigate('/customer')">{{ 'CustomerMaster' | translate }}</li>
+        <li (click)="navigate('/company')">{{ 'CompanyMaster' | translate }}</li>
+        <li (click)="navigate('/product')">{{ 'ProductMaster' | translate }}</li>
+        <li (click)="navigate('/product-type')">{{ 'ProductTypeMaster' | translate }}</li>
+        <li (click)="navigate('/lorry')">{{ 'LorryMaster' | translate }}</li>
+        <li (click)="navigate('/broker')">{{ 'BrokerMaster' | translate }}</li>
+        <li (click)="navigate('/tax')">{{ 'TaxMaster' | translate }}</li>
+        <li (click)="navigate('/accounts-master')">{{ 'AccountsMaster' | translate }}</li>
       </ul>
 
   </div>
@@ -106,7 +105,7 @@
 
   <input
     class="search"
-    placeholder="Search"
+    placeholder="{{ 'Search' | translate }}"
     [(ngModel)]="searchText"
     (input)="onSearch()"
     (keydown)="handleKeyDown($event)"
@@ -127,11 +126,32 @@
 
 </div>
 
-      <div class="user">
-        ⚙
-        <img src="assets/user.png" class="avatar"/>
-        Admin
-      </div>
+      <div class="user settings-container">
+
+  <span class="settings-icon" (click)="toggleSettings()">
+    ⚙
+  </span>
+
+  <img src="assets/user.png" class="avatar"/>
+  Admin
+
+  <div class="settings-menu" *ngIf="showSettings">
+
+    <div class="settings-title">
+      Language
+    </div>
+
+    <div (click)="changeLanguage('en')">
+      🇬🇧 English
+    </div>
+
+    <div (click)="changeLanguage('ta')">
+      🇮🇳 தமிழ்
+    </div>
+
+  </div>
+
+</div>
 
     </div>
 
