@@ -185,5 +185,5 @@
   "Print": "அச்சிடு",
   "Cash Bill": "பணம் பில்",
   "Credit Bill": "கடன் பில்",
-  "Insufficient Stock for Product": "தயாரிப்புக்கு போதுமான பங்கு இல்லை"
+  "insufficientStock": "தயாரிப்புக்கு போதுமான பங்கு இல்லை"
 }

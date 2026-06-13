@@ -6,8 +6,15 @@
 
     <div>
       <button class="btn btn-light me-2">✏</button>
-      <button class="btn btn-light me-2">🖨</button>
-      <button class="btn btn-primary" routerLink="/broker">+ Add New</button>
+        <button
+    type="button"
+    class="btn btn-dark print-btn"
+    (click)="printDayBook()">
+
+    🖨 Print
+
+  </button>
+      <button class="btn btn-primary" routerLink="/broker">  + Add New</button>
     </div>
   </div>
 

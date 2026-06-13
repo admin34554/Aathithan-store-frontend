@@ -87,4 +87,24 @@ mergeData(res: any) {
     }
   }
 
+ printDayBook() {
+
+    const billNo = this.dayBookList[0]?.billNo;
+
+    if (!billNo) {
+      alert('Save bill first');
+      return;
+    }
+
+    const link = document.createElement('a');
+
+    link.href =
+      `https://aadhi-store-backend.onrender.com/api/v1/day-book/pdf/${billNo}`;
+
+    link.download = `dayBook-${billNo}.pdf`;
+
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
 }
