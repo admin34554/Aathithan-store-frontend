@@ -11,7 +11,7 @@ export interface Product {
   type: string;
   brandName: string;
   weight: number;
-  retailRate: number;
+  rate: number;
   active: boolean;
 }
 

@@ -29,14 +29,15 @@
 
 <div class="row g-4">
 
-<!-- Tax Code -->
+<!-- HSN Code -->
 
 <div class="col-md-6">
 <input
 type="text"
 class="form-control"
-placeholder="{{ 'Tax Code' | translate }}"
-formControlName="taxCode"
+placeholder="{{ 'HSN Code' | translate }}"
+formControlName="hsnCode"
+readonly
 />
 </div>
 
@@ -77,6 +78,36 @@ class="form-control"
 placeholder="{{ 'Group Name' | translate }}"
 formControlName="groupName"
 />
+</div>
+
+<!-- CGST -->
+<div class="col-md-6">
+  <input
+    type="text"
+    class="form-control"
+    placeholder="{{ 'CGST' | translate }}"
+    formControlName="cgst"
+  />
+</div>
+
+<!-- SGST -->
+<div class="col-md-6">
+  <input
+    type="text"
+    class="form-control"
+    placeholder="{{ 'SGST' | translate }}"
+    formControlName="sgst"
+  />
+</div>
+
+<!-- IGST -->
+<div class="col-md-6">
+  <input
+    type="text"
+    class="form-control"
+    placeholder="{{ 'IGST' | translate }}"
+    formControlName="igst"
+  />
 </div>
 
 </div>

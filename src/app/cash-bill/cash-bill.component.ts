@@ -293,7 +293,7 @@ selectProduct(product: any, rowIndex: number) {
   row.patchValue({
     productCode: product.code,
     itemName: product.name,
-    rate: product.retailRate,
+    rate: product.rate,
     brNo: product.hsnNo
   });
 

@@ -5,10 +5,13 @@ import { environment } from '../../environments/environment.prod';
 
 export interface Tax {
   id?: number;
-  taxCode: string;
+  hsnCode: string;
   name: string;
   salesTaxPerc: number;
   surChargePerc: number;
+  cgst: number;
+  sgst: number;
+  igst: number;
   groupName: string;
   active: boolean;
 }

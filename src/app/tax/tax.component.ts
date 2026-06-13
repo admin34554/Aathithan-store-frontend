@@ -29,11 +29,14 @@ groups: any;
   this.translate.use(lang);
 
     this.taxForm = this.fb.group({
-      taxCode: [''],
+      hsnCode: [''],
       name: [''],
       salestaxPercentage: [''],
       chargePercentage: [''],
       groupName: [''],
+      cgst: [''],
+      sgst: [''],
+      igst: [''],
       active: [false]
     });
 

@@ -38,7 +38,7 @@ code:[''],
 name:[''],
 brandName:[''],
 weight:[''],
-retailRate:[''],
+rate:[''],
 taxes:this.fb.array([])
 
 })

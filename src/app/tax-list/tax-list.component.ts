@@ -44,7 +44,7 @@ export class TaxListComponent implements OnInit {
   searchTax() {
     this.filteredTax = this.tax.filter(t =>
       t.name?.toLowerCase().includes(this.searchText.toLowerCase()) ||
-      t.taxCode?.toLowerCase().includes(this.searchText.toLowerCase())
+      t.hsnCode?.toLowerCase().includes(this.searchText.toLowerCase())
     );
   }
 
