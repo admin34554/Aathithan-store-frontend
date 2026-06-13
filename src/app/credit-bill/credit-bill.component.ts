@@ -349,7 +349,8 @@ selectTax(tax: any, rowIndex: number) {
 
   row.patchValue({
     taxType: tax.name,
-    tax: Number(tax.salestaxPercentage)
+    tax: Number(tax.salestaxPercentage),
+    brNo: tax.hsnCode
   }, { emitEvent: false });
 
   this.filteredTaxes[rowIndex] = [];
@@ -453,7 +454,8 @@ onTaxBlur(i: number) {
 
     if (matchedTax) {
       row.patchValue({
-        tax: Number(matchedTax.salestaxPercentage)
+        tax: Number(matchedTax.salestaxPercentage),
+        brNo: matchedTax.hsnCode
       }, { emitEvent: false });
     }
 
