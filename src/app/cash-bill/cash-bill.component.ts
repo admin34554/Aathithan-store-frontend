@@ -303,11 +303,10 @@ selectProduct(product: any, rowIndex: number) {
 
     const cgst = Number(tax.cgst) || 0;
     const sgst = Number(tax.sgst) || 0;
-    const igst = Number(tax.igst) || 0;
 
     row.patchValue({
       taxType: tax.name,
-      tax: cgst + sgst + igst
+      tax: cgst + sgst
     });
 
   });
