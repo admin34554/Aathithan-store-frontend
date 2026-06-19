@@ -21,7 +21,7 @@ export class ProductListComponent implements OnInit {
   searchText: string = '';
 
   currentPage = 1;
-  pageSize = 5;
+  pageSize = 10;
 
   constructor(private productService: ProductService, private translate: TranslateService) {
      const lang = localStorage.getItem('lang') || 'en';

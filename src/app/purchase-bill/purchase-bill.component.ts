@@ -192,6 +192,7 @@ selectProduct(product: any, rowIndex: number) {
   row.patchValue({
     productCode: product.code,
     itemName: product.name,
+    balanceQuantity: product.noOfPacks,
     rate: product.retailRate
   });
 

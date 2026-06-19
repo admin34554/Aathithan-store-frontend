@@ -135,7 +135,6 @@
     formControlName="taxType"
     (input)="onTaxSearch($event, i)"
     (keydown)="onTaxKeyDown($event, i)"
-    (blur)="onTaxBlur(i)"
     autocomplete="off"
   >
 
@@ -143,7 +142,6 @@
   <ul *ngIf="filteredTaxes[i] && filteredTaxes[i].length > 0" class="dropdown-list">
     <li 
       *ngFor="let t of filteredTaxes[i]; let j = index"
-      (mousedown)="selectTax(t, i)"
       [class.active]="taxSelectedIndex[i] === j"
     >
       {{ t.name }} ({{ t.code }})

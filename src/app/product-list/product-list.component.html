@@ -35,11 +35,11 @@
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let product of filteredProducts; let i = index">
+            <tr *ngFor="let product of paginatedProducts; let i = index">
                 <td>{{ (currentPage - 1) * pageSize + i + 1 }}</td>
                 <td>{{ product.name }}</td>
                 <td>{{ product.code }}</td>
-                <td>{{ product.weight }}</td>
+                <td>{{ product.noOfPacks }}</td>
             </tr>
         <tr *ngIf="paginatedProducts.length == 0">
             <td colspan="4" class="text-center">{{ 'No products found.' | translate }}</td>

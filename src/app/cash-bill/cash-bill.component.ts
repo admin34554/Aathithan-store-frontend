@@ -295,7 +295,20 @@ selectProduct(product: any, rowIndex: number) {
     itemName: product.name,
     rate: product.rate,
     brNo: product.hsnNo
-  });
+  }, { emitEvent: false });
+
+    if (product.hsnNo) {
+
+    this.taxService.getTaxByHsnCode(product.hsnNo).subscribe(tax => {
+
+      row.patchValue({
+        taxType: tax.name,
+        tax: tax.cgst + tax.sgst + tax.igst 
+      });
+
+    });
+
+  }
 
   this.filteredProducts[rowIndex] = [];
 }
@@ -335,23 +348,23 @@ onTaxKeyDown(event: KeyboardEvent, rowIndex: number) {
   else if (event.key === 'Enter') {
     event.preventDefault();
     if (this.taxSelectedIndex[rowIndex] >= 0) {
-      this.selectTax(list[this.taxSelectedIndex[rowIndex]], rowIndex);
+      // this.selectTax(list[this.taxSelectedIndex[rowIndex]], rowIndex);
     }
   }
 }
 
-selectTax(tax: any, rowIndex: number) {
+// selectTax(tax: any, rowIndex: number) {
 
-  const row = this.items.at(rowIndex);
+//   const row = this.items.at(rowIndex);
 
-  row.patchValue({
-    taxType: tax.name,
-    tax: Number(tax.salestaxPercentage),
-    brNo: tax.hsnCode
-  }, { emitEvent: false });
+//   row.patchValue({
+//     taxType: tax.name,
+//     tax: Number(tax.salestaxPercentage),
+//     brNo: tax.hsnCode
+//   }, { emitEvent: false });
 
-  this.filteredTaxes[rowIndex] = [];
-}
+//   this.filteredTaxes[rowIndex] = [];
+// }
 
   // ✅ GET FORM ARRAY
   get items(): FormArray {
@@ -439,26 +452,26 @@ getGrandTotal(): number {
   }, 0);
 }
 
-onTaxBlur(i: number) {
-  setTimeout(() => {
+// onTaxBlur(i: number) {
+//   setTimeout(() => {
 
-    const row = this.items.at(i);
-    const enteredValue = row.value.taxType;
+//     const row = this.items.at(i);
+//     const enteredValue = row.value.taxType;
 
-    const matchedTax = this.tax.find(t => t.name === enteredValue);
+//     const matchedTax = this.tax.find(t => t.name === enteredValue);
 
-    if (matchedTax) {
-      row.patchValue({
-        tax: Number(matchedTax.salestaxPercentage),
-        brNo: matchedTax.hsnCode
-      }, { emitEvent: false });
-    }
+//     if (matchedTax) {
+//       row.patchValue({
+//         tax: Number(matchedTax.salestaxPercentage),
+//         brNo: matchedTax.hsnCode
+//       }, { emitEvent: false });
+//     }
 
-    this.filteredTaxes[i] = [];
-    this.taxSelectedIndex[i] = -1;
+//     this.filteredTaxes[i] = [];
+//     this.taxSelectedIndex[i] = -1;
 
-  }, 200);
-}
+//   }, 200);
+// }
 
 onProductBlur(i: number) {
   setTimeout(() => {

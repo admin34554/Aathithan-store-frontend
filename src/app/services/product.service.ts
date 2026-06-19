@@ -11,6 +11,7 @@ export interface Product {
   type: string;
   brandName: string;
   weight: number;
+  noOfPacks: number;
   rate: number;
   active: boolean;
 }

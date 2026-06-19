@@ -47,25 +47,8 @@ readonly
 <input
 type="text"
 class="form-control"
-placeholder="{{ 'Display Name' | translate }}"
+placeholder="{{ 'Description' | translate }}"
 formControlName="name"
-/>
-</div>
-
-<!-- Sales Tax -->
-
-<div class="col-md-6">
-<input type="number" class="form-control" placeholder="{{ 'Sales Tax Perc' | translate }}" formControlName="salestaxPercentage"/>
-</div>
-
-<!-- Surcharge -->
-
-<div class="col-md-6">
-<input
-type="number"
-class="form-control"
-placeholder="{{ 'Sur Charge Perc' | translate }}"
-formControlName="chargePercentage"
 />
 </div>
 
@@ -75,41 +58,50 @@ formControlName="chargePercentage"
 <input
 type="string"
 class="form-control"
-placeholder="{{ 'Group Name' | translate }}"
+placeholder="{{ 'Group Code' | translate }}"
 formControlName="groupName"
 />
 </div>
 
 <!-- CGST -->
 <div class="col-md-6">
-  <input
-    type="text"
-    class="form-control"
-    placeholder="{{ 'CGST' | translate }}"
-    formControlName="cgst"
-  />
+  <div class="input-group">
+    <input
+      type="number"
+      class="form-control"
+      placeholder="{{ 'CGST' | translate }}"
+      formControlName="cgst"
+    />
+  <span class="input-group-text">%</span>
+  </div>
 </div>
 
 <!-- SGST -->
 <div class="col-md-6">
-  <input
-    type="text"
-    class="form-control"
-    placeholder="{{ 'SGST' | translate }}"
-    formControlName="sgst"
-  />
+  <div class="input-group">
+    <input
+      type="number"
+      class="form-control"
+      placeholder="{{ 'SGST' | translate }}"
+      formControlName="sgst"
+    />
+    <span class="input-group-text">%</span>
+  </div>
 </div>
+
 
 <!-- IGST -->
 <div class="col-md-6">
-  <input
-    type="text"
+  <div class="input-group">
+    <input
+    type="number"
     class="form-control"
     placeholder="{{ 'IGST' | translate }}"
     formControlName="igst"
   />
+  <span class="input-group-text">%</span>
 </div>
-
+</div>
 </div>
 
 <!-- Active -->

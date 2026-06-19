@@ -38,6 +38,7 @@ code:[''],
 name:[''],
 brandName:[''],
 weight:[''],
+noOfPacks:[''],
 rate:[''],
 taxes:this.fb.array([])
 

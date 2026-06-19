@@ -51,4 +51,8 @@ export class TaxService {
   );
 }
 
+  getTaxByHsnCode(hsnCode: string) {
+  return this.http.get<Tax>(`${environment.apiUrl}/api/v1/tax-master/hsn/${hsnCode}`);
+}
+
 }
