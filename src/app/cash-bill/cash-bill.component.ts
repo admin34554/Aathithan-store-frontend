@@ -299,16 +299,20 @@ selectProduct(product: any, rowIndex: number) {
 
     if (product.hsnNo) {
 
-    this.taxService.getTaxByHsnCode(product.hsnNo).subscribe(tax => {
+  this.taxService.getTaxByHsnCode(product.hsnNo).subscribe(tax => {
 
-      row.patchValue({
-        taxType: tax.name,
-        tax: tax.cgst + tax.sgst + tax.igst 
-      });
+    const cgst = Number(tax.cgst) || 0;
+    const sgst = Number(tax.sgst) || 0;
+    const igst = Number(tax.igst) || 0;
 
+    row.patchValue({
+      taxType: tax.name,
+      tax: cgst + sgst + igst
     });
 
-  }
+  });
+
+}
 
   this.filteredProducts[rowIndex] = [];
 }
