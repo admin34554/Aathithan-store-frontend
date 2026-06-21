@@ -113,6 +113,12 @@ export const routes: Routes = [
       loadComponent: () =>
         import('./layout/layout.component')
           .then(m => m.LayoutComponent)
+    },
+    {
+      path: 'company',
+      loadComponent: () =>
+        import('./company-master/company-master.component')
+          .then(m => m.CompanyMasterComponent)
     }
     ]
   },

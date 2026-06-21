@@ -1,139 +1,183 @@
 <div class="app-container">
 
   <!-- LEFT SIDEBAR -->
-<div class="sidebar" [class.collapsed]="isSidebarCollapsed">
+  <div class="sidebar" [class.collapsed]="isSidebarCollapsed">
+
     <div class="logo">
-      <img src="assets/user.png" class="profile"/>
+      <img src="assets/user.png" class="profile" />
       <div class="store" (click)="navigate('/')">AATHITAN STORES</div>
     </div>
-<ul class="menu">
 
-  <li (click)="selectMenu('accounts')">
-    📁
-   <span>{{ 'Accounts' | translate }}</span>  </li>
+    <ul class="menu">
 
-  <li (click)="selectMenu('master')">
-    📋
-    <span>{{ 'Master' | translate }}</span>
-  </li>
+      <li (click)="selectMenu('accounts')">
+        📁 <span>{{ 'Accounts' | translate }}</span>
+      </li>
 
-   <li (click)="selectMenu('sales')">
-    🛒
-    <span>{{ 'Sales' | translate }}</span>
-  </li>
+      <li (click)="selectMenu('master')">
+        📋 <span>{{ 'Master' | translate }}</span>
+      </li>
 
-  <li (click)="selectMenu('inventory')">
-    📦
-    <span>{{ 'Inventory' | translate }}</span>
-  </li>
+      <li (click)="selectMenu('sales')">
+        🛒 <span>{{ 'Sales' | translate }}</span>
+      </li>
 
-  <li (click)="selectMenu('report')">
-    📊
-    <span>{{ 'Report' | translate }}</span>
-  </li>
+      <li (click)="selectMenu('inventory')">
+        📦 <span>{{ 'Inventory' | translate }}</span>
+      </li>
 
-  <li (click)="selectMenu('utilities')">
-    ⚙
-    <span>{{ 'Utilities' | translate }}</span>
-  </li>
+      <li (click)="selectMenu('report')">
+        📊 <span>{{ 'Report' | translate }}</span>
+      </li>
 
-</ul>
+      <li (click)="selectMenu('utilities')">
+        ⚙ <span>{{ 'Utilities' | translate }}</span>
+      </li>
 
-<button class="toggle-btn" (click)="toggleSidebar()">
-  {{ isSidebarCollapsed ? '➡' : '⬅' }}
-</button>
+    </ul>
+
+    <button class="toggle-btn" (click)="toggleSidebar()">
+      {{ isSidebarCollapsed ? '➡' : '⬅' }}
+    </button>
 
   </div>
 
+  <!-- INVENTORY SUB SIDEBAR -->
+  <div class="sub-sidebar"
+       [class.open]="activeMenu === 'inventory' && !isSidebarCollapsed">
 
-  <!-- SECOND SIDEBAR (MASTER MENU) -->
-
-  <div class="sub-sidebar" [class.open]="activeMenu === 'inventory' && !isSidebarCollapsed">
-
-      <ul>
-        <li (click)="navigate('/purchase-bill')">{{ 'PurchaseBill' | translate }}</li>
-      </ul>
-
-  </div>
-
-    <div class="sub-sidebar" [class.open]="activeMenu === 'sales' && !isSidebarCollapsed">
-
-      <ul>
-
-        <li (click)="navigate('/cash-bill')">{{ 'CashBill' | translate }}</li>
-        <li (click)="navigate('/credit-bill')">{{ 'CreditBill' | translate }}</li>
-      </ul>
+    <ul>
+      <li (click)="navigate('/purchase-bill')">
+        {{ 'PurchaseBill' | translate }}
+      </li>
+    </ul>
 
   </div>
 
+  <!-- SALES SUB SIDEBAR -->
+  <div class="sub-sidebar"
+       [class.open]="activeMenu === 'sales' && !isSidebarCollapsed">
 
-  <div class="sub-sidebar" [class.open]="activeMenu === 'report'">
+    <ul>
+      <li (click)="navigate('/cash-bill')">
+        {{ 'CashBill' | translate }}
+      </li>
 
-      <ul>
-
-        <li (click)="navigate('/day-book')">{{ 'DayBook' | translate }}</li>
-      </ul>
-
-  </div>
-
-  
-  <div class="sub-sidebar" [class.open]="activeMenu === 'master'">
-
-      <ul>
-
-        <li (click)="navigate('/supplier')">{{ 'SupplierMaster' | translate }}</li>
-        <li (click)="navigate('/customer')">{{ 'CustomerMaster' | translate }}</li>
-        <li (click)="navigate('/company')">{{ 'CompanyMaster' | translate }}</li>
-        <li (click)="navigate('/product')">{{ 'ProductMaster' | translate }}</li>
-        <li (click)="navigate('/product-type')">{{ 'ProductTypeMaster' | translate }}</li>
-        <li (click)="navigate('/lorry')">{{ 'LorryMaster' | translate }}</li>
-        <li (click)="navigate('/broker')">{{ 'BrokerMaster' | translate }}</li>
-        <li (click)="navigate('/tax')">{{ 'TaxMaster' | translate }}</li>
-        <li (click)="navigate('/accounts-master')">{{ 'AccountsMaster' | translate }}</li>
-      </ul>
+      <li (click)="navigate('/credit-bill')">
+        {{ 'CreditBill' | translate }}
+      </li>
+    </ul>
 
   </div>
 
+  <!-- REPORT SUB SIDEBAR -->
+  <div class="sub-sidebar"
+       [class.open]="activeMenu === 'report'">
+
+    <ul>
+      <li (click)="navigate('/day-book')">
+        {{ 'DayBook' | translate }}
+      </li>
+    </ul>
+
+  </div>
+
+  <!-- MASTER SUB SIDEBAR -->
+  <div class="sub-sidebar"
+       [class.open]="activeMenu === 'master'">
+
+    <ul>
+
+      <li (click)="navigate('/supplier')">
+        {{ 'SupplierMaster' | translate }}
+      </li>
+
+      <li (click)="navigate('/customer')">
+        {{ 'CustomerMaster' | translate }}
+      </li>
+
+      <li (click)="navigate('/company')">
+        {{ 'CompanyMaster' | translate }}
+      </li>
+
+      <li (click)="navigate('/product')">
+        {{ 'ProductMaster' | translate }}
+      </li>
+
+      <li (click)="navigate('/product-type')">
+        {{ 'ProductTypeMaster' | translate }}
+      </li>
+
+      <li (click)="navigate('/lorry')">
+        {{ 'LorryMaster' | translate }}
+      </li>
+
+      <li (click)="navigate('/broker')">
+        {{ 'BrokerMaster' | translate }}
+      </li>
+
+      <li (click)="navigate('/tax')">
+        {{ 'TaxMaster' | translate }}
+      </li>
+
+      <li (click)="navigate('/accounts-master')">
+        {{ 'AccountsMaster' | translate }}
+      </li>
+
+    </ul>
+
+  </div>
 
   <!-- MAIN AREA -->
-
   <div class="main">
 
+    <!-- TOPBAR -->
     <div class="topbar">
 
-<div class="search-box">
+      <!-- SEARCH -->
+      <div class="search-box">
 
-  <input
-    class="search"
-    placeholder="{{ 'Search' | translate }}"
-    [(ngModel)]="searchText"
-    (input)="onSearch()"
-    (keydown)="handleKeyDown($event)"
-  />
-<div class="search-box" #searchBox>
-  <div class="search-results" *ngIf="results.length > 0 && searchText">
+        <input
+          class="search"
+          placeholder="{{ 'Search' | translate }}"
+          [(ngModel)]="searchText"
+          (input)="onSearch()"
+          (keydown)="handleKeyDown($event)"
+        />
 
-    <div
-      class="result-item"
-      *ngFor="let item of results; let i = index"
-      [class.active]="i === selectedIndex"
-      (click)="selectResult(item)"
-    >
-      {{item.name}}
-    </div>
-  </div>
-  </div>
+        <div class="search-box" #searchBox>
 
-</div>
+          <div
+            class="search-results"
+            *ngIf="results.length > 0 && searchText">
 
+            <div
+              class="result-item"
+              *ngFor="let item of results; let i = index"
+              [class.active]="i === selectedIndex"
+              (click)="selectResult(item)">
+
+              {{ item.name }}
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- USER AREA -->
       <div class="user settings-container">
 
   <span class="settings-icon" (click)="toggleSettings()">
     ⚙
   </span>
 
-  <img src="assets/user.png" class="avatar"/>
-  Admin
+  <div class="admin-info" (click)="toggleCompanyPopup()">
+    <img src="assets/user.png" class="avatar"/>
+    <span>Admin ▼</span>
+  </div>
 
   <div class="settings-menu" *ngIf="showSettings">
 
@@ -155,10 +199,156 @@
 
     </div>
 
+    <!-- CONTENT -->
     <div class="content">
       <router-outlet></router-outlet>
     </div>
 
   </div>
+
+  <!-- COMPANY POPUP -->
+  <div
+    class="company-modal"
+    *ngIf="showCompanyPopup">
+
+    <div class="company-popup">
+
+      <div class="popup-header">
+
+        <h4>Select Company</h4>
+
+        <span
+          class="close-btn"
+          (click)="showCompanyPopup = false">
+
+          ✕
+
+        </span>
+
+      </div>
+
+      <hr>
+
+      <div class="mb-3">
+
+        <label class="form-label">
+          Company
+        </label>
+
+        <select
+          class="form-select"
+          [(ngModel)]="selectedCompanyId">
+
+          <option
+            *ngFor="let company of companies"
+            [ngValue]="company.id">
+
+            {{ company.name }}
+
+          </option>
+
+        </select>
+
+      </div>
+
+      <div class="text-end mt-3">
+
+        <button
+          type="button"
+          class="btn btn-secondary me-2"
+          (click)="showCompanyPopup = false">
+
+          Cancel
+
+        </button>
+
+        <button
+          type="button"
+          class="btn btn-primary"
+          (click)="saveSelectedCompany()">
+
+          OK
+
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- COMPANY POPUP -->
+
+<div class="company-modal" *ngIf="showCompanyPopup">
+
+  <div class="company-popup">
+
+    <div class="popup-header">
+
+      <h4>Admin Settings</h4>
+
+      <span
+        class="close-btn"
+        (click)="showCompanyPopup = false">
+
+        ✕
+
+      </span>
+
+    </div>
+
+    <div class="popup-body">
+
+      <div class="mb-3">
+
+        <label class="form-label">
+          Company
+        </label>
+
+        <select
+          class="form-select"
+          [(ngModel)]="selectedCompanyId">
+
+          <option [ngValue]="null">
+            Select Company
+          </option>
+
+          <option
+            *ngFor="let company of companies"
+            [ngValue]="company.id">
+
+            {{ company.name }}
+
+          </option>
+
+        </select>
+
+      </div>
+
+    </div>
+
+    <div class="popup-footer">
+
+      <button
+        class="btn btn-secondary"
+        (click)="showCompanyPopup = false">
+
+        Cancel
+
+      </button>
+
+      <button
+        class="btn btn-primary"
+        (click)="saveSelectedCompany()">
+
+        Save
+
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
 
 </div>

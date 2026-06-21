@@ -4,6 +4,8 @@ import { FormsModule } from "@angular/forms";
 import { CommonModule } from "@angular/common";
 import { SupplierService } from '../services/supplier.service';
 import { TranslateService, TranslateModule } from '@ngx-translate/core';
+import { CompanyService, Company } from '../services/company.service';
+import { CompanyContextService } from '../services/company-context.service';
 
 @Component({
   selector: 'app-layout',
@@ -22,6 +24,9 @@ scrollToActive() {
 }
 
   showSettings = false;
+  showCompanyPopup = false;
+
+companies: Company[] = [];
 
 onSearch() {
   const value = this.searchText.toLowerCase();
@@ -78,7 +83,9 @@ constructor(
   private router: Router,
   private supplierService: SupplierService,
   private eRef: ElementRef,
-  private translate: TranslateService
+  private translate: TranslateService,
+  private companyService: CompanyService,
+  private companyContextService: CompanyContextService
 ) {  
   const lang = localStorage.getItem('lang') || 'en';
 
@@ -90,6 +97,17 @@ constructor(
    toggleSettings() {
     this.showSettings = !this.showSettings;
   }
+
+  toggleCompanyPopup() {
+
+  this.showCompanyPopup = true;
+
+  this.companyService.getCompany().subscribe(data => {
+    this.companies = data;
+  });
+
+}
+
 
   changeLanguage(lang: string) {
 
@@ -141,6 +159,38 @@ selectMenu(menu: string) {
 navigate(route: string) {
   this.router.navigate([route]);
   this.activeMenu = ''; // collapse menu after navigation
+}
+
+selectedCompanyId!: number;
+saveSelectedCompany() {
+
+  const company = this.companies.find(
+    c => c.id == this.selectedCompanyId
+  );
+
+  if (company) {
+  this.companyContextService.setCompany(company);  }
+
+  this.showCompanyPopup = false;
+}
+
+selectedCompanyName = 'Select Company';
+
+ngOnInit() {
+
+  const company =
+    this.companyContextService.getCompany();
+
+  if (company) {
+    this.selectedCompanyName = company.name;
+  }
+
+  this.companyContextService.selectedCompany$
+    .subscribe(company => {
+      if (company) {
+        this.selectedCompanyName = company.name;
+      }
+    });
 }
 
 @HostListener('document:click', ['$event'])
@@ -283,6 +333,11 @@ searchItems = [
   },
   { name: 'Day Book',
     route: '/day-book',
+    api: 'master'
+  },
+  {
+    name: 'Company Master',
+    route: '/company',
     api: 'master'
   }
 ];

@@ -1,0 +1,150 @@
+<div class="container-fluid p-4">
+
+<!-- Header -->
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+
+  <h5>{{ 'Master' | translate }} > <span class="text-primary">{{ 'CompanyMaster' | translate }}</span></h5>
+
+  <div>
+
+    <button class="btn btn-light me-2">
+      ✏
+    </button>
+
+    <button class="btn btn-light me-2">
+      🖨
+    </button>
+
+    <button class="btn btn-primary">
+      + Add New
+    </button>
+
+  </div>
+
+</div>
+
+
+<form [formGroup]="companyForm">
+
+<div class="row g-4">
+
+<!-- Company Name -->
+
+<div class="col-md-6">
+<input
+type="text"
+class="form-control"
+placeholder="{{ 'Company Name' | translate }}"
+formControlName="name"
+/>
+</div>
+
+
+<div class="col-md-6">
+<input
+type="text"
+class="form-control"
+placeholder="{{ 'GSTIN' | translate }}"
+formControlName="gstIn"/>
+</div>
+
+
+<div class="col-md-6">
+<input
+type="text"
+class="form-control"
+placeholder="{{ 'PAN' | translate }}"
+formControlName="pan"/>
+</div>
+
+
+<!-- Address -->
+
+<div class="col-md-6">
+<input
+type="text"
+class="form-control"
+placeholder="{{ 'Address 1' | translate }}"
+formControlName="addressLine1"/>
+</div>
+
+<div class="col-md-6">
+<input
+type="text"
+class="form-control"
+placeholder="{{ 'Address 2' | translate }}"
+formControlName="addressLine2"/>
+</div>
+
+
+<div class="col-md-6">
+<input
+type="text"
+class="form-control"
+placeholder="{{ 'City' | translate }}"
+formControlName="city"/>
+</div>
+<div class="col-md-6">
+<input
+type="text"
+class="form-control"
+placeholder="{{ 'State' | translate }}"
+formControlName="state"/>
+</div>
+
+<div class="col-md-6">
+<input
+type="text"
+class="form-control"
+placeholder="{{ 'Country' | translate }}"
+formControlName="country"/>
+</div>
+
+<div class="col-md-6">
+<input
+type="text"
+class="form-control"
+placeholder="{{ 'Phone' | translate }}"
+formControlName="phone"/>
+</div>
+
+<div class="col-md-6">
+<input
+type="text"
+class="form-control"
+placeholder="{{ 'Email' | translate }}"
+formControlName="email"/>
+</div>
+
+
+</div>
+
+
+
+
+<!-- Buttons -->
+
+<div class="text-end mt-5">
+
+<button
+type="button"
+class="btn btn-secondary me-2"
+(click)="cancelForm()"
+>
+{{ 'Cancel' | translate }}
+</button>
+
+<button
+type="button"
+class="btn btn-primary"
+(click)="saveCompany()"
+>
+{{ 'Save' | translate }}
+</button>
+
+</div>
+
+</form>
+
+</div>

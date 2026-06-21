@@ -185,5 +185,11 @@
   "Print": "அச்சிடு",
   "Cash Bill": "பணம் பில்",
   "Credit Bill": "கடன் பில்",
-  "insufficientStock": "தயாரிப்புக்கு போதுமான பங்கு இல்லை"
+  "insufficientStock": "தயாரிப்புக்கு போதுமான பங்கு இல்லை",
+  "PAN": "பான்",
+  "Address 1": "முகவரி 1",
+  "Address 2": "முகவரி 2",
+  "Country": "நாடு",
+  "Company Name": "நிறுவன பெயர்",
+  "Phone": "தொலைபேசி"
 }
