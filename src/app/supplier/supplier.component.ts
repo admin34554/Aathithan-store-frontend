@@ -45,7 +45,12 @@ constructor(
     aadhar: [''],
     creditPeriod: [''],
     type: ['', Validators.required],
-    active: [false]
+    active: [false],
+    accountNo: [''],
+    bankName: [''],
+    branch: [''],
+    ifscCode: [''],
+    remarks: ['']
   });
 }
   ngOnInit(): void {
@@ -69,20 +74,51 @@ submitForm() {
     return;
   }
 
-  const supplierData : Supplier ={ ...this.supplierform.value,
-  id : null};
+  const formValue = this.supplierform.value;
 
-  this.supplierService.addSupplier(supplierData).subscribe({
+  const supplierData = {
+    id: null,
+
+    contact: formValue.contact,
+    aadharNo: formValue.aadhar,
+    gstNo: formValue.gstIn,
+    phone: formValue.phone,
+    mobile: formValue.mobile,
+    creditPeriod: formValue.creditPeriod,
+
+    doorNo: formValue.doorNo,
+    street: formValue.street,
+    city: formValue.city,
+    state: formValue.state,
+    pinCode: formValue.pinCode,
+
+    type: formValue.type,
+    active: formValue.active,
+
+    bankDetails: [
+      {
+        accountNo: formValue.accountNo,
+        bankName: formValue.bankName,
+        branch: formValue.branch,
+        ifscCode: formValue.ifscCode,
+        remarks: formValue.remarks
+      }
+    ]
+  };
+
+  console.log('Payload', supplierData);
+
+  this.supplierService.addSupplier(supplierData as any).subscribe({
     next: (res) => {
       console.log("Supplier Saved", res);
       alert("Supplier Saved Successfully");
       this.resetForm();
+      this.loadSuppliers();
     },
     error: (err) => {
       console.error("Error saving supplier", err);
     }
   });
-
 }
 
   editSupplier(supplier: Supplier) {

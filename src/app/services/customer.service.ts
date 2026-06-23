@@ -25,6 +25,10 @@ export interface Customer {
   type: string;
   active: boolean;
 
+  companyMaster?: {
+    id: number;
+  };
+
 
 }
 @Injectable({
@@ -59,6 +63,15 @@ export class CustomerService {
 searchCustomers(name: string): Observable<any[]> {
   return this.http.get<any[]>(
     `${environment.apiUrl}/api/v1/customer-master/list-view?name=${name}`
+  );
+}
+
+getCustomersByCompany(
+  companyId: number
+): Observable<Customer[]> {
+
+  return this.http.get<Customer[]>(
+    `${this.baseUrl}/list-view?companyId=${companyId}`
   );
 }
   

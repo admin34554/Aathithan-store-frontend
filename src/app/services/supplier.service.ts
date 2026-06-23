@@ -20,6 +20,13 @@ export interface Supplier {
   creditPeriod: number;
   type: string;
   active: boolean;
+  bankDetails?: {
+    accountNo: string;
+    bankName: string;
+    branch: string;
+    ifscCode: string;
+    remarks: string;
+  }[];
 
 }
 @Injectable({
@@ -51,4 +58,9 @@ export class SupplierService {
     return this.http.get<Supplier>(`${this.baseUrl}/${id}`);
   }
   
+  searchSupplier(name: string): Observable<any[]> {
+  return this.http.get<any[]>(
+    `${environment.apiUrl}/api/v1/supplier-master/list-view?name=${name}`
+  );
+}
 }

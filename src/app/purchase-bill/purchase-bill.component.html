@@ -26,13 +26,13 @@
   >
 
   <!-- ✅ DROPDOWN -->
-  <ul *ngIf="customers.length > 0" class="dropdown-list">
+  <ul *ngIf="supplier.length > 0" class="dropdown-list">
     <li 
-      *ngFor="let c of customers; let i = index"
-      (mousedown)="selectCustomer(c)"
-      [class.active]="i === customerSelectedIndex"
+      *ngFor="let c of supplier; let i = index"
+      (mousedown)="selectSupplier(c)"
+      [class.active]="i === supplierSelectedIndex"
     >
-      {{ c.fullName }} ({{ c.code }})
+      {{ c.contact }}
     </li>
   </ul>
 

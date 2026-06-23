@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { PurchaseBillService } from '../services/purchaseBill.service';
-import { CustomerService } from '../services/customer.service';
+import { SupplierService } from '../services/supplier.service';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { ProductTypeService } from '../services/productType.service';
 import { ProductService } from '../services/product.service';
@@ -18,39 +18,47 @@ import { TranslateService, TranslateModule } from '@ngx-translate/core';
   styleUrls: ['./purchase-bill.component.css']
 })
 export class PurchaseBillComponent implements OnInit {
-  onKeyDown(event: KeyboardEvent) {
+onKeyDown(event: KeyboardEvent) {
 
-  if (!this.customers.length) return;
+  if (!this.supplier.length) return;
 
   if (event.key === 'ArrowDown') {
+
     event.preventDefault();
-    this.customerSelectedIndex =
-      this.customerSelectedIndex < this.customers.length - 1
-        ? this.customerSelectedIndex + 1
+
+    this.supplierSelectedIndex =
+      this.supplierSelectedIndex < this.supplier.length - 1
+        ? this.supplierSelectedIndex + 1
         : 0;
   }
 
   else if (event.key === 'ArrowUp') {
+
     event.preventDefault();
-    this.customerSelectedIndex =
-      this.customerSelectedIndex > 0
-        ? this.customerSelectedIndex - 1
-        : this.customers.length - 1;
+
+    this.supplierSelectedIndex =
+      this.supplierSelectedIndex > 0
+        ? this.supplierSelectedIndex - 1
+        : this.supplier.length - 1;
   }
 
   else if (event.key === 'Enter') {
+
     event.preventDefault();
-    if (this.customerSelectedIndex >= 0) {
-      this.selectCustomer(this.customers[this.customerSelectedIndex]);
+
+    if (this.supplierSelectedIndex >= 0) {
+      this.selectSupplier(
+        this.supplier[this.supplierSelectedIndex]
+      );
     }
   }
 }
-selectCustomer(customer: any) {
+selectSupplier(suppliers: any) {
 
-  this.purchaseBillForm.get('name')?.setValue(customer.fullName, { emitEvent: false });
+  this.purchaseBillForm.get('name')?.setValue(suppliers.contact, { emitEvent: false });
 
-  this.customers = [];
-  this.customerSelectedIndex = -1;
+  this.supplier = [];
+  this.supplierSelectedIndex = -1;
 
   setTimeout(() => {
     (document.activeElement as HTMLElement)?.blur();
@@ -58,15 +66,15 @@ selectCustomer(customer: any) {
 }
 
   purchaseBillForm: FormGroup;
-   customers: any[] = [];
+   supplier: any[] = [];
   products: any[] = [];
   tax: any[] = [];
   brokers: any[] = [];
   filteredProducts: any[][] = []; 
   filteredTaxes: any[][] = [];
   taxSelectedIndex: number[] = [];
-// ✅ Customer dropdown (single)
-customerSelectedIndex: number = -1;
+// ✅ Suppliser dropdown (single)
+  supplierSelectedIndex: number = -1;
 
 // ✅ Product dropdown (per row)
 productSelectedIndex: number[] = [];  
@@ -75,7 +83,7 @@ productSelectedIndex: number[] = [];
     private fb: FormBuilder,
     private purchaseBillService: PurchaseBillService,
         private brokerService: BrokerService,
-        private customerService: CustomerService,
+        private supplierService: SupplierService,
         private productTypeService: ProductTypeService,
         private productService: ProductService,
         private taxService: TaxService,
@@ -111,7 +119,7 @@ productSelectedIndex: number[] = [];
           distinctUntilChanged()
         )
          .subscribe(value => {
-          this.searchCustomers(value);
+          this.searchSupplier(value);
         });
   }
 
@@ -134,14 +142,14 @@ productSelectedIndex: number[] = [];
     });
   }
 
-    searchCustomers(name: string) {
-  if (!name || name.trim().length < 2) {
-    this.customers = [];
+    searchSupplier(contact: string) {
+  if (!contact || contact.trim().length < 2) {
+    this.supplier = [];
     return;
   }
 
-  this.customerService.searchCustomers(name).subscribe(res => {
-    this.customers = res;
+  this.supplierService.searchSupplier(contact).subscribe(res => {
+    this.supplier = res;
   });
 }
 
@@ -290,8 +298,8 @@ addRow() {
 
 onCustomerBlur() {
   setTimeout(() => {
-    this.customers = [];
-    this.customerSelectedIndex = -1;
+    this.supplier = [];
+    this.supplierSelectedIndex = -1;
   }, 200);
 }
 

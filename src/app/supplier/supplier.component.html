@@ -30,6 +30,14 @@
         {{ 'Address' | translate }}
       </button>
     </li>
+
+    <li class="nav-item">
+  <button class="nav-link"
+    [class.active]="activeTab==='bank'"
+    (click)="activeTab='bank'">
+    {{ 'Bank Details' | translate }}
+  </button>
+</li>
   </ul>
 
 <form [formGroup]="supplierform" (ngSubmit)="submitForm()">
@@ -116,6 +124,51 @@
     </div>
 
 
+
+  </div>
+
+</div>
+
+<!-- BANK DETAILS TAB -->
+
+<div [hidden]="activeTab !== 'bank'">
+
+  <div class="row">
+
+    <div class="col-md-6 mb-3">
+      <input
+        class="form-control"
+        placeholder="{{ 'Account No' | translate }}"
+        formControlName="accountNo">
+    </div>
+
+    <div class="col-md-6 mb-3">
+      <input
+        class="form-control"
+        placeholder="{{ 'Bank Name' | translate }}"
+        formControlName="bankName">
+    </div>
+
+    <div class="col-md-6 mb-3">
+      <input
+        class="form-control"
+        placeholder="{{ 'Branch' | translate }}"
+        formControlName="branch">
+    </div>
+
+    <div class="col-md-6 mb-3">
+      <input
+        class="form-control"
+        placeholder="{{ 'IFSC Code' | translate }}"
+        formControlName="ifscCode">
+    </div>
+
+    <div class="col-md-6 mb-3">
+      <input
+        class="form-control"
+        placeholder="{{ 'Remarks' | translate }}"
+        formControlName="remarks">
+    </div>
 
   </div>
 

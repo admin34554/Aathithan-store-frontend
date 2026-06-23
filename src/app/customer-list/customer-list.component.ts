@@ -6,6 +6,7 @@ import { Customer } from '../services/customer.service';
 import { CustomerRoutingModule } from "../modules/customer/customer-routing.module";
 import { RouterModule } from '@angular/router';
 import { TranslateService, TranslateModule } from '@ngx-translate/core';
+import { CompanyContextService } from '../services/company-context.service';
 
 @Component({
   selector: 'app-customer-list',
@@ -24,7 +25,7 @@ export class CustomerListComponent implements OnInit {
   currentPage = 1;
   pageSize = 5;
 
-  constructor(private customerService: CustomerService, private translate: TranslateService) {
+  constructor(private customerService: CustomerService, private translate: TranslateService, private companyContextService: CompanyContextService) {
 
       const lang = localStorage.getItem('lang') || 'en';
 
@@ -32,16 +33,49 @@ export class CustomerListComponent implements OnInit {
   this.translate.use(lang);
   }
 
-  ngOnInit(): void {
-    this.loadCustomers();
+ngOnInit(): void {
+
+  this.companyContextService.selectedCompany$
+    .subscribe(company => {
+
+      if (company?.id) {
+
+        this.customerService
+          .getCustomersByCompany(company.id)
+          .subscribe(data => {
+
+            this.customers = data;
+            this.filteredCustomers = data;
+            this.currentPage = 1;
+
+          });
+
+      }
+
+    });
+
+}
+
+ loadCustomers() {
+
+  const company =
+    this.companyContextService.getCompany();
+
+  if (!company) {
+    return;
   }
 
-  loadCustomers() {
-    this.customerService.getCustomers().subscribe(data => {
-      this.customers = data;
-      this.filteredCustomers = data;
-    });
-  }
+  this.customerService
+      .getCustomersByCompany(company.id!)
+      .subscribe(data => {
+
+        this.customers = data;
+        this.filteredCustomers = data;
+
+      });
+}
+
+
 
   searchCustomer() {
     this.filteredCustomers = this.customers.filter(c =>

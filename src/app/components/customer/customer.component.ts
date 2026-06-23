@@ -4,6 +4,7 @@ import { Customer, CustomerService } from '../../services/customer.service';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { TranslateService, TranslateModule } from '@ngx-translate/core';
+import { CompanyContextService } from '../../services/company-context.service';
 
 @Component({
   selector: 'app-customer',
@@ -21,6 +22,7 @@ activeTab: string = 'details';
 
 constructor(
   private customerService: CustomerService,
+  private companyContextService: CompanyContextService,
   private fb: FormBuilder,
   private translate: TranslateService
 )
@@ -74,8 +76,17 @@ submitForm() {
     return;
   }
 
-  const customerData : Customer ={ ...this.customerform.value,
-  id : null};
+  const selectedCompany =
+    this.companyContextService.getCompany();
+
+  const customerData: Customer = {
+    ...this.customerform.value,
+    id: undefined,
+
+    companyMaster: {
+      id: selectedCompany!.id!
+    }
+  };
 
   this.customerService.addCustomer(customerData).subscribe({
     next: (res) => {
