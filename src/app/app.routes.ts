@@ -119,6 +119,12 @@ export const routes: Routes = [
       loadComponent: () =>
         import('./company-master/company-master.component')
           .then(m => m.CompanyMasterComponent)
+    },
+    {
+  path: 'tax/:id',
+  loadComponent: () =>
+    import('./tax/tax.component')
+      .then(m => m.TaxComponent)
     }
     ]
   },

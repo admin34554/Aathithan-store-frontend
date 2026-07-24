@@ -4,9 +4,14 @@ import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment.prod';
 
 export interface Tax {
-  id?: number;
+  id: number;
   hsnCode: string;
   name: string;
+  hsnDescription: string;
+  unit: string;
+  unitText: string;
+  stateCode: string;
+  stateGstCode: string;
   salesTaxPerc: number;
   surChargePerc: number;
   cgst: number;
@@ -21,13 +26,18 @@ export interface Tax {
 })
 export class TaxService {
 
-  private baseUrl = `${environment.apiUrl}/api/v1/tax-master`;
+  private baseUrl = `${environment.apiUrl}/api/v1/tax-new-controller`;
 
   constructor(private http: HttpClient) {}
 
   // GET LIST
   getTaxes(): Observable<Tax[]> {
     return this.http.get<Tax[]>(`${this.baseUrl}/list-view`);
+  }
+
+  // GET BY ID
+  getTaxById(id: number): Observable<Tax> {
+    return this.http.get<Tax>(`${this.baseUrl}/${id}`);
   }
 
   // SAVE TAX

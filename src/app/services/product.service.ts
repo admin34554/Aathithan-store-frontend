@@ -6,13 +6,16 @@ import { environment } from '../../environments/environment.prod';
 
 export interface Product {
   id?: number;
-  code: string;
-  name: string;
+  hsnCode: string;
+  productCode: string;
+  productName: string;
+  description: string;
   type: string;
   brandName: string;
   weight: number;
   noOfPacks: number;
   rate: number;
+  quantity: number;
   active: boolean;
 }
 
@@ -22,7 +25,7 @@ export interface Product {
 
 export class ProductService {
 
-  private apiUrl = `${environment.apiUrl}/api/v1/product-master`;
+  private apiUrl = `${environment.apiUrl}/api/v1/product-master/product-new`;
 
   constructor(private http: HttpClient) {}
 

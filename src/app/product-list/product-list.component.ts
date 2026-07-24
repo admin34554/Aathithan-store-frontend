@@ -43,8 +43,8 @@ export class ProductListComponent implements OnInit {
 
   searchProduct() {
     this.filteredProducts = this.products.filter(p =>
-      p.name?.toLowerCase().includes(this.searchText.toLowerCase()) ||
-      p.code?.toLowerCase().includes(this.searchText.toLowerCase())
+      p.productName?.toLowerCase().includes(this.searchText.toLowerCase()) ||
+      p.description?.toLowerCase().includes(this.searchText.toLowerCase())
     );
   }
 

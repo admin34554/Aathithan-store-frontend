@@ -1,25 +1,62 @@
-.container-fluid{
-background:#f5f6f8;
-height:100vh;
+.container-fluid {
+    background: #f5f6f8;
+    height: calc(100vh - 70px); /* navbar height */
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.tax-form-container {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-right: 8px;
 }
 
 .form-control,
-.form-select{
-height:45px;
-border-radius:8px;
+.form-select {
+    height: 45px;
+    border-radius: 8px;
 }
 
-.btn-primary{
-padding:8px 20px;
+.btn-primary {
+    padding: 8px 20px;
 }
 
-.btn-secondary{
-background:#e5e5e5;
-border:none;
-color:#000;
+.btn-secondary {
+    background: #e5e5e5;
+    border: none;
+    color: #000;
 }
 
 input[readonly] {
-  background-color: #f8f9fa;
-  cursor: not-allowed;
+    background-color: #f8f9fa;
+    cursor: not-allowed;
 }
+
+/* Scrollbar */
+.tax-form-container::-webkit-scrollbar {
+    width: 8px;
+}
+
+.tax-form-container::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+.tax-form-container::-webkit-scrollbar-thumb {
+    background: #bdbdbd;
+    border-radius: 10px;
+}
+
+.tax-form-container::-webkit-scrollbar-thumb:hover {
+    background: #888;
+}
+
+.tax-form-container {
+    flex: 1;
+    min-height: 0; 
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-right: 8px;
+}
+

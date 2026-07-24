@@ -29,18 +29,30 @@
         <thead class="table-light">
             <tr>
                 <th style="width: 100px;">{{ 'S.No' | translate }}</th>
-                <th>{{ 'Tax Name' | translate }}</th>
+                <th>{{ 'HSN Name' | translate }}</th>
                 <th>{{ 'HSN Code' | translate }}</th>
+                <th>{{ 'State Code' | translate }}</th>
+                <th>{{ 'State GST Code' | translate }}</th>
+                <th>{{ 'Unit' | translate }}</th>
+                <th>{{ 'Unit Text' | translate }}</th>
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let tax of paginatedTax; let i = index">
-                <td>{{ (currentPage - 1) * pageSize + i + 1 }}</td>
-                <td>{{ tax.name }}</td>
-                <td>{{ tax.hsnCode }}</td>
-            </tr>
+              <tr
+    *ngFor="let tax of paginatedTax; let i = index"
+    (click)="viewTax(tax.id)"
+    style="cursor: pointer;"
+  >
+    <td>{{ (currentPage - 1) * pageSize + i + 1 }}</td>
+    <td>{{ tax.hsnDescription }}</td>
+    <td>{{ tax.hsnCode }}</td>
+    <td>{{ tax.stateCode }}</td>
+    <td>{{ tax.stateGstCode }}</td>
+    <td>{{ tax.unit }}</td>
+    <td>{{ tax.unitText }}</td>
+  </tr>
         <tr *ngIf="filteredTax.length == 0">
-            <td colspan="3" class="text-center">{{ 'No tax found.' | translate }}</td>
+            <td colspan="4" class="text-center">{{ 'No tax found.' | translate }}</td>
         </tr>
         </tbody>
     </table>

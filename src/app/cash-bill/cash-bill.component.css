@@ -237,3 +237,19 @@ h5 {
   background-color: #007bff;
   color: white;
 }
+
+.tax-cell {
+  height: 70px;
+  max-height: 70px;
+  resize: none;
+  overflow-y: auto;
+  white-space: pre-line;
+  line-height: 1.4;
+}
+
+.tax-total-box {
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px;
+}
+

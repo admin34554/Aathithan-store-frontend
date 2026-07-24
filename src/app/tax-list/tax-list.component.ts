@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Tax, TaxService } from '../services/tax.service';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { TranslateService, TranslateModule } from '@ngx-translate/core';
 
 @Component({
@@ -20,9 +20,9 @@ export class TaxListComponent implements OnInit {
   searchText: string = '';
 
   currentPage = 1;
-  pageSize = 5;
+  pageSize = 10;
 
-  constructor(private taxService: TaxService, private translate: TranslateService) {
+  constructor(private taxService: TaxService, private translate: TranslateService, private router: Router) {
 
               const lang = localStorage.getItem('lang') || 'en';
 
@@ -43,7 +43,7 @@ export class TaxListComponent implements OnInit {
 
   searchTax() {
     this.filteredTax = this.tax.filter(t =>
-      t.name?.toLowerCase().includes(this.searchText.toLowerCase()) ||
+      t.hsnDescription?.toLowerCase().includes(this.searchText.toLowerCase()) ||
       t.hsnCode?.toLowerCase().includes(this.searchText.toLowerCase())
     );
   }
@@ -64,5 +64,9 @@ export class TaxListComponent implements OnInit {
       this.currentPage--;
     }
   }
+
+  viewTax(id: number) {
+  this.router.navigate(['/tax', id]);
+}
 
 }

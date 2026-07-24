@@ -89,15 +89,20 @@ productSelectedIndex: number[] = [];
 
   this.translate.setDefaultLang('en');
   this.translate.use(lang);
-    this.cashBillForm = this.fb.group({
-      name: [''],
-      lorry: [''],
-      broker: [''],
-      billNo: [''],
-      billDate: [new Date().toISOString().split('T')[0]],
-      remarks: [''],
-      items: this.fb.array([]) // ✅ IMPORTANT
-    });
+    const today = new Date().toISOString().split('T')[0];
+
+ this.cashBillForm = this.fb.group({
+
+  name: [''],
+  lorry: [''],
+  broker: [''],
+  billNo: [''],
+  billDate: [today],
+  remarks: [''],
+
+  items: this.fb.array([])
+
+});
   }
 
   ngOnInit(): void {
@@ -286,34 +291,46 @@ loadBillByBillNo() {
 }
 
 
-selectProduct(product: any, rowIndex: number) {
+selectProduct(product: any, rowIndex: number): void {
 
-  const row = this.items.at(rowIndex);
+  const row = this.items.at(rowIndex) as FormGroup;
+
+  const cgst = Number(product.taxMasterNew?.cgst ?? 0);
+  const sgst = Number(product.taxMasterNew?.sgst ?? 0);
+  const igst = Number(product.taxMasterNew?.igst ?? 0);
+
+  const taxPercent = cgst + sgst;
 
   row.patchValue({
-    productCode: product.code,
-    itemName: product.name,
-    rate: product.rate,
-    brNo: product.hsnNo
-  }, { emitEvent: false });
 
-    if (product.hsnNo) {
+    productCode: product.productCode,
+    itemName: product.productItems[0].itemName,
 
-  this.taxService.getTaxByHsnCode(product.hsnNo).subscribe(tax => {
+    taxType: 'GST',
 
-    const cgst = Number(tax.cgst) || 0;
-    const sgst = Number(tax.sgst) || 0;
+    rate: product.productItems[0].productItemPrice[0].mrp,
+      
+    quantity: 1,
 
-    row.patchValue({
-      taxType: tax.name,
-      tax: cgst + sgst
-    });
+    // Numeric value used for calculation
+    tax: taxPercent,
+
+    // Display value
+    taxDetails:
+      `CGST ${cgst}%\n` +
+      `SGST ${sgst}%\n` +
+      `IGST ${igst}%`,
+
+    brNo: product.hsnCode,
+
+    surCh: 0
 
   });
 
-}
+  this.calculateRow(row);
 
   this.filteredProducts[rowIndex] = [];
+  this.productSelectedIndex[rowIndex] = -1;
 }
 
 onTaxSearch(event: any, rowIndex: number) {
@@ -356,6 +373,8 @@ onTaxKeyDown(event: KeyboardEvent, rowIndex: number) {
   }
 }
 
+
+
 // selectTax(tax: any, rowIndex: number) {
 
 //   const row = this.items.at(rowIndex);
@@ -375,19 +394,30 @@ onTaxKeyDown(event: KeyboardEvent, rowIndex: number) {
   }
 
   // ✅ CREATE ROW
-  createItem(): FormGroup {
-    return this.fb.group({
-      productCode: [''],
-      itemName: [''],
-      taxType: [''],
-      rate: [''],
-      quantity: [''],
-      tax: [''],
-      total: [''],
-      brNo: [''],
-      surCh: ['']
-    });
-  }
+createItem(): FormGroup {
+
+  const row = this.fb.group({
+
+    productCode: [''],
+    itemName: [''],
+    taxType: ['GST'],
+    rate: [0],
+    quantity: [1],
+
+    tax: [0],          // numeric tax %
+    taxDetails: [''],  // display text
+
+    total: [0],
+    brNo: [''],
+    surCh: [0]
+
+  });
+
+  row.get('rate')?.valueChanges.subscribe(() => this.calculateRow(row));
+  row.get('quantity')?.valueChanges.subscribe(() => this.calculateRow(row));
+
+  return row;
+}
 
   // ✅ ADD ROW
 addRow() {
@@ -444,9 +474,29 @@ getTotalQuantity(): number {
 }
 
 getTotalTax(): number {
-  return this.items.controls.reduce((sum, row) => {
-    return sum + (Number(row.get('tax')?.value) || 0);
-  }, 0);
+
+    return this.items.controls.reduce((sum, row) => {
+
+        const tax = +row.get('tax')?.value || 0;
+
+        return sum + tax;
+
+    }, 0);
+}
+
+calculateRow(row: FormGroup) {
+
+    const qty  = +row.get('quantity')!.value || 0;
+    const rate = +row.get('rate')!.value || 0;
+    const tax  = +row.get('tax')!.value || 0;
+
+    const amount = qty * rate;
+    const total  = amount + (amount * tax / 100);
+
+    row.patchValue(
+        { total },
+        { emitEvent: false }
+    );
 }
 
 getGrandTotal(): number {
@@ -551,9 +601,9 @@ printBill() {
   const link = document.createElement('a');
 
   link.href =
-    `https://aadhi-store-backend.onrender.com/api/v1/cash-bill/pdf/${billNo}`;
+    `https://aadhi-store-backend.onrender.com/api/v1/credit-bill/pdf/${billNo}`;
 
-  link.download = `cashBill-${billNo}.pdf`;
+  link.download = `credBill-${billNo}.pdf`;
 
   document.body.appendChild(link);
 

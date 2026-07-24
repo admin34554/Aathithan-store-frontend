@@ -87,95 +87,142 @@
           <div class="table-responsive mt-4">
             <table class="table table-bordered">
               <thead class="table-light">
-                <tr>
-                  <th style="width: 60px;">{{ 'S.No' | translate }}</th>
-                  <th>{{ 'Product Code' | translate }}</th>
-                  <th>{{ 'Item Name' | translate }}</th>
-                  <th>{{ 'Tax Type' | translate }}</th>
-                  <th>{{ 'Rate' | translate }}</th>
-                  <th>{{ 'Quantity' | translate }}</th>
-                  <th>{{ 'Tax' | translate }}</th>
-                  <th>{{ 'Total' | translate }}</th>
-                  <th>{{ 'HSN No' | translate }}</th>
-                  <th>{{ 'SurCharge' | translate }}</th>
-                  <th style="width: 80px;">{{ 'Action' | translate }}</th>
-                </tr>
-              </thead>
+    <tr>
+        <th style="width: 60px;">{{ 'S.No' | translate }}</th>
+        <th>{{ 'Product Code' | translate }}</th>
+        <th>{{ 'Item Name' | translate }}</th>
+        <th>{{ 'Tax Type' | translate }}</th>
+        <th>{{ 'Rate' | translate }}</th>
+        <th>{{ 'Quantity' | translate }}</th>
+        <th>{{ 'Tax' | translate }}</th>
+        <th>{{ 'Total' | translate }}</th>
+        <th>{{ 'HSN No' | translate }}</th>
+        <th>{{ 'SurCharge' | translate }}</th>
+        <th style="width:80px;">{{ 'Action' | translate }}</th>
+    </tr>
+</thead>
 
-              <tbody formArrayName="items">
-                <tr *ngFor="let row of items.controls; let i = index" [formGroupName]="i">
-                  <td>{{ i + 1 }}</td>
-                  <td class="position-relative">
-  <input 
-    class="form-control" 
-    formControlName="productCode"
-    (input)="onProductSearch($event, i)"
-    (keydown)="onProductKeyDown($event, i)"
-    (blur)="onProductBlur(i)"
-    autocomplete="off"
-  >
+         <tbody formArrayName="items">
 
-  <!-- Dropdown -->
-  <ul *ngIf="filteredProducts[i] && filteredProducts[i].length > 0" class="dropdown-list">
-    <li 
-      *ngFor="let p of filteredProducts[i]; let j = index"
-      (mousedown)="selectProduct(p, i)"
-      [class.active]="productSelectedIndex[i] === j"
-    >
-      {{ p.name }} ({{ p.code }})
-    </li>
-  </ul>
+<tr
+    *ngFor="let row of items.controls; let i = index"
+    [formGroupName]="i">
+
+    <td>{{ i + 1 }}</td>
+
+    <!-- Product -->
+    <td class="position-relative">
+
+        <input
+            class="form-control"
+            formControlName="productCode"
+            (input)="onProductSearch($event, i)"
+            (keydown)="onProductKeyDown($event, i)"
+            (blur)="onProductBlur(i)"
+            autocomplete="off">
+
+        <ul
+            *ngIf="filteredProducts[i]?.length"
+            class="dropdown-list">
+
+            <li
+                *ngFor="let p of filteredProducts[i]; let j = index"
+                (mousedown)="selectProduct(p, i)"
+                [class.active]="productSelectedIndex[i] === j">
+
+                {{ p.productName }} ({{ p.productCode }})
+
+            </li>
+
+        </ul>
+
+    </td>
+
+    <!-- Item Name -->
+    <td>
+        <input
+            class="form-control"
+            formControlName="itemName">
+    </td>
+
+    <!-- Tax Type -->
+    <td>
+        <input
+            class="form-control"
+            formControlName="taxType"
+            readonly>
+    </td>
+
+    <!-- Rate -->
+    <td>
+        <input
+            type="number"
+            class="form-control"
+            formControlName="rate">
+    </td>
+
+    <!-- Quantity -->
+    <td>
+        <input
+            type="number"
+            class="form-control"
+            formControlName="quantity">
+    </td>
+
+    <!-- Tax Details -->
+
+<!-- Tax Details -->
+<td>
+    <textarea
+        class="form-control tax-cell"
+        formControlName="taxDetails"
+        rows="3"
+        readonly>
+    </textarea>
 </td>
-                  <td>
-                    <input class="form-control" formControlName="itemName">
-                  </td>
-                  <td>
-                      <input 
-    class="form-control" 
-    formControlName="taxType"
-    (input)="onTaxSearch($event, i)"
-    (keydown)="onTaxKeyDown($event, i)"
-    autocomplete="off"
-  >
 
-    <!-- Dropdown -->
-  <ul *ngIf="filteredTaxes[i] && filteredTaxes[i].length > 0" class="dropdown-list">
-    <li 
-      *ngFor="let t of filteredTaxes[i]; let j = index"
-      [class.active]="taxSelectedIndex[i] === j"
-    >
-      {{ t.name }} ({{ t.code }})
-    </li>
-  </ul>
-                  </td>
-                  <td>
-                    <input type="number" class="form-control" formControlName="rate">
-                  </td>
-                  <td>
-                    <input type="number" class="form-control" formControlName="quantity">
-                  </td>
-                  <td>
-                    <input type="number" class="form-control" formControlName="tax">
-                  </td>
-                  <td>
-                    <input type="number" class="form-control" formControlName="total">
-                  </td>
-                  <td>
-                    <input class="form-control" formControlName="brNo">
-                  </td>
-                  <td>
-                    <input type="number" class="form-control" formControlName="surCh">
-                  </td>
-                  <td class="text-center">
-                    <button 
-                      type="button" 
-                      class="btn btn-danger btn-sm"
-                      (click)="removeRow(i)">
-                      ✕
-                    </button>
-                  </td>
-                </tr>
-              </tbody>
+    <!-- Total -->
+    <td>
+        <input
+            type="number"
+            class="form-control"
+            formControlName="total"
+            readonly>
+    </td>
+
+    <!-- HSN -->
+    <td>
+        <input
+            class="form-control"
+            formControlName="brNo"
+            readonly>
+    </td>
+
+    <!-- Surcharge -->
+    <td>
+        <input
+            type="number"
+            class="form-control"
+            formControlName="surCh">
+    </td>
+
+    <!-- Delete -->
+    <td class="text-center">
+
+        <button
+            type="button"
+            class="btn btn-danger btn-sm"
+            (click)="removeRow(i)">
+
+            ✕
+
+        </button>
+
+    </td>
+
+</tr>
+
+</tbody>
               <tfoot>
   <tr class="table-secondary fw-bold">
     <td colspan="4" class="text-end">
@@ -190,9 +237,11 @@
       {{ getTotalQuantity() }}
     </td>
 
-    <td>
-      {{ getTotalTax() | number:'1.2-2' }}
-    </td>
+<td>
+  <div class="tax-total-box">
+    {{ getTotalTax() | number:'1.0-2' }}%
+  </div>
+</td>
 
     <td>
       {{ getGrandTotal() | number:'1.2-2' }}

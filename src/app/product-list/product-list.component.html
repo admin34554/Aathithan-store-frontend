@@ -29,17 +29,19 @@
         <thead class="table-light">
             <tr>
                 <th style="width: 100px;">{{ 'S.No' | translate }}</th>
-                <th>{{ 'Product Name' | translate }}</th>
+                <th>{{ 'HSN CODE' | translate }}</th>
                 <th>{{ 'Product Code' | translate }}</th>
-                <th>{{ 'Stock in Godown' | translate }}</th>
+                <th>{{ 'Product Name' | translate }}</th>
+                <th>{{ 'Description' | translate }}</th>
             </tr>
         </thead>
         <tbody>
             <tr *ngFor="let product of paginatedProducts; let i = index">
                 <td>{{ (currentPage - 1) * pageSize + i + 1 }}</td>
-                <td>{{ product.name }}</td>
-                <td>{{ product.code }}</td>
-                <td>{{ product.noOfPacks }}</td>
+                <td>{{ product.hsnCode }}</td>
+                <td>{{ product.productCode }}</td>
+                <td>{{ product.productName }}</td>
+                <td>{{ product.description }}</td>
             </tr>
         <tr *ngIf="paginatedProducts.length == 0">
             <td colspan="4" class="text-center">{{ 'No products found.' | translate }}</td>

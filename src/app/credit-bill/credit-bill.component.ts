@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { CreditBillService } from '../services/creditBill.service';
 import { BrokerService } from '../services/broker.service';
 import { LorryService } from '../services/lorry.service';
-import { CreditBillService } from '../services/creditBill.service';
-import { debounceTime, distinctUntilChanged } from 'rxjs';
 import { CustomerService } from '../services/customer.service';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { ProductTypeService } from '../services/productType.service';
 import { ProductService } from '../services/product.service';
 import { TaxService } from '../services/tax.service';
@@ -17,7 +17,6 @@ import { TranslateService, TranslateModule } from '@ngx-translate/core';
   imports: [CommonModule, ReactiveFormsModule, TranslateModule],
   templateUrl: './credit-bill.component.html',
   styleUrls: ['./credit-bill.component.css']
-  
 })
 export class CreditBillComponent implements OnInit {
 onKeyDown(event: KeyboardEvent) {
@@ -74,11 +73,7 @@ customerSelectedIndex: number = -1;
 
 // ✅ Product dropdown (per row)
 productSelectedIndex: number[] = [];  
-
-errorMessage = '';
-
-
-constructor(
+  constructor(
     private fb: FormBuilder,
     private creditBillService: CreditBillService,
     private lorryService: LorryService,
@@ -88,28 +83,33 @@ constructor(
     private productService: ProductService,
     private taxService: TaxService,
     private translate: TranslateService
-    ) {
+  ) {
 
-        const lang = localStorage.getItem('lang') || 'en';
+      const lang = localStorage.getItem('lang') || 'en';
 
   this.translate.setDefaultLang('en');
   this.translate.use(lang);
-    this.creditBillForm = this.fb.group({
-      name: [''],
-      lorry: [''],
-      broker: [''],
-      billNo: [''],
-      billDate: [new Date().toISOString().split('T')[0]],
-      remarks: [''],
-      items: this.fb.array([]) // ✅ IMPORTANT
-    });
+    const today = new Date().toISOString().split('T')[0];
+
+ this.creditBillForm = this.fb.group({
+
+  name: [''],
+  lorry: [''],
+  broker: [''],
+  billNo: [''],
+  billDate: [today],
+  remarks: [''],
+
+  items: this.fb.array([])
+
+});
   }
 
   ngOnInit(): void {
     this.addRow(); // ✅ ADD ONE ROW BY DEFAULT
     this.loadLorries();
     this.loadBrokers();
-    this.loadProducts();
+   this.loadProducts();
     this.loadTaxes();
      this.creditBillForm.get('name')?.valueChanges.pipe(
           debounceTime(300),
@@ -205,7 +205,7 @@ onProductKeyDown(event: KeyboardEvent, rowIndex: number) {
   }
 }
 
-  loadBillByBillNo() {
+loadBillByBillNo() {
 
   const billNo = this.creditBillForm.get('billNo')?.value;
 
@@ -289,18 +289,48 @@ onProductKeyDown(event: KeyboardEvent, rowIndex: number) {
   });
 
 }
-selectProduct(product: any, rowIndex: number) {
 
-  const row = this.items.at(rowIndex);
+
+selectProduct(product: any, rowIndex: number): void {
+
+  const row = this.items.at(rowIndex) as FormGroup;
+
+  const cgst = Number(product.taxMasterNew?.cgst ?? 0);
+  const sgst = Number(product.taxMasterNew?.sgst ?? 0);
+  const igst = Number(product.taxMasterNew?.igst ?? 0);
+
+  const taxPercent = cgst + sgst;
 
   row.patchValue({
-    productCode: product.code,
-    itemName: product.name,
-    rate: product.retailRate,
-    brNo: product.hsnNo
+
+    productCode: product.productCode,
+    itemName: product.productItems[0].itemName,
+
+    taxType: 'GST',
+
+    rate: product.productItems[0].productItemPrice[0].mrp,
+      
+    quantity: 1,
+
+    // Numeric value used for calculation
+    tax: taxPercent,
+
+    // Display value
+    taxDetails:
+      `CGST ${cgst}%\n` +
+      `SGST ${sgst}%\n` +
+      `IGST ${igst}%`,
+
+    brNo: product.hsnCode,
+
+    surCh: 0
+
   });
 
+  this.calculateRow(row);
+
   this.filteredProducts[rowIndex] = [];
+  this.productSelectedIndex[rowIndex] = -1;
 }
 
 onTaxSearch(event: any, rowIndex: number) {
@@ -338,69 +368,56 @@ onTaxKeyDown(event: KeyboardEvent, rowIndex: number) {
   else if (event.key === 'Enter') {
     event.preventDefault();
     if (this.taxSelectedIndex[rowIndex] >= 0) {
-      this.selectTax(list[this.taxSelectedIndex[rowIndex]], rowIndex);
+      // this.selectTax(list[this.taxSelectedIndex[rowIndex]], rowIndex);
     }
   }
 }
 
-selectTax(tax: any, rowIndex: number) {
 
-  const row = this.items.at(rowIndex);
 
-  row.patchValue({
-    taxType: tax.name,
-    tax: Number(tax.salestaxPercentage),
-    brNo: tax.hsnCode
-  }, { emitEvent: false });
+// selectTax(tax: any, rowIndex: number) {
 
-  this.filteredTaxes[rowIndex] = [];
-}
+//   const row = this.items.at(rowIndex);
 
+//   row.patchValue({
+//     taxType: tax.name,
+//     tax: Number(tax.salestaxPercentage),
+//     brNo: tax.hsnCode
+//   }, { emitEvent: false });
+
+//   this.filteredTaxes[rowIndex] = [];
+// }
 
   // ✅ GET FORM ARRAY
   get items(): FormArray {
     return this.creditBillForm.get('items') as FormArray;
   }
 
-
-getTotalRate(): number {
-  return this.items.controls.reduce((sum, row) => {
-    return sum + (Number(row.get('rate')?.value) || 0);
-  }, 0);
-}
-
-getTotalQuantity(): number {
-  return this.items.controls.reduce((sum, row) => {
-    return sum + (Number(row.get('quantity')?.value) || 0);
-  }, 0);
-}
-
-getTotalTax(): number {
-  return this.items.controls.reduce((sum, row) => {
-    return sum + (Number(row.get('tax')?.value) || 0);
-  }, 0);
-}
-
-getGrandTotal(): number {
-  return this.items.controls.reduce((sum, row) => {
-    return sum + (Number(row.get('total')?.value) || 0);
-  }, 0);
-}
-
   // ✅ CREATE ROW
-  createItem(): FormGroup {
-    return this.fb.group({
-      productCode: [''],
-      itemName: [''],
-      taxType: [''],
-      rate: [''],
-      quantity: [''],
-      tax: [''],
-      total: [''],
-      brNo: [''],
-      surCh: ['']
-    });
-  }
+createItem(): FormGroup {
+
+  const row = this.fb.group({
+
+    productCode: [''],
+    itemName: [''],
+    taxType: ['GST'],
+    rate: [0],
+    quantity: [1],
+
+    tax: [0],          // numeric tax %
+    taxDetails: [''],  // display text
+
+    total: [0],
+    brNo: [''],
+    surCh: [0]
+
+  });
+
+  row.get('rate')?.valueChanges.subscribe(() => this.calculateRow(row));
+  row.get('quantity')?.valueChanges.subscribe(() => this.calculateRow(row));
+
+  return row;
+}
 
   // ✅ ADD ROW
 addRow() {
@@ -444,26 +461,70 @@ onCustomerBlur() {
   }, 200);
 }
 
-onTaxBlur(i: number) {
-  setTimeout(() => {
-
-    const row = this.items.at(i);
-    const enteredValue = row.value.taxType;
-
-    const matchedTax = this.tax.find(t => t.name === enteredValue);
-
-    if (matchedTax) {
-      row.patchValue({
-        tax: Number(matchedTax.salestaxPercentage),
-        brNo: matchedTax.hsnCode
-      }, { emitEvent: false });
-    }
-
-    this.filteredTaxes[i] = [];
-    this.taxSelectedIndex[i] = -1;
-
-  }, 200);
+getTotalRate(): number {
+  return this.items.controls.reduce((sum, row) => {
+    return sum + (Number(row.get('rate')?.value) || 0);
+  }, 0);
 }
+
+getTotalQuantity(): number {
+  return this.items.controls.reduce((sum, row) => {
+    return sum + (Number(row.get('quantity')?.value) || 0);
+  }, 0);
+}
+
+getTotalTax(): number {
+
+    return this.items.controls.reduce((sum, row) => {
+
+        const tax = +row.get('tax')?.value || 0;
+
+        return sum + tax;
+
+    }, 0);
+}
+
+calculateRow(row: FormGroup) {
+
+    const qty  = +row.get('quantity')!.value || 0;
+    const rate = +row.get('rate')!.value || 0;
+    const tax  = +row.get('tax')!.value || 0;
+
+    const amount = qty * rate;
+    const total  = amount + (amount * tax / 100);
+
+    row.patchValue(
+        { total },
+        { emitEvent: false }
+    );
+}
+
+getGrandTotal(): number {
+  return this.items.controls.reduce((sum, row) => {
+    return sum + (Number(row.get('total')?.value) || 0);
+  }, 0);
+}
+
+// onTaxBlur(i: number) {
+//   setTimeout(() => {
+
+//     const row = this.items.at(i);
+//     const enteredValue = row.value.taxType;
+
+//     const matchedTax = this.tax.find(t => t.name === enteredValue);
+
+//     if (matchedTax) {
+//       row.patchValue({
+//         tax: Number(matchedTax.salestaxPercentage),
+//         brNo: matchedTax.hsnCode
+//       }, { emitEvent: false });
+//     }
+
+//     this.filteredTaxes[i] = [];
+//     this.taxSelectedIndex[i] = -1;
+
+//   }, 200);
+// }
 
 onProductBlur(i: number) {
   setTimeout(() => {
@@ -473,7 +534,9 @@ onProductBlur(i: number) {
 }
 
   // SAVE
-  saveCreditBill() {
+errorMessage = '';
+
+saveCreditBill() {
 
   if (this.creditBillForm.invalid) {
     return;
@@ -491,7 +554,7 @@ onProductBlur(i: number) {
 
   console.log("FINAL PAYLOAD", payload);
 
-this.creditBillService.addCreditBill(payload).subscribe({
+ this.creditBillService.addCreditBill(payload).subscribe({
 
     next: (res) => {
 
@@ -504,11 +567,12 @@ this.creditBillService.addCreditBill(payload).subscribe({
       alert("Saved: " + res.billNo);
     },
 
-error: (err) => {
+    error: (err) => {
 
-  const errorMsg = err.error as string;
-
-  const productName = errorMsg.split('Product').pop()?.trim() || '';
+  const productName = err.error.replace(
+    'Insufficient stock for product ',
+    ''
+  );
 
   this.translate.get('insufficientStock').subscribe(msg => {
     this.errorMessage = `${msg} ${productName}`;
@@ -525,8 +589,7 @@ error: (err) => {
     this.items.clear();
     this.addRow();
   }
-
-  printCreditBill() {
+printCreditBill() {
 
   const billNo = this.creditBillForm.get('billNo')?.value;
 
