@@ -48,7 +48,7 @@ onKeyDown(event: KeyboardEvent) {
 }
 selectCustomer(customer: any) {
 
-  this.cashBillForm.get('name')?.setValue(customer.fullName, { emitEvent: false });
+  this.cashBillForm.get('name')?.setValue(customer.name, { emitEvent: false });
 
   this.customers = [];
   this.customerSelectedIndex = -1;
@@ -116,7 +116,7 @@ productSelectedIndex: number[] = [];
           distinctUntilChanged()
         )
          .subscribe(value => {
-          this.searchCustomers(value);
+          this.searchCustomers(value, this.cashBillForm.get('companyId')?.value);
         });
   }
 
@@ -145,7 +145,7 @@ productSelectedIndex: number[] = [];
     });
   }
 
-    searchCustomers(name: string) {
+    searchCustomers(name: string, companyId: number) {
   if (!name || name.trim().length < 2) {
     this.customers = [];
     return;

@@ -48,7 +48,7 @@ onKeyDown(event: KeyboardEvent) {
 }
 selectCustomer(customer: any) {
 
-  this.creditBillForm.get('name')?.setValue(customer.fullName, { emitEvent: false });
+  this.creditBillForm.get('name')?.setValue(customer.name, { emitEvent: false });
 
   this.customers = [];
   this.customerSelectedIndex = -1;
