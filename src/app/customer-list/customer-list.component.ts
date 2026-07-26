@@ -79,7 +79,7 @@ ngOnInit(): void {
 
   searchCustomer() {
     this.filteredCustomers = this.customers.filter(c =>
-      c.fullName?.toLowerCase().includes(this.searchText.toLowerCase()) ||
+      c.name?.toLowerCase().includes(this.searchText.toLowerCase()) ||
       c.type?.toLowerCase().includes(this.searchText.toLowerCase())
     );
   }

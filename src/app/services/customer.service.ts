@@ -7,7 +7,7 @@ import { environment } from '../../environments/environment.prod';
 export interface Customer {
   id?: number;
   code: string;
-  fullName: string;
+  name: string;
   doorNo: string;
   street: string;
   area: string;
