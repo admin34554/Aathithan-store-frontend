@@ -68,6 +68,8 @@ selectCustomer(customer: any) {
   filteredProducts: any[][] = []; 
   filteredTaxes: any[][] = [];
   taxSelectedIndex: number[] = [];
+  productItems: any[][] = [];
+selectedProducts: any[] = [];
 // ✅ Customer dropdown (single)
 customerSelectedIndex: number = -1;
 
@@ -293,29 +295,30 @@ loadBillByBillNo() {
 
 selectProduct(product: any, rowIndex: number): void {
 
+  this.selectedProducts[rowIndex] = product;
+
+  this.productItems[rowIndex] = product.productItems;
+
   const row = this.items.at(rowIndex) as FormGroup;
 
   const cgst = Number(product.taxMasterNew?.cgst ?? 0);
   const sgst = Number(product.taxMasterNew?.sgst ?? 0);
   const igst = Number(product.taxMasterNew?.igst ?? 0);
 
-  const taxPercent = cgst + sgst;
-
   row.patchValue({
 
     productCode: product.productCode,
-    itemName: product.productItems[0].itemName,
+
+    itemName: '',
+
+    rate: 0,
+
+    quantity: 1,
 
     taxType: 'GST',
 
-    rate: product.productItems[0].productItemPrice[0].mrp,
-      
-    quantity: 1,
+    tax: cgst + sgst,
 
-    // Numeric value used for calculation
-    tax: taxPercent,
-
-    // Display value
     taxDetails:
       `CGST ${cgst}%\n` +
       `SGST ${sgst}%\n` +
@@ -327,10 +330,30 @@ selectProduct(product: any, rowIndex: number): void {
 
   });
 
-  this.calculateRow(row);
-
   this.filteredProducts[rowIndex] = [];
-  this.productSelectedIndex[rowIndex] = -1;
+}
+
+onItemChange(event: any, rowIndex: number) {
+
+    const itemId = Number(event.target.value);
+
+    const item = this.productItems[rowIndex]
+        .find((x: any) => x.id === itemId);
+
+    if (!item) {
+        return;
+    }
+
+    const row = this.items.at(rowIndex) as FormGroup;
+
+    row.patchValue({
+
+        itemName: item.id,
+
+        rate: item.productItemPrice[0]?.mrp ?? 0
+
+    });
+
 }
 
 onTaxSearch(event: any, rowIndex: number) {

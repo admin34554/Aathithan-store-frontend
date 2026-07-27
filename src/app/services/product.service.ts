@@ -17,6 +17,25 @@ export interface Product {
   rate: number;
   quantity: number;
   active: boolean;
+
+  productItems: ProductItem[];
+}
+
+export interface ProductItemPrice {
+  id?: number;
+  batchCode: string;
+  quantity: number;
+  mrp: number;
+  msp: number;
+}
+
+export interface ProductItem {
+  id?: number;
+  measure: number;
+  unit: string;
+  itemName: string;
+  itemDescription: string;
+  productItemPrice: ProductItemPrice[];
 }
 
 @Injectable({

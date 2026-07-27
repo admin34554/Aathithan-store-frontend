@@ -33,6 +33,8 @@
                 <th>{{ 'Product Code' | translate }}</th>
                 <th>{{ 'Product Name' | translate }}</th>
                 <th>{{ 'Description' | translate }}</th>
+                <th>{{ 'Item Name' | translate }}</th>
+                <th>{{ 'Quantity' | translate }}</th>
             </tr>
         </thead>
         <tbody>
@@ -42,6 +44,19 @@
                 <td>{{ product.productCode }}</td>
                 <td>{{ product.productName }}</td>
                 <td>{{ product.description }}</td>
+    <td>
+        <div *ngFor="let item of product.productItems">
+            {{ item.itemName }}
+        </div>
+    </td>
+
+    <td>
+        <div *ngFor="let item of product.productItems">
+            <div *ngFor="let price of item.productItemPrice">
+                {{ price.quantity }}
+            </div>
+        </div>
+    </td>
             </tr>
         <tr *ngIf="paginatedProducts.length == 0">
             <td colspan="4" class="text-center">{{ 'No products found.' | translate }}</td>
