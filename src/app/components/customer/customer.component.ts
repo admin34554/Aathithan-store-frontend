@@ -37,7 +37,7 @@ constructor(
     id: [''],
     name: ['', Validators.required],
     code: [''],
-    doorNo: [''],
+    doorNumber: [''],
     area: [''],
     street: [''], 
     city: [''],

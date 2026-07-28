@@ -235,44 +235,55 @@ loadBillByBillNo() {
       // ✅ Bind item rows
       if (res.items && res.items.length > 0) {
 
-        res.items.forEach((item: any) => {
+res.items.forEach((item: any, index: number) => {
 
-          const row = this.createItem();
+  const row = this.createItem();
+  this.items.push(row);
 
-          row.patchValue({
-            productCode: item.productCode,
-            itemName: item.itemName,
-            taxType: item.tax,
-            rate: item.rate,
-            quantity: item.quantity,
-            tax: item.tax,
-            total: item.total,
-            brNo: item.brNo,
-            surCh: item.surCh
-          });
+  this.filteredProducts.push([]);
+  this.productSelectedIndex.push(-1);
+  this.productItems.push([]);
 
-          // ✅ Recalculate total on changes
-          row.valueChanges.subscribe(val => {
+  this.productService.searchProducts(item.productCode).subscribe(products => {
 
-            const rate = Number(val.rate) || 0;
-            const qty = Number(val.quantity) || 0;
-            const taxPerc = Number(val.tax) || 0;
+    const product = products[0];
 
-            const amount = rate * qty;
-            const taxAmount = amount * taxPerc / 100;
+    this.productItems[index] = product.productItems;
 
-            row.patchValue({
-              total: (amount + taxAmount).toFixed(2)
-            }, { emitEvent: false });
+    row.patchValue({
+      productCode: item.productCode,
+      productItemId: item.productItemId,
+      taxType: item.taxType,
+      rate: item.rate,
+      quantity: item.quantity,
+      tax: item.tax,
+        taxDetails:
+      `CGST ${Number(item.tax) / 2}%\n` +
+      `SGST ${Number(item.tax) / 2}%\n` +
+      `IGST ${item.tax}%`,
+      total: item.total,
+      brNo: item.brNo,
+      surCh: item.surCh
+    });
 
-          });
+  });
 
-          this.items.push(row);
+  row.valueChanges.subscribe(val => {
 
-          this.filteredProducts.push([]);
-          this.productSelectedIndex.push(-1);
+    const rate = Number(val.rate) || 0;
+    const qty = Number(val.quantity) || 0;
+    const taxPerc = Number(val.tax) || 0;
 
-        });
+    const amount = rate * qty;
+    const taxAmount = amount * taxPerc / 100;
+
+    row.patchValue({
+      total: (amount + taxAmount).toFixed(2)
+    }, { emitEvent: false });
+
+  });
+
+});
 
       } else {
 
@@ -348,9 +359,9 @@ onItemChange(event: any, rowIndex: number) {
 
     row.patchValue({
 
-        itemName: item.id,
-
-        rate: item.productItemPrice[0]?.mrp ?? 0
+    productItemId: item.id,
+    itemName: item.itemName,
+    rate: item.productItemPrice[0]?.mrp ?? 0
 
     });
 
@@ -422,7 +433,9 @@ createItem(): FormGroup {
   const row = this.fb.group({
 
     productCode: [''],
-    itemName: [''],
+    itemName: [''],        // display/save
+    productItem: [null],   // backend
+    productItemId: [null], // dropdown
     taxType: ['GST'],
     rate: [0],
     quantity: [1],
@@ -572,7 +585,13 @@ saveCreditBill() {
     ...formValue,
     billNo: null,
     lorry: formValue.lorry ? { id: Number(formValue.lorry) } : null,
-    broker: formValue.broker ? { id: Number(formValue.broker) } : null
+    broker: formValue.broker ? { id: Number(formValue.broker) } : null,
+     items: formValue.items.map((item: any) => ({
+    ...item,
+    productItem: {
+      id: item.productItemId
+    }
+  }))
   };
 
   console.log("FINAL PAYLOAD", payload);

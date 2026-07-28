@@ -70,6 +70,7 @@ selectSupplier(suppliers: any) {
   products: any[] = [];
   tax: any[] = [];
   brokers: any[] = [];
+  productItems: any[][] = [];
   filteredProducts: any[][] = []; 
   filteredTaxes: any[][] = [];
   taxSelectedIndex: number[] = [];
@@ -197,12 +198,19 @@ selectProduct(product: any, rowIndex: number) {
 
   const row = this.items.at(rowIndex);
 
-  row.patchValue({
-    productCode: product.code,
-    itemName: product.name,
-    balanceQuantity: product.noOfPacks,
-    rate: product.retailRate
-  });
+row.patchValue({
+
+    productCode: product.productCode,
+
+    itemName: '',
+
+    productItemId: null,
+
+    productItem: null
+
+});
+
+this.productItems[rowIndex] = product.productItems || [];
 
   this.filteredProducts[rowIndex] = [];
 }
@@ -287,6 +295,39 @@ addRow() {
   this.productSelectedIndex.push(-1);
 }
 
+onItemChange(event: any, rowIndex: number) {
+
+    const itemId = Number(event.target.value);
+
+    const row = this.items.at(rowIndex);
+
+    const item = this.productItems[rowIndex]
+        .find((x: any) => x.id === itemId);
+
+    if (!item) return;
+
+    const price = item.productItemPrice?.[0];
+
+    row.patchValue({
+
+        productItemId: item.id,
+
+        productItem: {
+            id: item.id
+        },
+
+        itemName: item.itemName,
+
+        balanceQuantity: price?.quantity ?? 0,
+
+        pRate: price?.msp ?? 0,
+
+        rate: price?.mrp ?? 0
+
+    });
+
+}
+
   // ✅ REMOVE ROW
  removeRow(index: number) {
   this.items.removeAt(index);
@@ -336,18 +377,33 @@ onProductBlur(i: number) {
   }
 
   // ✅ CREATE ROW
-  createItem(): FormGroup {
-    return this.fb.group({
-      productCode: [''],
-      itemName: [''],
-      pRate: [''],
-      balanceQuantity: [''],
-      quantity: [''],
-      rate: [''],
-      brComm: [''],
-      brTotal: ['']
-    });
-  }
+createItem(): FormGroup {
+
+  return this.fb.group({
+
+    productCode: [''],
+
+    itemName: [''],
+
+    productItemId: [null],
+
+    productItem: [null],
+
+    pRate: [0],
+
+    balanceQuantity: [0],
+
+    quantity: [1],
+
+    rate: [0],
+
+    brComm: [0],
+
+    brTotal: [0]
+
+  });
+
+}
 
 
   // SAVE

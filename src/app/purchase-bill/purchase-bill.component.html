@@ -117,8 +117,23 @@
     </li>
   </ul>
 </td>
-                <td>
-  <input class="form-control" formControlName="itemName">
+<td>
+  <select
+      class="form-control"
+      formControlName="productItemId"
+      (change)="onItemChange($event, i)">
+
+      <option value="">Select Item</option>
+
+      <option
+          *ngFor="let item of productItems[i]"
+          [value]="item.id">
+
+          {{ item.itemName }}
+
+      </option>
+
+  </select>
 </td>
 
 <td>

@@ -140,22 +140,22 @@
 
     <!-- Item Name -->
 <td>
-    <select
-        class="form-control"
-        formControlName="itemName"
-        (change)="onItemChange($event, i)">
+   <select
+    class="form-control"
+    formControlName="productItemId"
+    (change)="onItemChange($event, i)">
 
-        <option value="">Select Item</option>
+    <option value="">Select Item</option>
 
-        <option
-            *ngFor="let item of productItems[i]"
-            [value]="item.id">
+    <option
+        *ngFor="let item of productItems[i]"
+        [value]="item.id">
 
-            {{ item.itemName }}
+        {{ item.itemName }}
 
-        </option>
+    </option>
 
-    </select>
+</select>
 </td>
 
     <!-- Tax Type -->

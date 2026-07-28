@@ -19,7 +19,6 @@ export class ProductListComponent implements OnInit {
   products: Product[] = [];
   filteredProducts: Product[] = [];
   searchText: string = '';
-
   currentPage = 1;
   pageSize = 10;
 
