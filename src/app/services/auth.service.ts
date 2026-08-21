@@ -7,7 +7,7 @@ import { LoginResponse } from './login-response';
 })
 export class AuthService {
 
-  private api = 'https://aataadhi-store-backend.onrender.com//api/v1/auth';
+  private api = 'https://aadhi-store-backend.onrender.com/api/v1/auth';
 
   constructor(private http: HttpClient) {}
 
