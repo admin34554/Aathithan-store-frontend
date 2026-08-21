@@ -10,7 +10,7 @@ import {
 
 import {
     environment
-} from '../../environments/environment';
+} from '../../environments/environment.prod';
 
 
 export interface Stock {

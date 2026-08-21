@@ -7,7 +7,7 @@ import { LoginResponse } from './login-response';
 })
 export class AuthService {
 
-  private api = 'http://localhost:9090/api/v1/auth';
+  private api = 'https://aathithan-store-backend.onrender.com/api/v1/auth';
 
   constructor(private http: HttpClient) {}
 
