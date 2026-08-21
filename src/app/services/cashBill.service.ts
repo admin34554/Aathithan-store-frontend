@@ -23,6 +23,12 @@ export interface CashBill {
   remarks: string;
 }
 
+export interface StockMaster {
+  id?: number;
+  itemName: string;
+  hsnCode: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })

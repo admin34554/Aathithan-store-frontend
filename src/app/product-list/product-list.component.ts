@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ProductService } from '../services/product.service';
 import { Product } from '../services/product.service';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
 import { TranslateService, TranslateModule } from '@ngx-translate/core';
 
 @Component({
@@ -22,7 +22,7 @@ export class ProductListComponent implements OnInit {
   currentPage = 1;
   pageSize = 10;
 
-  constructor(private productService: ProductService, private translate: TranslateService) {
+  constructor(private productService: ProductService, private translate: TranslateService, private router: Router) {
      const lang = localStorage.getItem('lang') || 'en';
 
   this.translate.setDefaultLang('en');
@@ -43,7 +43,8 @@ export class ProductListComponent implements OnInit {
   searchProduct() {
     this.filteredProducts = this.products.filter(p =>
       p.productName?.toLowerCase().includes(this.searchText.toLowerCase()) ||
-      p.description?.toLowerCase().includes(this.searchText.toLowerCase())
+      p.description?.toLowerCase().includes(this.searchText.toLowerCase()) ||
+      p.productCode?.toLowerCase().includes(this.searchText.toLowerCase())
     );
   }
 
@@ -63,5 +64,13 @@ export class ProductListComponent implements OnInit {
       this.currentPage--;
     }
   }
+
+viewProduct(id: number) {
+    this.router.navigate(['/product/view', id]);
+}
+
+editProduct(id: number) {
+    this.router.navigate(['/product/edit', id]);
+}
 
 }

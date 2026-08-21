@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 export interface ProductType {
   id?: number;
   code: string;
-  type: string;
+  productType: string;
 }
 
 @Injectable({
@@ -39,5 +39,16 @@ export class ProductTypeService {
   deleteProductType(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
+
+ getByType(productType: string) {
+  return this.http.get<ProductType[]>(
+    `${this.apiUrl}/byProductType`,
+    {
+      params: {
+        productType: productType
+      }
+    }
+  );
+}
 
 }

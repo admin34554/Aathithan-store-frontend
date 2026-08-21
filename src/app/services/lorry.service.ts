@@ -30,6 +30,11 @@ export class LorryService {
     return this.http.get<Lorry[]>(`${this.baseUrl}/list-view`);
   }
 
+  getLorryById(id: number) {
+    return this.http.get<any>(`${this.baseUrl}/${id}`);
+  }
+
+
   // SAVE LORRY
   addLorry(lorry: Lorry): Observable<Lorry> {
     return this.http.post<Lorry>(this.baseUrl, lorry);

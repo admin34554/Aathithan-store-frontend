@@ -6,7 +6,7 @@
 
   <h5>{{ 'Master' | translate }} > <span class="text-primary">{{ 'LorryMaster' | translate }}</span></h5>
 
-  <div>
+  <!-- <div>
 
     <button class="btn btn-light me-2">
       ✏
@@ -20,7 +20,7 @@
       + Add New
     </button>
 
-  </div>
+  </div> -->
 
 </div>
 
@@ -111,58 +111,106 @@ formControlName="areaCovering"/>
 
 <div class="d-flex gap-3 mt-2">
 
-<div class="form-check">
-<input class="form-check-input" type="checkbox" value="L1" (change)="onRouteChange($event)">
-<label class="form-check-label">{{ 'L1' | translate }}</label>
+
+
+    <div class="form-check">
+      <input
+        class="form-check-input"
+        type="checkbox"
+        value="L1"
+        [checked]="selectedRoutes.includes('L1')"
+        [disabled]="viewMode"
+        (change)="onRouteChange($event)"
+      >
+      <label class="form-check-label">
+        {{ 'L1' | translate }}
+      </label>
+    </div>
+
+    <div class="form-check">
+      <input
+        class="form-check-input"
+        type="checkbox"
+        value="L2"
+        [checked]="selectedRoutes.includes('L2')"
+        [disabled]="viewMode"
+        (change)="onRouteChange($event)"
+      >
+      <label class="form-check-label">
+        {{ 'L2' | translate }}
+      </label>
+    </div>
+
+    <div class="form-check">
+      <input
+        class="form-check-input"
+        type="checkbox"
+        value="L3"
+        [checked]="selectedRoutes.includes('L3')"
+        [disabled]="viewMode"
+        (change)="onRouteChange($event)"
+      >
+      <label class="form-check-label">
+        {{ 'L3' | translate }}
+      </label>
+    </div>
+
+    <div class="form-check">
+      <input
+        class="form-check-input"
+        type="checkbox"
+        value="L4"
+        [checked]="selectedRoutes.includes('L4')"
+        [disabled]="viewMode"
+        (change)="onRouteChange($event)"
+      >
+      <label class="form-check-label">
+        {{ 'L4' | translate }}
+      </label>
+    </div>
+
+    <div class="form-check">
+      <input
+        class="form-check-input"
+        type="checkbox"
+        value="L5"
+        [checked]="selectedRoutes.includes('L5')"
+        [disabled]="viewMode"
+        (change)="onRouteChange($event)"
+      >
+      <label class="form-check-label">
+        {{ 'L5' | translate }}
+      </label>
+    </div>
+
+  </div>
 </div>
-
-<div class="form-check">
-<input class="form-check-input" type="checkbox" value="L2" (change)="onRouteChange($event)">
-<label class="form-check-label">{{ 'L2' | translate }}</label>
 </div>
-
-<div class="form-check">
-<input class="form-check-input" type="checkbox" value="L3" (change)="onRouteChange($event)">
-<label class="form-check-label">{{ 'L3' | translate }}</label>
-</div>
-
-<div class="form-check">
-<input class="form-check-input" type="checkbox" value="L4" (change)="onRouteChange($event)">
-<label class="form-check-label">{{ 'L4' | translate }}</label>
-</div>
-
-<div class="form-check">
-<input class="form-check-input" type="checkbox" value="L5" (change)="onRouteChange($event)">
-<label class="form-check-label">{{ 'L5' | translate }}</label>
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-
-
-
 <!-- Buttons -->
 
 <div class="text-end mt-5">
 
 <button
-type="button"
-class="btn btn-secondary me-2"
-(click)="cancelForm()"
->
-{{ 'Cancel' | translate }}
+  *ngIf="viewMode"
+  type="button"
+  class="btn btn-light"
+  (click)="enableEdit()">
+  ✏️
 </button>
 
 <button
-type="button"
-class="btn btn-primary"
-(click)="saveLorry()"
->
-{{ 'Save' | translate }}
+  *ngIf="!viewMode"
+  type="button"
+  class="btn btn-primary"
+  (click)="saveLorry()">
+  {{ editMode ? 'Update' : 'Save' }}
+</button>
+
+<button
+  type="button"
+  class="btn btn-secondary"
+  (click)="cancelForm()">
+  Cancel
 </button>
 
 </div>

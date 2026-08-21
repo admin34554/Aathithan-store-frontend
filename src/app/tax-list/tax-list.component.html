@@ -4,12 +4,12 @@
         <h5>{{ 'Master' | translate }} > <span class="text-primary">{{ 'Tax List' | translate }}</span></h5>
 
     <div>
-        <button class="btn btb-light me-2">
+        <!-- <button class="btn btb-light me-2">
             ✏
         </button>
         <button class="btn btn-light me-2">
              🖨
-        </button>
+        </button> -->
         <button class="btn btn-primary" routerLink="/tax">
             + Add New
         </button>
@@ -31,10 +31,10 @@
                 <th style="width: 100px;">{{ 'S.No' | translate }}</th>
                 <th>{{ 'HSN Name' | translate }}</th>
                 <th>{{ 'HSN Code' | translate }}</th>
-                <th>{{ 'State Code' | translate }}</th>
-                <th>{{ 'State GST Code' | translate }}</th>
-                <th>{{ 'Unit' | translate }}</th>
-                <th>{{ 'Unit Text' | translate }}</th>
+                <th>{{ 'CGST' | translate }}</th>
+                <th>{{ 'SGST' | translate }}</th>
+                <th>{{ 'IGST' | translate }}</th>
+                <th>{{ 'Actions' | translate }}</th>
             </tr>
         </thead>
         <tbody>
@@ -46,10 +46,25 @@
     <td>{{ (currentPage - 1) * pageSize + i + 1 }}</td>
     <td>{{ tax.hsnDescription }}</td>
     <td>{{ tax.hsnCode }}</td>
-    <td>{{ tax.stateCode }}</td>
-    <td>{{ tax.stateGstCode }}</td>
-    <td>{{ tax.unit }}</td>
-    <td>{{ tax.unitText }}</td>
+    <td>{{ tax.cgst }}</td>
+    <td>{{ tax.sgst }}</td>
+    <td>{{ tax.igst }}</td>
+    <td>
+
+<button
+  class="btn btn-info btn-sm me-2"
+  (click)="viewTax(tax.id); $event.stopPropagation()"
+  title="View">
+  <i class="bi bi-eye"></i>
+</button>
+
+<button
+  class="btn btn-warning btn-sm"
+  (click)="editTax(tax.id); $event.stopPropagation()"
+  title="Edit">
+  <i class="bi bi-pencil-square"></i>
+</button>
+</td>
   </tr>
         <tr *ngIf="filteredTax.length == 0">
             <td colspan="4" class="text-center">{{ 'No tax found.' | translate }}</td>

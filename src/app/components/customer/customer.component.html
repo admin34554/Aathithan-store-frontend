@@ -3,15 +3,11 @@
   <!-- Header -->
   <div class="d-flex justify-content-between align-items-center mb-3">
     <h5>{{ 'Master' | translate }} > <span class="text-primary">{{ 'CustomerMaster' | translate }}</span></h5>
-    <button class="btn btn-primary">+ Add New</button>
+    <!-- <button class="btn btn-primary">+ Add New</button> -->
   </div>
 
   <!-- Search -->
-  <div class="row mb-4">
-    <div class="col-md-4">
-      <input type="text" class="form-control" placeholder="{{ 'SearchBy' | translate }} {{ 'CustomerNameCode' | translate }}">
-    </div>
-  </div>
+
 
   <!-- Tabs -->
   <ul class="nav nav-tabs mb-3">
@@ -131,8 +127,8 @@
 
 <div class="text-end mt-3">
   <button type="button" class="btn btn-secondary me-2" (click)="resetForm()">{{ 'Cancel' | translate }}</button>
-  <button type="submit" class="btn btn-primary">{{ 'Save' | translate }}</button></div>
-
+  <button type="submit" class="btn btn-primary" *ngIf="!viewMode"> {{ editMode ? 'Update' : 'Save' }}</button>
+</div>
 </form>
 
 </div>

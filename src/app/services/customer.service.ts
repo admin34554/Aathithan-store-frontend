@@ -8,7 +8,7 @@ export interface Customer {
   id?: number;
   code: string;
   name: string;
-  doorNo: string;
+  doorNumber: string;
   street: string;
   area: string;
   city: string;

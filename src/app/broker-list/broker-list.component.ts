@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Broker, BrokerService } from '../services/broker.service';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { TranslateService, TranslateModule } from '@ngx-translate/core';
 
 @Component({
@@ -23,7 +23,8 @@ export class BrokerListComponent implements OnInit {
   pageSize = 5;
 
   constructor(private brokerService: BrokerService, 
-    private translate: TranslateService) {
+    private translate: TranslateService,
+    private router: Router) {
 
   const lang = localStorage.getItem('lang') || 'en';
 
@@ -41,6 +42,14 @@ export class BrokerListComponent implements OnInit {
       this.broker = data;
       this.filteredBroker = data;
     });
+  }
+
+    viewBroker(id:number){
+    this.router.navigate(['/broker/view', id]);
+  }
+
+  editBroker(id:number){
+    this.router.navigate(['/broker/edit', id]);
   }
 
   searchBroker() {

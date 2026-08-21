@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { Supplier, SupplierService } from '../services/supplier.service';
 import { RouterModule } from '@angular/router';
 import { TranslateService, TranslateModule } from '@ngx-translate/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-supplier-list',
@@ -22,7 +23,7 @@ export class SupplierListComponent implements OnInit {
   currentPage = 1;
   pageSize = 5;
 
-  constructor(private supplierService: SupplierService, private translate: TranslateService) {
+  constructor(private supplierService: SupplierService, private translate: TranslateService, private router: Router) {
 
         const lang = localStorage.getItem('lang') || 'en';
 
@@ -46,6 +47,14 @@ export class SupplierListComponent implements OnInit {
       s.contact?.toLowerCase().includes(this.searchText.toLowerCase()) ||
       s.type?.toLowerCase().includes(this.searchText.toLowerCase())
     );
+  }
+
+  viewSupplier(id:number){
+    this.router.navigate(['/supplier/view', id]);
+  }
+
+  editSupplier(id:number){
+    this.router.navigate(['/supplier/edit', id]);
   }
 
   get paginatedSupplier() {

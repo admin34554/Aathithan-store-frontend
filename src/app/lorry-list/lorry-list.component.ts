@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Lorry, LorryService } from '../services/lorry.service';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { TranslateService, TranslateModule } from '@ngx-translate/core';
 
 @Component({
@@ -22,7 +22,7 @@ export class LorryListComponent implements OnInit {
   currentPage = 1;
   pageSize = 5;
 
-  constructor(private lorryService: LorryService, private translate: TranslateService) {
+  constructor(private lorryService: LorryService, private translate: TranslateService, private router: Router) {
         const lang = localStorage.getItem('lang') || 'en';
 
   this.translate.setDefaultLang('en');
@@ -65,4 +65,13 @@ export class LorryListComponent implements OnInit {
     }
   }
 
+
+
+  viewLorry(id:number){
+    this.router.navigate(['/lorry/view', id]);
+  }
+
+  editLorry(id:number){
+    this.router.navigate(['/lorry/edit', id]);
+  }
 }

@@ -34,25 +34,27 @@
             <div class="col-md-4 position-relative">
 
   <!-- ✅ ONLY ONE INPUT -->
-  <input 
-    class="form-control" 
-    placeholder="{{ 'Name' | translate }}" 
-    formControlName="name"
-    (blur)="onCustomerBlur()"
-    (keydown)="onKeyDown($event)"
-    autocomplete="off"
-  >
+<input
+  class="form-control"
+  placeholder="{{ 'Customer Name' | translate }}"
+  formControlName="name"
+  (input)="searchCustomers($any($event.target).value, cashBillForm.get('companyId')?.value)"
+  (blur)="onCustomerBlur()"
+  (keydown)="onKeyDown($event)"
+  autocomplete="off"
+/>
 
   <!-- ✅ DROPDOWN -->
-  <ul *ngIf="customers.length > 0" class="dropdown-list">
-    <li 
-      *ngFor="let c of customers; let i = index"
-      (mousedown)="selectCustomer(c)"
-      [class.active]="i === customerSelectedIndex"
-    >
-      {{ c.fullName }} ({{ c.code }})
-    </li>
-  </ul>
+<ul *ngIf="customers.length > 0" class="dropdown-list">
+  <li
+    *ngFor="let c of customers; let i = index"
+    (mousedown)="selectCustomer(c)"
+    [class.active]="i === customerSelectedIndex"
+  >
+    {{ c.name }}
+    <span *ngIf="c.code">({{ c.code }})</span>
+  </li>
+</ul>
 
 </div>
 
@@ -79,201 +81,282 @@
             </div>
 
             <div class="col-md-4 mt-3">
-              <input type="date" class="form-control" formControlName="billDate">
+              <input type="date" class="form-control" formControlName="billDate" readOnly>
             </div>
           </div>
 
-          <!-- TABLE -->
-          <div class="table-responsive mt-4">
-            <table class="table table-bordered">
-              <thead class="table-light">
-    <tr>
-        <th style="width: 60px;">{{ 'S.No' | translate }}</th>
-        <th>{{ 'Product Code' | translate }}</th>
-        <th>{{ 'Item Name' | translate }}</th>
-        <th>{{ 'Tax Type' | translate }}</th>
-        <th>{{ 'Rate' | translate }}</th>
-        <th>{{ 'Quantity' | translate }}</th>
-        <th>{{ 'Tax' | translate }}</th>
-        <th>{{ 'Total' | translate }}</th>
-        <th>{{ 'HSN No' | translate }}</th>
-        <th>{{ 'SurCharge' | translate }}</th>
-        <th style="width:80px;">{{ 'Action' | translate }}</th>
-    </tr>
-</thead>
+<!-- TABLE SECTION -->
+<div class="table-responsive mt-4">
 
-         <tbody formArrayName="items">
+    <table class="table table-bordered">
 
-<tr
-    *ngFor="let row of items.controls; let i = index"
-    [formGroupName]="i">
+        <thead class="table-light">
+            <tr>
+                <th style="width: 60px;">{{ 'S.No' | translate }}</th>
+                <th>{{ 'Product Code' | translate }}</th>
+                <th>{{ 'Item Name' | translate }}</th>
+                <th>{{ 'Rate' | translate }}</th>
+                <th>{{ 'Quantity' | translate }}</th>
+                <th>{{ 'Tax' | translate }}</th>
+                <th>{{ 'Total' | translate }}</th>
+                <th>{{ 'HSN No' | translate }}</th>
+                <th style="width:80px;">{{ 'Action' | translate }}</th>
+            </tr>
+        </thead>
 
-    <td>{{ i + 1 }}</td>
+        <tbody formArrayName="items">
 
-    <!-- Product -->
-    <td class="position-relative">
+            <tr
+                *ngFor="let row of items.controls; let i = index"
+                [formGroupName]="i">
 
-        <input
-            class="form-control"
-            formControlName="productCode"
-            (input)="onProductSearch($event, i)"
-            (keydown)="onProductKeyDown($event, i)"
-            (blur)="onProductBlur(i)"
-            autocomplete="off">
+                <td>{{ i + 1 }}</td>
 
-        <ul
-            *ngIf="filteredProducts[i]?.length"
-            class="dropdown-list">
+                <!-- Product Code -->
+                <td class="position-relative">
 
-            <li
-                *ngFor="let p of filteredProducts[i]; let j = index"
-                (mousedown)="selectProduct(p, i)"
-                [class.active]="productSelectedIndex[i] === j">
+                    <input
+                        class="form-control"
+                        formControlName="productCode"
+                        (input)="onProductSearch($event, i)"
+                        (keydown)="onProductKeyDown($event, i)"
+                        (blur)="onProductBlur(i)"
+                        autocomplete="off">
 
-                {{ p.productName }} ({{ p.productCode }})
+                    <ul
+                        *ngIf="filteredProducts[i]?.length"
+                        class="dropdown-list">
 
-            </li>
+                        <li
+                            *ngFor="
+                                let p of filteredProducts[i];
+                                let j = index
+                            "
+                            (mousedown)="selectProduct(p, i)"
+                            [class.active]="
+                                productSelectedIndex[i] === j
+                            ">
 
-        </ul>
+                            {{ p.productName }}
+                            ({{ p.productCode }})
 
-    </td>
+                        </li>
 
-    <!-- Item Name -->
-<td>
-   <select
-    class="form-control"
-    formControlName="productItemId"
-    (change)="onItemChange($event, i)">
+                    </ul>
 
-    <option value="">Select Item</option>
+                </td>
 
-    <option
-        *ngFor="let item of productItems[i]"
-        [value]="item.id">
+                <!-- Item Name -->
+                <td>
 
-        {{ item.itemName }}
+                    <select
+                        class="form-control"
+                        formControlName="productItemId"
+                        (change)="onItemChange($event, i)">
 
-    </option>
+                        <option value="">
+                            Select Item
+                        </option>
 
-</select>
-</td>
+                        <option
+                            *ngFor="let item of productItems[i]"
+                            [value]="item.id">
 
-    <!-- Tax Type -->
-    <td>
-        <input
-            class="form-control"
-            formControlName="taxType"
-            readonly>
-    </td>
+                            {{ item.itemName }}
 
-    <!-- Rate -->
-    <td>
-        <input
-            type="number"
-            class="form-control"
-            formControlName="rate">
-    </td>
+                        </option>
 
-    <!-- Quantity -->
-    <td>
-        <input
-            type="number"
-            class="form-control"
-            formControlName="quantity">
-    </td>
+                    </select>
 
-    <!-- Tax Details -->
+                </td>
 
-<!-- Tax Details -->
-<td>
-    <textarea
-        class="form-control tax-cell"
-        formControlName="taxDetails"
-        rows="3"
-        readonly>
-    </textarea>
-</td>
+                <!-- Rate -->
+                <td>
 
-    <!-- Total -->
-    <td>
-        <input
-            type="number"
-            class="form-control"
-            formControlName="total"
-            readonly>
-    </td>
+                    <input
+                        type="number"
+                        class="form-control"
+                        formControlName="rate"
+                        readonly>
 
-    <!-- HSN -->
-    <td>
-        <input
-            class="form-control"
-            formControlName="brNo"
-            readonly>
-    </td>
+                </td>
 
-    <!-- Surcharge -->
-    <td>
-        <input
-            type="number"
-            class="form-control"
-            formControlName="surCh">
-    </td>
+                <!-- Quantity -->
+                <td>
 
-    <!-- Delete -->
-    <td class="text-center">
+                    <input
+                        type="number"
+                        class="form-control"
+                        formControlName="quantity">
+
+                </td>
+
+                <!-- Tax -->
+                <td>
+
+                    <textarea
+                        class="form-control tax-cell"
+                        formControlName="taxDetails"
+                        rows="3"
+                        readonly>
+                    </textarea>
+
+                </td>
+
+                <!-- Total -->
+                <td>
+
+                    <input
+                        type="number"
+                        class="form-control"
+                        [value]="getItemGrandTotal(row)"
+                        readonly>
+
+                </td>
+
+                <!-- HSN -->
+                <td>
+
+                    <input
+                        class="form-control"
+                        formControlName="brNo"
+                        readonly>
+
+                </td>
+
+                <!-- Action -->
+                <td class="text-center">
+
+                    <button
+                        type="button"
+                        class="btn btn-danger btn-sm"
+                        (click)="removeRow(i)">
+
+                        ✕
+
+                    </button>
+
+                </td>
+
+            </tr>
+
+        </tbody>
+
+        <tfoot>
+
+            <tr class="table-secondary fw-bold">
+
+                <td colspan="3"></td>
+
+                <td class="text-end">
+                    {{ getTotalRate() | number:'1.2-2' }}
+                </td>
+
+                <td class="text-end">
+                    {{ getTotalQuantity() }}
+                </td>
+
+                <td class="text-end">
+                    {{ getTotalTax() | number:'1.0-2' }}%
+                </td>
+
+                <td class="text-end">
+                    {{ getGrandTotal() | number:'1.2-2' }}
+                </td>
+
+                <td colspan="2"></td>
+
+            </tr>
+
+        </tfoot>
+
+    </table>
+
+</div>
+
+
+
+<div class="bill-bottom-section">
+
+    <!-- Add Row -->
+    <div class="add-row-section">
 
         <button
             type="button"
-            class="btn btn-danger btn-sm"
-            (click)="removeRow(i)">
+            class="btn btn-primary btn-sm"
+            (click)="addRow()">
 
-            ✕
+            {{ 'Add Row' | translate }}
 
         </button>
 
-    </td>
+    </div>
 
-</tr>
 
-</tbody>
-              <tfoot>
-  <tr class="table-secondary fw-bold">
-    <td colspan="4" class="text-end">
-      
-    </td>
+    <!-- Summary -->
+   <div class="bill-summary">
 
-    <td>
-      {{ getTotalRate() | number:'1.2-2' }}
-    </td>
+    <!-- Sub Total -->
+    <div class="summary-row">
 
-    <td>
-      {{ getTotalQuantity() }}
-    </td>
+        <span>
+            Sub Total
+        </span>
 
-<td>
-  <div class="tax-total-box">
-    {{ getTotalTax() | number:'1.0-2' }}%
-  </div>
-</td>
+        <span>
+            ₹ {{ getSubTotal() | number:'1.2-2' }}
+        </span>
 
-    <td>
-      {{ getGrandTotal() | number:'1.2-2' }}
-    </td>
+    </div>
 
-    <td colspan="3"></td>
-  </tr>
-</tfoot>
-            </table>
 
-            <!-- Add Row Button -->
-            <button 
-              type="button" 
-              class="btn btn-primary btn-sm mt-2 mb-2"
-              (click)="addRow()">
-              {{ 'Add Row' | translate }}
-            </button>
-          </div>
+    <!-- SGST -->
+    <div class="summary-row">
 
+        <span>
+            SGST
+        </span>
+
+        <span>
+            ₹ {{ getSgstAmount() | number:'1.2-2' }}
+        </span>
+
+    </div>
+
+
+    <!-- CGST -->
+    <div class="summary-row">
+
+        <span>
+            CGST
+        </span>
+
+        <span>
+            ₹ {{ getCgstAmount() | number:'1.2-2' }}
+        </span>
+
+    </div>
+
+
+    <div class="summary-divider"></div>
+
+
+    <!-- Grand Total -->
+    <div class="summary-row grand-total">
+
+        <span>
+            Grand Total
+        </span>
+
+        <span>
+            ₹ {{ getGrandTotal() | number:'1.2-2' }}
+        </span>
+
+    </div>
+
+</div>
+
+</div>
           <!-- Bottom Section -->
           <div class="row mt-4">
             <!-- Remarks -->

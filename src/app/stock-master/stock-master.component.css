@@ -1,0 +1,35 @@
+.table th {
+    font-size: 13px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.table td {
+    font-size: 14px;
+}
+
+.table tbody tr {
+    height: 48px;
+}
+
+.input-group-text {
+    background: #fff;
+}
+
+.card {
+    border: 1px solid #e5e7eb;
+}
+
+@media print {
+
+    .btn,
+    .input-group,
+    .card:first-child {
+        display: none;
+    }
+
+    .container-fluid {
+        padding: 0;
+    }
+
+}

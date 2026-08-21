@@ -17,7 +17,10 @@ export class TaxComponent implements OnInit {
   taxForm!: FormGroup;
 
   taxId!: number;
-  isEditMode = false;
+
+  editMode = false;
+  viewMode = false;
+  activeTab = 'details';
 
   constructor(
     private fb: FormBuilder,
@@ -33,7 +36,6 @@ export class TaxComponent implements OnInit {
 
     this.taxForm = this.fb.group({
 
-      id: [0],
 
       hsnCode: ['', Validators.required],
       hsnDescription: ['', Validators.required],
@@ -54,19 +56,23 @@ export class TaxComponent implements OnInit {
 
   }
 
-  ngOnInit(): void {
+ ngOnInit(): void {
 
-    this.route.paramMap.subscribe(params => {
+    const mode = this.route.snapshot.url[1]?.path;
 
-      const id = params.get('id');
+    this.taxId = Number(this.route.snapshot.paramMap.get('id'));
 
-      if (id) {
-        this.taxId = +id;
-        this.isEditMode = true;
-        this.loadTax(this.taxId);
-      }
+    if (mode === 'view') {
 
-    });
+      this.viewMode = true;
+      this.loadTax(this.taxId);
+
+    } else if (mode === 'edit') {
+
+      this.editMode = true;
+      this.loadTax(this.taxId);
+
+    }
 
   }
 
@@ -74,23 +80,27 @@ export class TaxComponent implements OnInit {
 
     this.taxService.getTaxById(id).subscribe({
 
-      next: (tax) => {
+      next: (res) => {
 
         this.taxForm.patchValue({
 
-          id: tax.id,
-          hsnCode: tax.hsnCode,
-          hsnDescription: tax.hsnDescription,
-          stateCode: tax.stateCode,
-          stateGstCode: tax.stateGstCode,
-          unit: tax.unit,
-          unitText: tax.unitText,
-          sgst: tax.sgst,
-          cgst: tax.cgst,
-          igst: tax.igst,
-          active: tax.active
+          id: res.id,
+          hsnCode: res.hsnCode,
+          hsnDescription: res.hsnDescription,
+          stateCode: res.stateCode,
+          stateGstCode: res.stateGstCode,
+          unit: res.unit,
+          unitText: res.unitText,
+          sgst: res.sgst,
+          cgst: res.cgst,
+          igst: res.igst,
+          active: res.active
 
         });
+
+           if (this.viewMode) {
+          this.taxForm.disable();
+        }
 
       },
 
@@ -102,42 +112,54 @@ export class TaxComponent implements OnInit {
 
   }
 
-  saveTax(): void {
+saveTax(): void {
 
-    if (this.taxForm.invalid) {
-      this.taxForm.markAllAsTouched();
-      return;
-    }
+  if (this.taxForm.invalid) {
+    this.taxForm.markAllAsTouched();
+    return;
+  }
 
-    const taxData = this.taxForm.value;
+  const form = this.taxForm.getRawValue();
 
-    if (this.isEditMode) {
+  if (this.editMode) {
 
-      this.taxService.updateTax(this.taxId, taxData).subscribe({
+    this.taxService.updateTax(this.taxId, form).subscribe({
 
-        next: () => {
-          alert('Tax Updated Successfully');
-          this.router.navigate(['/tax-list']);
-        },
+      next: () => {
+        alert('Tax Updated Successfully');
+        this.router.navigate(['/tax-list']);
+      },
 
-        error: err => console.error(err)
+      error: (err) => {
+        console.error(err);
+      }
 
-      });
+    });
 
-    } else {
+  } else {
 
-      this.taxService.addTax(taxData).subscribe({
+    this.taxService.addTax(form).subscribe({
 
-        next: () => {
-          alert('Tax Saved Successfully');
-          this.router.navigate(['/tax-list']);
-        },
+      next: () => {
+        alert('Tax Saved Successfully');
+        this.router.navigate(['/tax-list']);
+      },
 
-        error: err => console.error(err)
+      error: (err) => {
+        console.error(err);
+      }
 
-      });
+    });
 
-    }
+  }
+
+}
+
+ resetForm() {
+
+    this.taxForm.reset();
+
+    this.activeTab = 'details';
 
   }
 

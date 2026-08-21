@@ -65,8 +65,12 @@ export class TaxListComponent implements OnInit {
     }
   }
 
-  viewTax(id: number) {
-  this.router.navigate(['/tax', id]);
-}
+  viewTax(id:number){
+    this.router.navigate(['/tax/view', id]);
+  }
+
+  editTax(id:number){
+    this.router.navigate(['/tax/edit', id]);
+  }
 
 }

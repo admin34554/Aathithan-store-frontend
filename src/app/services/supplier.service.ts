@@ -16,7 +16,8 @@ export interface Supplier {
   phone: string;
   gstNo: string;
   panNo: string;
-  aadhar: number;
+  aadharNo: number;
+  area: string;
   creditPeriod: number;
   type: string;
   active: boolean;

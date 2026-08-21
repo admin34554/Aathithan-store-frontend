@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://aadhi-store-backend.onrender.com'
+  apiUrl: 'http://localhost:9090'
 };

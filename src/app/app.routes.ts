@@ -1,10 +1,20 @@
 import { Routes } from '@angular/router';
 import { LayoutComponent } from './layout/layout.component';
+import { authGuard } from './auth.guard';
 
 export const routes: Routes = [
+
+    {
+    path: 'login',
+    loadComponent: () =>
+      import('./login/login.component')
+        .then(m => m.LoginComponent)
+  },
+
   {
     path: '',
     component: LayoutComponent,
+    canActivate: [authGuard],
     children: [
     {
     path: 'customer',
@@ -42,6 +52,25 @@ export const routes: Routes = [
         import('./lorry-list/lorry-list.component')
           .then(m => m.LorryListComponent)
     },
+    {
+      path: 'lorry-master',
+      loadComponent: () =>
+        import('./lorry/lorry.component')
+          .then(m => m.LorryComponent)
+    },
+    {
+      path: 'lorry-master/view/:id',
+      loadComponent: () =>
+        import('./lorry/lorry.component')
+          .then(m => m.LorryComponent)
+    },
+    {
+      path: 'lorry-master/edit/:id',
+      loadComponent: () =>
+        import('./lorry/lorry.component')
+          .then(m => m.LorryComponent)
+    },
+    
     {
       path: 'broker',
       loadComponent: () =>
@@ -121,12 +150,144 @@ export const routes: Routes = [
           .then(m => m.CompanyMasterComponent)
     },
     {
-  path: 'tax/:id',
+      path: 'tax/:id',
+      loadComponent: () =>
+        import('./tax/tax.component')
+          .then(m => m.TaxComponent)
+    },
+    {
+      path: 'supplier/view/:id',
+      loadComponent: () =>
+        import('./supplier/supplier.component')
+          .then(m => m.SupplierComponent)
+    },
+    {
+      path: 'supplier/edit/:id',
+      loadComponent: () =>
+        import('./supplier/supplier.component')
+          .then(m => m.SupplierComponent)
+    },
+    {
+      path: 'customer/view/:id',
+      loadComponent: () =>
+      import('./components/customer/customer.component')
+          .then(m => m.CustomerComponent)
+    },
+    {
+      path: 'customer/edit/:id',
+      loadComponent: () =>
+        import('./components/customer/customer.component')
+          .then(m => m.CustomerComponent)
+    },
+    {
+      path: 'tax/view/:id',
+      loadComponent: () =>
+        import('./tax/tax.component')
+          .then(m => m.TaxComponent)
+    },
+    {
+      path: 'tax/edit/:id',
+      loadComponent: () =>
+        import('./tax/tax.component')
+          .then(m => m.TaxComponent)
+    },
+    {
+      path: 'product/view/:id',
+      loadComponent: () =>
+        import('./product/product.component')
+          .then(m => m.ProductComponent)
+    },
+    {
+      path: 'product/edit/:id',
+      loadComponent: () =>
+        import('./product/product.component')
+          .then(m => m.ProductComponent)
+    },
+    {
+      path: 'product-type/view/:id',
+      loadComponent: () =>
+        import('./product-type/product-type.component')
+          .then(m => m.ProductTypeComponent)
+    },
+    {
+      path: 'product-type/edit/:id',
+      loadComponent: () =>
+        import('./product-type/product-type.component')
+          .then(m => m.ProductTypeComponent)
+    },
+    {
+      path: 'lorry/view/:id',
+      loadComponent: () =>
+        import('./lorry/lorry.component')
+          .then(m => m.LorryComponent)
+    },
+    {
+      path: 'lorry/edit/:id',
+      loadComponent: () =>
+        import('./lorry/lorry.component')
+          .then(m => m.LorryComponent)
+    },
+    {
+      path: 'broker/view/:id',
+      loadComponent: () =>
+        import('./broker/broker.component')
+          .then(m => m.BrokerComponent)
+    },
+    {
+      path: 'broker/edit/:id',
+      loadComponent: () =>
+        import('./broker/broker.component')
+          .then(m => m.BrokerComponent)
+    },
+    {
+      path: 'stock',
+      loadComponent: () =>
+        import('./stock/stock.component')
+            .then(m => m.StockComponent)
+    },
+    {
+      path: 'stock/view/:id',
+      loadComponent: () =>
+        import('./stock/stock.component')
+            .then(m => m.StockComponent)
+    },
+
+    {
+      path: 'stock/edit/:id',
+      loadComponent: () =>
+        import('./stock/stock.component')
+            .then(m => m.StockComponent)
+  },
+  {
+    path: 'stock-master',
+    loadComponent: () =>
+        import('./stock-master/stock-master.component')
+            .then(m => m.StockMasterComponent)
+  },
+{
+  path: 'broker-master',
   loadComponent: () =>
-    import('./tax/tax.component')
-      .then(m => m.TaxComponent)
-    }
+    import('./broker/broker.component')
+      .then(m => m.BrokerComponent),
+  data: { mode: 'create' }
+},
+
+{
+  path: 'broker-master/view/:id',
+  loadComponent: () =>
+    import('./broker/broker.component')
+      .then(m => m.BrokerComponent),
+  data: { mode: 'view' }
+},
+
+{
+  path: 'broker-master/edit/:id',
+  loadComponent: () =>
+    import('./broker/broker.component')
+      .then(m => m.BrokerComponent),
+  data: { mode: 'edit' }
+}
     ]
   },
-  { path: '', redirectTo: '/customer', pathMatch: 'full' }
+  { path: '', redirectTo: '/login', pathMatch: 'full' }
 ];

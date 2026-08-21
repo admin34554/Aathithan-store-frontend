@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { CreditBillService } from '../services/creditBill.service';
@@ -46,6 +46,28 @@ onKeyDown(event: KeyboardEvent) {
     }
   }
 }
+
+  @HostListener('document:keydown', ['$event'])
+  handleKeyboardEvent(event: KeyboardEvent): void {
+
+    if (event.key.toLowerCase() === 'p') {
+
+      const target = event.target as HTMLElement;
+
+      // Don't print when typing inside input/textarea/select
+      if (
+        target.tagName === 'INPUT' ||
+        target.tagName === 'TEXTAREA' ||
+        target.tagName === 'SELECT'
+      ) {
+        return;
+      }
+
+      event.preventDefault();
+
+      this.printBill();
+    }
+  }
 selectCustomer(customer: any) {
 
   this.creditBillForm.get('name')?.setValue(customer.name, { emitEvent: false });
@@ -72,6 +94,12 @@ selectCustomer(customer: any) {
 selectedProducts: any[] = [];
 // ✅ Customer dropdown (single)
 customerSelectedIndex: number = -1;
+
+showItemPopup = false;
+
+selectedProductIndex = -1;
+
+selectedProduct: any = null;
 
 // ✅ Product dropdown (per row)
 productSelectedIndex: number[] = [];  
@@ -118,7 +146,7 @@ productSelectedIndex: number[] = [];
           distinctUntilChanged()
         )
          .subscribe(value => {
-          this.searchCustomers(value);
+          this.searchCustomers(value, this.creditBillForm.get('companyId')?.value);
         });
   }
 
@@ -147,7 +175,7 @@ productSelectedIndex: number[] = [];
     });
   }
 
-    searchCustomers(name: string) {
+    searchCustomers(name: string, companyId: number) {
   if (!name || name.trim().length < 2) {
     this.customers = [];
     return;
@@ -167,20 +195,117 @@ productSelectedIndex: number[] = [];
   });
 }
 
-onProductSearch(event: any, rowIndex: number) {
-  const value = event.target.value;
+onProductSearch(event: any, index: number): void {
 
-  if (!value || value.trim().length < 2) {
-    this.filteredProducts[rowIndex] = [];
+  const searchText = event.target.value?.trim() || '';
+
+  const row = this.items.at(index) as FormGroup;
+
+  // User changed the product code.
+  // It must be selected/validated again.
+  row.patchValue({
+    productSelected: false,
+    productItemId: '',
+    brNo: '',
+    rate: 0,
+    taxDetails: '',
+    total: 0
+  }, { emitEvent: false });
+
+  // Remove previous invalidProduct error immediately
+  const control = row.get('productCode');
+
+  if (control?.hasError('invalidProduct')) {
+    const errors = { ...(control.errors || {}) };
+    delete errors['invalidProduct'];
+
+    control.setErrors(
+      Object.keys(errors).length > 0 ? errors : null
+    );
+  }
+
+  if (!searchText) {
+    this.filteredProducts[index] = [];
     return;
   }
 
-  this.productService.searchProducts(value).subscribe(res => {
-    this.filteredProducts[rowIndex] = res;
-    this.productSelectedIndex[rowIndex] = -1;
+  this.productService.searchProducts(searchText).subscribe({
+
+    next: (products) => {
+      this.filteredProducts[index] = products || [];
+    },
+
+    error: (error) => {
+      console.error('Product search error:', error);
+      this.filteredProducts[index] = [];
+    }
+
   });
 }
 
+validateProducts(): boolean {
+
+  let valid = true;
+
+  this.items.controls.forEach((control, index) => {
+
+    const row = control as FormGroup;
+
+    const productCode =
+      row.get('productCode')?.value?.trim();
+
+    const productCodeControl =
+      row.get('productCode');
+
+    // Ignore empty rows
+    if (!productCode) {
+      return;
+    }
+
+    // Check actual selected product
+    const selectedProduct =
+      this.selectedProducts[index];
+
+    console.log(
+      'Row:',
+      index,
+      'Code:',
+      productCode,
+      'Selected:',
+      selectedProduct
+    );
+
+    if (!selectedProduct) {
+
+      valid = false;
+
+      productCodeControl?.setErrors({
+        ...(productCodeControl.errors || {}),
+        invalidProduct: true
+      });
+
+      productCodeControl?.markAsTouched();
+
+    } else {
+
+      // Product is valid
+      const errors = {
+        ...(productCodeControl?.errors || {})
+      };
+
+      delete errors['invalidProduct'];
+
+      productCodeControl?.setErrors(
+        Object.keys(errors).length > 0
+          ? errors
+          : null
+      );
+    }
+
+  });
+
+  return valid;
+}
 onProductKeyDown(event: KeyboardEvent, rowIndex: number) {
 
   const list = this.filteredProducts[rowIndex] || [];
@@ -306,9 +431,8 @@ res.items.forEach((item: any, index: number) => {
 
 selectProduct(product: any, rowIndex: number): void {
 
+  // Store the actual selected product
   this.selectedProducts[rowIndex] = product;
-
-  this.productItems[rowIndex] = product.productItems;
 
   const row = this.items.at(rowIndex) as FormGroup;
 
@@ -316,9 +440,12 @@ selectProduct(product: any, rowIndex: number): void {
   const sgst = Number(product.taxMasterNew?.sgst ?? 0);
   const igst = Number(product.taxMasterNew?.igst ?? 0);
 
+  // Set product details
   row.patchValue({
 
     productCode: product.productCode,
+
+    productSelected: true,
 
     itemName: '',
 
@@ -339,9 +466,46 @@ selectProduct(product: any, rowIndex: number): void {
 
     surCh: 0
 
+  }, {
+    emitEvent: false
   });
 
+
+  // ==========================================
+  // CLEAR INVALID PRODUCT ERROR
+  // ==========================================
+
+  const productCodeControl = row.get('productCode');
+
+  if (productCodeControl) {
+
+    const errors = {
+      ...(productCodeControl.errors || {})
+    };
+
+    delete errors['invalidProduct'];
+
+    productCodeControl.setErrors(
+      Object.keys(errors).length > 0
+        ? errors
+        : null
+    );
+
+  }
+
+  this.productItems[rowIndex] =
+    product.productItems || [];
+
   this.filteredProducts[rowIndex] = [];
+  this.productSelectedIndex[rowIndex] = -1;
+  this.showItemPopup = true;
+
+
+  console.log(
+    'Selected product:',
+    this.selectedProducts[rowIndex]
+  );
+
 }
 
 onItemChange(event: any, rowIndex: number) {
@@ -358,12 +522,10 @@ onItemChange(event: any, rowIndex: number) {
     const row = this.items.at(rowIndex) as FormGroup;
 
     row.patchValue({
-
     productItemId: item.id,
     itemName: item.itemName,
     rate: item.productItemPrice[0]?.mrp ?? 0
-
-    });
+});
 
 }
 
@@ -456,8 +618,10 @@ createItem(): FormGroup {
 }
 
   // ✅ ADD ROW
-addRow() {
+addRow(): void {
+
   const row = this.createItem();
+
   row.valueChanges.subscribe(val => {
 
     const rate = Number(val.rate) || 0;
@@ -465,19 +629,26 @@ addRow() {
     const taxPerc = Number(val.tax) || 0;
 
     const amount = rate * qty;
+
     const taxAmount = amount * taxPerc / 100;
 
     const total = amount + taxAmount;
 
-    row.patchValue({
-      total: total.toFixed(2)
-    }, { emitEvent: false });
+    row.patchValue(
+      {
+        total: Number(total.toFixed(2))
+      },
+      {
+        emitEvent: false
+      }
+    );
 
   });
 
   this.items.push(row);
 
   this.filteredProducts.push([]);
+
   this.productSelectedIndex.push(-1);
 }
 
@@ -535,33 +706,6 @@ calculateRow(row: FormGroup) {
     );
 }
 
-getGrandTotal(): number {
-  return this.items.controls.reduce((sum, row) => {
-    return sum + (Number(row.get('total')?.value) || 0);
-  }, 0);
-}
-
-// onTaxBlur(i: number) {
-//   setTimeout(() => {
-
-//     const row = this.items.at(i);
-//     const enteredValue = row.value.taxType;
-
-//     const matchedTax = this.tax.find(t => t.name === enteredValue);
-
-//     if (matchedTax) {
-//       row.patchValue({
-//         tax: Number(matchedTax.salestaxPercentage),
-//         brNo: matchedTax.hsnCode
-//       }, { emitEvent: false });
-//     }
-
-//     this.filteredTaxes[i] = [];
-//     this.taxSelectedIndex[i] = -1;
-
-//   }, 200);
-// }
-
 onProductBlur(i: number) {
   setTimeout(() => {
     this.filteredProducts[i] = [];
@@ -578,6 +722,14 @@ saveCreditBill() {
     return;
   }
 
+   if (!this.validateProducts()) {
+
+    this.errorMessage =
+      'Please select a valid product from the product list.';
+
+    return;
+  }
+
   const formValue = this.creditBillForm.value;
 
   // ✅ CONVERT ID → OBJECT
@@ -586,6 +738,7 @@ saveCreditBill() {
     billNo: null,
     lorry: formValue.lorry ? { id: Number(formValue.lorry) } : null,
     broker: formValue.broker ? { id: Number(formValue.broker) } : null,
+
      items: formValue.items.map((item: any) => ({
     ...item,
     productItem: {
@@ -631,7 +784,7 @@ saveCreditBill() {
     this.items.clear();
     this.addRow();
   }
-printCreditBill() {
+printBill() {
 
   const billNo = this.creditBillForm.get('billNo')?.value;
 
@@ -652,5 +805,115 @@ printCreditBill() {
   link.click();
 
   document.body.removeChild(link);
+  }
+
+
+getItemAmount(row: any): number {
+  const rate = Number(row.get('rate')?.value) || 0;
+  const quantity = Number(row.get('quantity')?.value) || 0;
+
+  return rate * quantity;
+}
+
+
+getItemTaxPercentage(row: any): number {
+
+  // Prefer the numeric tax field
+  const tax = Number(row.get('tax')?.value);
+
+  if (!isNaN(tax) && tax > 0) {
+    return tax;
+  }
+
+  // Fallback: read from taxDetails
+  const taxDetails = row.get('taxDetails')?.value || '';
+
+  const match = taxDetails.match(/IGST\s+([\d.]+)%/i);
+
+  if (match) {
+    return Number(match[1]) || 0;
+  }
+
+  return 0;
+}
+
+getSubTotal(): number {
+
+  return this.items.controls.reduce((total, row) => {
+
+    return total + this.getItemAmount(row);
+
+  }, 0);
+
+}
+
+
+getCgstAmount(): number {
+
+  return this.items.controls.reduce((total, row) => {
+
+    const itemAmount = this.getItemAmount(row);
+
+    const taxPercentage = this.getItemTaxPercentage(row);
+
+    const cgstPercentage = taxPercentage / 2;
+
+    const cgstAmount =
+      itemAmount * cgstPercentage / 100;
+
+    return total + cgstAmount;
+
+  }, 0);
+
+}
+
+getSgstAmount(): number {
+
+  return this.items.controls.reduce((total, row) => {
+
+    const itemAmount = this.getItemAmount(row);
+
+    const taxPercentage = this.getItemTaxPercentage(row);
+
+    const sgstPercentage = taxPercentage / 2;
+
+    const sgstAmount =
+      itemAmount * sgstPercentage / 100;
+
+    return total + sgstAmount;
+
+  }, 0);
+
+}
+
+getTotalTaxAmount(): number {
+
+  return this.getCgstAmount() + this.getSgstAmount();
+
+}
+
+getGrandTotal(): number {
+
+  const subTotal = this.getSubTotal();
+
+  const cgst = this.getCgstAmount();
+
+  const sgst = this.getSgstAmount();
+
+  return subTotal + cgst + sgst;
+
+}
+
+getItemGrandTotal(row: any): number {
+
+  const itemAmount = this.getItemAmount(row);
+
+  const taxPercentage =
+    this.getItemTaxPercentage(row);
+
+  const taxAmount =
+    itemAmount * taxPercentage / 100;
+
+  return itemAmount + taxAmount;
 }
 }

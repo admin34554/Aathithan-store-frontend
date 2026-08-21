@@ -19,6 +19,7 @@ export interface Product {
   active: boolean;
 
   productItems: ProductItem[];
+  productTypeMasters?: ProductTypeMaster[];
 }
 
 export interface ProductItemPrice {
@@ -38,6 +39,13 @@ export interface ProductItem {
   productItemPrice: ProductItemPrice[];
 }
 
+export interface ProductTypeMaster {
+    id?: number;
+    productType: string;
+    code: string;
+    productMaster?: any[];
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -55,7 +63,7 @@ export class ProductService {
 
   // SAVE PRODUCT
   saveProduct(product: Product): Observable<Product> {
-    return this.http.post<Product>(this.apiUrl, product);
+    return this.http.post<Product>(`${this.apiUrl}/create`, product);
   }
 
   // UPDATE
@@ -71,5 +79,15 @@ export class ProductService {
   searchProducts(value: string) {
   return this.http.get<any[]>(`${this.apiUrl}/search?code=${value}`);
 }
+
+getProductById(id: number): Observable<Product> {
+
+    return this.http.get<Product>(
+        `${this.apiUrl}/${id}`
+    );
+
+}
+
+
 
 }

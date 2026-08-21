@@ -4,15 +4,18 @@
         <h5>{{ 'Master' | translate }} > <span class="text-primary">{{ 'Product List' | translate }}</span></h5>
 
     <div>
-        <button class="btn btb-light me-2">
-            ✏
-        </button>
-        <button class="btn btn-light me-2">
-             🖨
-        </button>
         <button class="btn btn-primary" routerLink="/product">
             + Add New
         </button>
+
+          <button
+                type="button"
+                class="btn btn-outline-secondary"
+                (click)="loadProducts()"
+                title="Refresh">
+
+                <i class="bi bi-arrow-clockwise"></i>
+            </button>
     </div>
 </div>
 
@@ -30,38 +33,130 @@
             <tr>
                 <th style="width: 100px;">{{ 'S.No' | translate }}</th>
                 <th>{{ 'HSN CODE' | translate }}</th>
-                <th>{{ 'Product Code' | translate }}</th>
+                <th>{{ 'Product Type/Code' | translate }}</th>
                 <th>{{ 'Product Name' | translate }}</th>
                 <th>{{ 'Description' | translate }}</th>
                 <th>{{ 'Item Name' | translate }}</th>
-                <th>{{ 'Quantity' | translate }}</th>
+                <th>{{ 'Available Stock' | translate }}</th>
+                <th width="'150">{{ 'Actions' | translate }}</th>
             </tr>
         </thead>
-        <tbody>
-            <tr *ngFor="let product of paginatedProducts; let i = index">
-                <td>{{ (currentPage - 1) * pageSize + i + 1 }}</td>
-                <td>{{ product.hsnCode }}</td>
-                <td>{{ product.productCode }}</td>
-                <td>{{ product.productName }}</td>
-                <td>{{ product.description }}</td>
-    <td>
-        <div *ngFor="let item of product.productItems">
-            {{ item.itemName }}
-        </div>
+<tbody>
+
+<ng-container *ngFor="let product of paginatedProducts; let i = index">
+
+    <tr>
+
+        <!-- S.No -->
+        <td>
+            {{ (currentPage - 1) * pageSize + i + 1 }}
+        </td>
+
+        <!-- HSN Code -->
+        <td>
+            {{ product.hsnCode }}
+        </td>
+
+        <!-- Product Type / Code -->
+        <td>
+            {{ product.productTypeMasters?.[0]?.productType }}
+            /
+            {{ product.productCode }}
+        </td>
+
+        <!-- Product Name -->
+        <td>
+            {{ product.productName }}
+        </td>
+
+        <!-- Description -->
+        <td>
+            {{ product.description }}
+        </td>
+
+        <!-- Item Name -->
+        <td class="item-column">
+
+            <div
+                *ngFor="let item of product.productItems"
+                class="item-row">
+
+                {{ item.itemName }}
+
+            </div>
+
+        </td>
+
+        <!-- Available Stock -->
+        <td class="stock-column">
+
+            <div
+                *ngFor="let item of product.productItems"
+                class="item-row">
+
+                <ng-container
+                    *ngIf="
+                        item.productItemPrice &&
+                        item.productItemPrice.length > 0;
+                        else noStock
+                    ">
+
+                    {{ item.productItemPrice[0].quantity }}
+
+                </ng-container>
+
+                <ng-template #noStock>
+                    0
+                </ng-template>
+
+            </div>
+
+        </td>
+
+        <!-- Actions -->
+        <td class="text-center">
+
+            <!-- View -->
+            <button
+                class="btn btn-info btn-sm me-2"
+                (click)="viewProduct(product.id!)"
+                title="View">
+
+                <i class="bi bi-eye"></i>
+
+            </button>
+
+            <!-- Edit -->
+            <button
+                class="btn btn-warning btn-sm"
+                (click)="editProduct(product.id!)"
+                title="Edit">
+
+                <i class="bi bi-pencil-square"></i>
+
+            </button>
+
+        </td>
+
+    </tr>
+
+</ng-container>
+
+
+<!-- No Data -->
+<tr *ngIf="paginatedProducts.length === 0">
+
+    <td
+        colspan="8"
+        class="text-center text-muted py-4">
+
+        No products found.
+
     </td>
 
-    <td>
-        <div *ngFor="let item of product.productItems">
-            <div *ngFor="let price of item.productItemPrice">
-                {{ price.quantity }}
-            </div>
-        </div>
-    </td>
-            </tr>
-        <tr *ngIf="paginatedProducts.length == 0">
-            <td colspan="4" class="text-center">{{ 'No products found.' | translate }}</td>
-        </tr>
-        </tbody>
+</tr>
+
+</tbody>
     </table>
 </div>
 

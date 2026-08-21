@@ -1,0 +1,164 @@
+<div class="login-page">
+
+    <!-- Background Decorations -->
+
+    <div class="circle circle1"></div>
+    <div class="circle circle2"></div>
+    <div class="circle circle3"></div>
+
+    <div class="square square1"></div>
+    <div class="square square2"></div>
+
+    <div class="line line1"></div>
+    <div class="line line2"></div>
+
+    <div class="login-wrapper">
+
+        <!-- LEFT PANEL -->
+
+        <div class="left-panel">
+
+            <div class="brand">
+
+                <div class="logo">
+                    <img src="assets/user.png" class="profile" alt="AATHITAN STORES logo" />
+                </div>
+
+                <h1>AATHITAN STORES</h1>
+
+                <span>Enterprise Resource Planning</span>
+
+            </div>
+
+            <div class="welcome">
+
+                <h2>Welcome Back</h2>
+
+                <p>
+                    Manage your inventory, sales,
+                    customers, suppliers and reports
+                    from one place.
+                </p>
+
+            </div>
+
+            <div class="features">
+
+                <div class="feature">
+                    <div class="icon">📦</div>
+                    <div>
+                        <h4>Inventory</h4>
+                        <span>Stock Management</span>
+                    </div>
+                </div>
+
+                <div class="feature">
+                    <div class="icon">🧾</div>
+                    <div>
+                        <h4>Billing</h4>
+                        <span>Cash &amp; Credit Bills</span>
+                    </div>
+                </div>
+
+                <div class="feature">
+                    <div class="icon">📊</div>
+                    <div>
+                        <h4>Reports</h4>
+                        <span>Business Analytics</span>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- RIGHT PANEL -->
+
+        <div class="login-card">
+
+            <div class="card-header">
+                <h2>Sign In</h2>
+                <p>Login to continue</p>
+            </div>
+
+            <form (ngSubmit)="login()">
+
+                <div class="input-group">
+
+                    <label for="username">Username</label>
+
+                    <div class="input-box">
+                        <span class="input-icon">
+                            <i class="bi bi-person-fill"></i>
+                        </span>
+
+                        <input
+                            id="username"
+                            type="text"
+                            name="username"
+                            [(ngModel)]="username"
+                            placeholder="Enter Username"
+                            autocomplete="username"
+                            required>
+                    </div>
+
+                </div>
+
+                <div class="input-group">
+
+                    <label for="password">Password</label>
+
+                    <div class="input-box">
+                        <span class="input-icon">
+                            <i class="bi bi-lock-fill"></i>
+                        </span>
+
+                        <input
+                            id="password"
+                            [type]="showPassword ? 'text' : 'password'"
+                            name="password"
+                            [(ngModel)]="password"
+                            placeholder="Enter Password"
+                            autocomplete="current-password"
+                            required>
+
+                        <span class="eye" (click)="showPassword = !showPassword">
+                            <i class="bi" [ngClass]="showPassword ? 'bi-eye' : 'bi-eye-slash'"></i>
+                        </span>
+                    </div>
+
+                </div>
+
+                <div class="remember">
+                    <label>
+                        <input type="checkbox" [(ngModel)]="rememberMe" name="rememberMe">
+                        Remember Me
+                    </label>
+
+                    <a href="#" (click)="forgotPassword($event)">Forgot Password?</a>
+                </div>
+
+                <button
+                    type="submit"
+                    class="login-btn"
+                    [disabled]="loading">
+
+                    {{ loading ? 'SIGNING IN...' : 'LOGIN' }}
+
+                </button>
+
+                <div class="error" *ngIf="error">
+                    {{ error }}
+                </div>
+
+            </form>
+
+            <div class="footer">
+                © 2026 AATHITAN STORES ERP
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

@@ -1,15 +1,15 @@
 <div class="container-fluid p-4">
 
     <div class="d-flex justify-content-between align-items-center mb-3">
-        <h5>{{ 'Master' | translate }} > <span class="text-primary">{{ 'CustomerList' | translate }}</span></h5>
+        <h5>{{ 'Master' | translate }} > <span class="text-primary">{{ 'Customer List' | translate }}</span></h5>
 
     <div>
-        <button class="btn btb-light me-2">
+        <!-- <button class="btn btb-light me-2">
             ✏
         </button>
         <button class="btn btn-light me-2">
              🖨
-        </button>
+        </button> -->
         <button class="btn btn-primary" routerLink="/customer">
             + Add New
         </button>
@@ -31,6 +31,7 @@
                 <th style="width: 100px;">{{ 'S.No' | translate }}</th>
                 <th>{{ 'CustomerName' | translate }}</th>
                 <th>{{ 'CustomerType' | translate }}</th>
+                <th>{{ 'Actions' | translate }}</th>
             </tr>
         </thead>
         <tbody>
@@ -38,6 +39,16 @@
                 <td>{{ (currentPage - 1) * pageSize + i + 1 }}</td>
                 <td>{{ customer.name }}</td>
                 <td>{{ customer.type }}</td>
+                  <td>
+
+                <button class="btn btn-info btn-sm me-2" (click)="viewCustomer(customer.id!)"  title="View">
+  <i class="bi bi-eye"></i>
+</button>
+
+<button class="btn btn-warning btn-sm" (click)="editCustomer(customer.id!)"  title="Edit">
+  <i class="bi bi-pencil-square"></i>
+</button>
+</td>
             </tr>
         <tr *ngIf="paginatedCustomers.length == 0">
             <td colspan="3" class="text-center">No customers found.</td>

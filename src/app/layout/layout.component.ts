@@ -98,16 +98,31 @@ constructor(
     this.showSettings = !this.showSettings;
   }
 
-  toggleCompanyPopup() {
+toggleCompanyPopup() {
 
   this.showCompanyPopup = true;
 
+  this.selectedCompanyId =
+    Number(localStorage.getItem('companyId'));
+
   this.companyService.getCompany().subscribe(data => {
+
     this.companies = data;
+
   });
 
 }
 
+
+logout() {
+
+  localStorage.clear();
+
+  this.showSettings = false;
+
+  this.router.navigate(['/login']);
+
+}
 
   changeLanguage(lang: string) {
 
@@ -165,32 +180,37 @@ selectedCompanyId!: number;
 saveSelectedCompany() {
 
   const company = this.companies.find(
-    c => c.id == this.selectedCompanyId
+      c => c.id === this.selectedCompanyId
   );
 
-  if (company) {
-  this.companyContextService.setCompany(company);  }
+if (company && company.id != null) {
+
+  this.selectedCompanyName = company.name;
+
+  localStorage.setItem('companyId', company.id.toString());
+
+  localStorage.setItem('companyName', company.name);
+
+  this.companyContextService.setCompany(company);
+}
 
   this.showCompanyPopup = false;
 }
 
-selectedCompanyName = 'Select Company';
+selectedCompanyName = '';
 
 ngOnInit() {
 
-  const company =
-    this.companyContextService.getCompany();
+  this.selectedCompanyName =
+    localStorage.getItem('companyName') || 'Select Company';
 
-  if (company) {
-    this.selectedCompanyName = company.name;
+  this.selectedCompanyId =
+    Number(localStorage.getItem('companyId'));
+
+  if (localStorage.getItem('token')) {
+    this.router.navigate(['/']);
   }
 
-  this.companyContextService.selectedCompany$
-    .subscribe(company => {
-      if (company) {
-        this.selectedCompanyName = company.name;
-      }
-    });
 }
 
 @HostListener('document:click', ['$event'])
@@ -251,63 +271,63 @@ selectedIndex: number = -1;
 results: any[] = [];
 
 searchItems = [
+  // {
+  //   name: 'Supplier Master',
+  //   route: '/supplier',
+  //   api: 'master'
+  // },
   {
     name: 'Supplier Master',
-    route: '/supplier',
-    api: 'master'
-  },
-  {
-    name: 'Supplier List',
     route: '/supplier-list',
     api: 'list-view'
   },
+  // {
+  //   name: 'Customer Master',
+  //   route: '/customer',
+  //   api: 'master'
+  // },
   {
     name: 'Customer Master',
-    route: '/customer',
-    api: 'master'
-  },
-  {
-    name: 'Customer List',
     route: '/customer-list',
     api: 'list-view'
   },
+  // {
+  //   name: 'Lorry Master',
+  //   route: '/lorry',
+  //   api: 'master'
+  // },
   {
     name: 'Lorry Master',
-    route: '/lorry',
-    api: 'master'
-  },
-  {
-    name: 'Lorry List',
     route: '/lorry-list',
     api: 'list-view'
   },
+  // {
+  //   name: 'Broker Master',
+  //   route: '/broker',
+  //   api: 'master'
+  // },
   {
     name: 'Broker Master',
-    route: '/broker',
-    api: 'master'
-  },
-  {
-    name: 'Broker List',
     route: '/broker-list',
     api: 'list-view'
   },
+  // {
+  //   name: 'Tax Master',
+  //   route: '/tax',
+  //   api: 'master'
+  // },
   {
     name: 'Tax Master',
-    route: '/tax',
-    api: 'master'
-  },
-  {
-    name: 'Tax List',
     route: '/tax-list',
     api: 'list-view'
   },
+  // {
+  //   name: 'Product Master',
+  //   route: '/product',
+  //   api: 'master'
+  // },
   {
     name: 'Product Master',
-    route: '/product',
-    api: 'master'
-  },
-  {
-    name: 'Product List',
     route: '/product-list',
     api: 'list-view'
   },
@@ -338,6 +358,11 @@ searchItems = [
   {
     name: 'Company Master',
     route: '/company',
+    api: 'master'
+  },
+  {
+    name: 'Stock Master',
+    route: '/stock-master',
     api: 'master'
   }
 ];

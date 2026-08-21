@@ -1,4 +1,186 @@
 input[readonly] {
-  background-color: #f8f9fa;
-  cursor: not-allowed;
+    background-color: #f8f9fa;
+    cursor: not-allowed;
+}
+
+/* ===========================
+   Page Layout
+=========================== */
+
+.product-page {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background: #f5f7fb;
+}
+
+.product-scroll {
+    flex: 1;
+    height: calc(100vh - 80px);
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-right: 10px;
+    padding-bottom: 20px;
+
+    /* Firefox */
+    scrollbar-width: thin;
+    scrollbar-color: #9f9f9f #ececec;
+}
+
+/* Chrome Scrollbar */
+
+.product-scroll::-webkit-scrollbar {
+    width: 10px;
+}
+
+.product-scroll::-webkit-scrollbar-track {
+    background: #ececec;
+    border-radius: 10px;
+}
+
+.product-scroll::-webkit-scrollbar-thumb {
+    background: #9f9f9f;
+    border-radius: 10px;
+}
+
+.product-scroll::-webkit-scrollbar-thumb:hover {
+    background: #6f6f6f;
+}
+
+/* ===========================
+   Cards
+=========================== */
+
+.card {
+    border: none;
+    border-radius: 12px;
+    overflow: hidden;
+    transition: all .25s ease;
+}
+
+.card:hover {
+    box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .12);
+}
+
+.card-header {
+    background: #fff;
+    border-bottom: 1px solid #ececec;
+    font-size: 16px;
+    font-weight: 600;
+    padding: 14px 20px;
+}
+
+.card-body {
+    padding: 22px;
+}
+
+/* ===========================
+   Forms
+=========================== */
+
+.form-control,
+.form-select {
+    min-height: 42px;
+    border-radius: 8px;
+    transition: .2s;
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 .15rem rgba(13,110,253,.15);
+}
+
+.form-label {
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: #555;
+}
+
+/* ===========================
+   Table
+=========================== */
+
+.table {
+    margin-bottom: 0;
+}
+
+.table thead {
+    position: sticky;
+    top: 0;
+    background: #f8f9fa;
+    z-index: 10;
+}
+
+.table th {
+    white-space: nowrap;
+    font-weight: 600;
+}
+
+.table td {
+    vertical-align: middle;
+}
+
+.table-responsive {
+    max-height: 320px;
+    overflow: auto;
+}
+
+.table-responsive::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+.table-responsive::-webkit-scrollbar-track {
+    background: #ececec;
+}
+
+.table-responsive::-webkit-scrollbar-thumb {
+    background: #bfbfbf;
+    border-radius: 20px;
+}
+
+/* ===========================
+   Buttons
+=========================== */
+
+.btn-primary {
+    border-radius: 8px;
+    padding: 8px 18px;
+    font-weight: 500;
+    transition: .2s;
+}
+
+.btn-primary:hover {
+    transform: translateY(-1px);
+}
+
+.btn-danger {
+    border-radius: 6px;
+}
+
+.button-section {
+    position: sticky;
+    bottom: 0;
+    background: #fff;
+    padding: 18px;
+    border-top: 1px solid #ddd;
+    z-index: 100;
+}
+
+/* ===========================
+   Typography
+=========================== */
+
+h5 {
+    font-weight: 600;
+}
+
+.text-primary {
+    color: #0d6efd !important;
+}
+
+.row.g-3 {
+    margin-bottom: 5px;
 }

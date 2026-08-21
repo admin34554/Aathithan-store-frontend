@@ -33,7 +33,7 @@ export class ProductTypeComponent {
   
   this.productTypeForm=this.fb.group({
   
-  type:[''],
+  productType:[''],
   code:[''],
   name:[''],
   brandName:[''],

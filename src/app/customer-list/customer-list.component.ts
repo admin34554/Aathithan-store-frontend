@@ -7,6 +7,7 @@ import { CustomerRoutingModule } from "../modules/customer/customer-routing.modu
 import { RouterModule } from '@angular/router';
 import { TranslateService, TranslateModule } from '@ngx-translate/core';
 import { CompanyContextService } from '../services/company-context.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-customer-list',
@@ -25,7 +26,7 @@ export class CustomerListComponent implements OnInit {
   currentPage = 1;
   pageSize = 5;
 
-  constructor(private customerService: CustomerService, private translate: TranslateService, private companyContextService: CompanyContextService) {
+  constructor(private customerService: CustomerService, private translate: TranslateService, private companyContextService: CompanyContextService, private router: Router) {
 
       const lang = localStorage.getItem('lang') || 'en';
 
@@ -75,6 +76,14 @@ ngOnInit(): void {
       });
 }
 
+
+  viewCustomer(id:number){
+    this.router.navigate(['/customer/view', id]);
+  }
+
+  editCustomer(id:number){
+    this.router.navigate(['/customer/edit', id]);
+  }
 
 
   searchCustomer() {

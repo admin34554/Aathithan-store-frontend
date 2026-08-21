@@ -29,6 +29,10 @@ export class BrokerService {
     return this.http.get<Broker[]>(`${this.baseUrl}/list-view`);
   }
 
+  getBrokerById(id: number) {
+    return this.http.get<any>(`${this.baseUrl}/${id}`);
+  }
+
   // SAVE BROKER
   addBroker(broker: Broker): Observable<Broker> {
     return this.http.post<Broker>(this.baseUrl, broker);

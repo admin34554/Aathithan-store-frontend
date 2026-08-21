@@ -4,6 +4,7 @@ import { Supplier, SupplierService } from '../services/supplier.service';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { TranslateService, TranslateModule } from '@ngx-translate/core';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-supplier',
@@ -18,11 +19,15 @@ supplierform: FormGroup;
 editMode: boolean = false;
 editId: number | null = null;
 activeTab: string = 'details';
+viewMode=false;
+supplierId!:number;
 
 constructor(
   private supplierService: SupplierService,
   private fb: FormBuilder,
-  private translate: TranslateService
+  private translate: TranslateService,
+  private route: ActivatedRoute,
+  private router: Router
 )
 {
 
@@ -42,7 +47,9 @@ constructor(
     mobile: [''],
     phone: [''],
     gstIn: [''],
-    aadhar: [''],
+    panNo: [''],
+    area: [''],
+    aadharNo: [''],
     creditPeriod: [''],
     type: ['', Validators.required],
     active: [false],
@@ -53,19 +60,75 @@ constructor(
     remarks: ['']
   });
 }
-  ngOnInit(): void {
-    this.loadSuppliers();
-  }
+ngOnInit(): void {
 
-loadSuppliers() {
-  this.supplierService.getSuppliers().subscribe({
-    next: (data) => {
-      this.suppliers = data;
-    },
-    error: (err) => {
-      console.error("Error loading suppliers", err);
+
+const mode=this.route.snapshot.url[1]?.path;
+
+this.supplierId=Number(this.route.snapshot.paramMap.get('id'));
+
+if(mode==="view"){
+
+this.viewMode=true;
+
+this.loadSupplier(this.supplierId);
+
+}
+
+else if(mode==="edit"){
+
+this.editMode=true;
+
+this.loadSupplier(this.supplierId);
+
+}
+
+}
+
+loadSupplier(id: number) {
+
+  this.supplierService.getSupplierById(id).subscribe({
+
+    next: (res) => {
+
+      this.supplierform.patchValue({
+
+        id: res.id,
+        contact: res.contact,
+        aadharNo: res.aadharNo,
+        panNo: res.panNo,
+        gstIn: res.gstNo,
+
+        doorNo: res.doorNo,
+        street: res.street,
+        area: res.area,
+        city: res.city,
+        state: res.state,
+        pinCode: res.pinCode,
+
+        phone: res.phone,
+        mobile: res.mobile,
+        creditPeriod: res.creditPeriod,
+
+        type: res.type,
+        active: res.active,
+
+        accountNo: res.bankDetails?.[0]?.accountNo,
+        bankName: res.bankDetails?.[0]?.bankName,
+        branch: res.bankDetails?.[0]?.branch,
+        ifscCode: res.bankDetails?.[0]?.ifscCode,
+        remarks: res.bankDetails?.[0]?.remarks
+
+      });
+
+      if (this.viewMode) {
+        this.supplierform.disable();
+      }
+
     }
+
   });
+
 }
 
 submitForm() {
@@ -74,51 +137,60 @@ submitForm() {
     return;
   }
 
-  const formValue = this.supplierform.value;
+  const form = this.supplierform.getRawValue();
 
-  const supplierData = {
-    id: null,
+  const supplierData: Supplier = {
 
-    contact: formValue.contact,
-    aadharNo: formValue.aadhar,
-    gstNo: formValue.gstIn,
-    phone: formValue.phone,
-    mobile: formValue.mobile,
-    creditPeriod: formValue.creditPeriod,
+    ...form,
 
-    doorNo: formValue.doorNo,
-    street: formValue.street,
-    city: formValue.city,
-    state: formValue.state,
-    pinCode: formValue.pinCode,
-
-    type: formValue.type,
-    active: formValue.active,
+    gstNo: form.gstIn,
 
     bankDetails: [
       {
-        accountNo: formValue.accountNo,
-        bankName: formValue.bankName,
-        branch: formValue.branch,
-        ifscCode: formValue.ifscCode,
-        remarks: formValue.remarks
+        accountNo: form.accountNo,
+        bankName: form.bankName,
+        branch: form.branch,
+        ifscCode: form.ifscCode,
+        remarks: form.remarks
       }
     ]
+
   };
 
-  console.log('Payload', supplierData);
+  if (this.editMode) {
 
-  this.supplierService.addSupplier(supplierData as any).subscribe({
-    next: (res) => {
-      console.log("Supplier Saved", res);
-      alert("Supplier Saved Successfully");
-      this.resetForm();
-      this.loadSuppliers();
-    },
-    error: (err) => {
-      console.error("Error saving supplier", err);
-    }
-  });
+    this.supplierService
+      .updateSupplier(this.supplierId, supplierData)
+      .subscribe({
+
+        next: () => {
+
+          alert('Supplier Updated Successfully');
+
+          this.router.navigate(['/supplier-list']);
+
+        }
+
+      });
+
+  } else {
+
+    this.supplierService
+      .addSupplier(supplierData)
+      .subscribe({
+
+        next: () => {
+
+          alert('Supplier Saved Successfully');
+
+          this.resetForm();
+
+        }
+
+      });
+
+  }
+
 }
 
   editSupplier(supplier: Supplier) {
@@ -130,14 +202,16 @@ submitForm() {
   deleteSupplier(id: number) {
     if(confirm('Are you sure you want to delete this supplier?')) {
       this.supplierService.deleteSupplier(id)
-        .subscribe(() => this.loadSuppliers());
+        .subscribe(() => this.loadSupplier(this.supplierId));
     }
   }
 
-  resetForm() {
-    this.supplierform.reset();
-    this.editMode = false;
-    this.editId = null;
-  }
+resetForm() {
+
+  this.supplierform.reset();
+
+  this.activeTab = 'details';
+
+}
 
 }

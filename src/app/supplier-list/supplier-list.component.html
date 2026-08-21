@@ -1,15 +1,15 @@
 <div class="container-fluid p-4">
 
     <div class="d-flex justify-content-between align-items-center mb-3">
-        <h5>{{ 'Master' | translate }} > <span class="text-primary">{{ 'SupplierList' | translate }}</span></h5>
+        <h5>{{ 'Master' | translate }} > <span class="text-primary">{{ 'Supplier List' | translate }}</span></h5>
 
     <div>
-        <button class="btn btb-light me-2">
+        <!-- <button class="btn btb-light me-2">
             ✏
         </button>
         <button class="btn btn-light me-2">
              🖨
-        </button>
+        </button> -->
         <button class="btn btn-primary" routerLink="/supplier">
             + Add New
         </button>
@@ -31,6 +31,7 @@
                 <th style="width: 100px;">{{ 'S.No' | translate }}</th>
                 <th>{{ 'Supplier Name' | translate }}</th>
                 <th>{{ 'Type' | translate }}</th>
+                <th>{{ 'Actions' | translate }}</th>
             </tr>
         </thead>
         <tbody>
@@ -38,6 +39,23 @@
                 <td>{{ (currentPage - 1) * pageSize + i + 1 }}</td>
                 <td>{{ supplier.contact }}</td>
                 <td>{{ supplier.type }}</td>
+
+                <td>
+
+<button
+class="btn btn-info btn-sm me-2"
+(click)="viewSupplier(supplier.id!)"title="View">
+  <i class="bi bi-eye"></i>
+</button>
+
+<button
+class="btn btn-warning btn-sm"
+(click)="editSupplier(supplier.id!)"title="Edit">
+  <i class="bi bi-pencil-square"></i>
+</button>
+
+</td>
+
             </tr>
         <tr *ngIf="filteredSupplier.length == 0">
             <td colspan="3" class="text-center">No supplier found.</td>

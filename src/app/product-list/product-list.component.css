@@ -18,3 +18,13 @@ border-radius: 20px;
 .btn-light {
 border: 1px solid #ddd;
 }
+
+.item-row {
+    min-height: 32px;
+    line-height: 32px;
+}
+
+.item-column,
+.stock-column {
+    vertical-align: top;
+}
