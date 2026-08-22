@@ -18,8 +18,8 @@ export class DayBookService {
   constructor(private http: HttpClient) {}
 
   // GET LIST
-  getDayBook(): Observable<DayBook[]> {
-    return this.http.get<DayBook[]>(`${this.baseUrl}/list-view?fromDate`);
+  getDayBook(fromDate: string, toDate: string): Observable<DayBook[]> {
+    return this.http.get<DayBook[]>(`${this.baseUrl}/list-view?fromDate=${fromDate}&toDate=${toDate}`);
   }
 
 

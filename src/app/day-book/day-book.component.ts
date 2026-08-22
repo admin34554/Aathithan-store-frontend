@@ -43,10 +43,10 @@ formatDate(date: string): string {
 
 loadDayBook() {
 
-  // const from = this.formatDate(this.fromDate);
-  // const to = this.formatDate(this.toDate);
+  const from = this.formatDate(this.fromDate);
+  const to = this.formatDate(this.toDate);
 
-  this.dayBookService.getDayBook().subscribe(res => {
+  this.dayBookService.getDayBook(from, to).subscribe(res => {
     this.dayBookList = this.mergeData(res);
   });
 }
