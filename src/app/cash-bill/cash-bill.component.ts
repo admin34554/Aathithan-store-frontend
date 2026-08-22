@@ -10,6 +10,7 @@ import { ProductTypeService } from '../services/productType.service';
 import { ProductService } from '../services/product.service';
 import { TaxService } from '../services/tax.service';
 import { TranslateService, TranslateModule } from '@ngx-translate/core';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-cash-bill',
@@ -115,7 +116,8 @@ productSelectedIndex: number[] = [];
     private productTypeService: ProductTypeService,
     private productService: ProductService,
     private taxService: TaxService,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private http: HttpClient
   ) {
 
       const lang = localStorage.getItem('lang') || 'en';
@@ -801,23 +803,37 @@ printBill() {
   const billNo = this.cashBillForm.get('billNo')?.value;
 
   if (!billNo) {
-    alert("Save bill first");
+    alert('Save bill first');
     return;
   }
 
-  const link = document.createElement('a');
-
-  link.href =
+  const url =
     `https://aadhi-store-backend.onrender.com/api/v1/cash-bill/pdf/${billNo}`;
 
-  link.download = `cashBill-${billNo}.pdf`;
+  this.http.get(url, {
+    responseType: 'blob'
+  }).subscribe({
+    next: (blob: Blob) => {
 
-  document.body.appendChild(link);
+      const pdfUrl = URL.createObjectURL(blob);
 
-  link.click();
+      const link = document.createElement('a');
+      link.href = pdfUrl;
+      link.download = `cashBill-${billNo}.pdf`;
 
-  document.body.removeChild(link);
-  }
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+
+      URL.revokeObjectURL(pdfUrl);
+    },
+
+    error: (error) => {
+      console.error('PDF download failed:', error);
+      alert('Unable to download bill PDF');
+    }
+  });
+}
 
 
 getItemAmount(row: any): number {
