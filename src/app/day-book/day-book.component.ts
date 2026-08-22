@@ -46,8 +46,13 @@ loadDayBook() {
   const from = this.formatDate(this.fromDate);
   const to = this.formatDate(this.toDate);
 
-  this.dayBookService.getDayBook(from, to).subscribe(res => {
-    this.dayBookList = this.mergeData(res);
+  this.dayBookService.getDayBook(from, to).subscribe({
+    next: res => {
+      this.dayBookList = this.mergeData(res);
+    },
+    error: err => {
+      console.error('Error loading day book:', err);
+    }
   });
 }
 
