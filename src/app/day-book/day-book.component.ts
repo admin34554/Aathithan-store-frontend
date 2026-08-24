@@ -70,6 +70,17 @@ mergeData(res: any) {
     });
   });
 
+    // CREDIT
+  res.creditBillsList?.forEach((c: any) => {
+    list.push({
+      type: 'CREDIT',
+      name: c.name,
+      date: c.billDate,
+      billNo: c.billNo,
+      remarks: c.remarks
+    });
+  });
+
   // PURCHASE
   res.purchaseBillList?.forEach((p: any) => {
     list.push({
