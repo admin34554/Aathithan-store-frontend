@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -87,6 +87,11 @@ export class CustomerComponent implements OnInit {
     }
 
   }
+
+  @HostListener('document:keydown.escape')
+handleEscape(): void {
+  this.router.navigate(['/customer-list']);
+}
 
   loadCustomer(id: number) {
 

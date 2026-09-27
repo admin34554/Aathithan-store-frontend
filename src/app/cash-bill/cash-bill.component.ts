@@ -397,9 +397,7 @@ res.items.forEach((item: any, index: number) => {
       quantity: item.quantity,
       tax: item.tax,
         taxDetails:
-      `CGST ${Number(item.tax) / 2}%\n` +
-      `SGST ${Number(item.tax) / 2}%\n` +
-      `IGST ${item.tax}%`,
+      `${item.tax}%`,
       total: item.total,
       brNo: item.brNo,
       surCh: item.surCh
@@ -472,9 +470,7 @@ selectProduct(product: any, rowIndex: number): void {
     tax: cgst + sgst,
 
     taxDetails:
-      `CGST ${cgst}%\n` +
-      `SGST ${sgst}%\n` +
-      `IGST ${igst}%`,
+      `${igst}%`,
 
     brNo: product.hsnCode,
 

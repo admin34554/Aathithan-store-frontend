@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Supplier, SupplierService } from '../services/supplier.service';
 import { CommonModule } from '@angular/common';
@@ -83,6 +83,11 @@ this.loadSupplier(this.supplierId);
 
 }
 
+}
+
+  @HostListener('document:keydown.escape')
+handleEscape(): void {
+  this.router.navigate(['/supplier-list']);
 }
 
 loadSupplier(id: number) {

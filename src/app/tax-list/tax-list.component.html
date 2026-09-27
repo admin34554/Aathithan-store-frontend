@@ -40,8 +40,7 @@
         <tbody>
               <tr
     *ngFor="let tax of paginatedTax; let i = index"
-    (click)="viewTax(tax.id)"
-    style="cursor: pointer;"
+    [class.selected-row]="i === selectedIndex"
   >
     <td>{{ (currentPage - 1) * pageSize + i + 1 }}</td>
     <td>{{ tax.hsnDescription }}</td>
@@ -53,14 +52,14 @@
 
 <button
   class="btn btn-info btn-sm me-2"
-  (click)="viewTax(tax.id); $event.stopPropagation()"
+  (click)="viewTax(tax.id);"
   title="View">
   <i class="bi bi-eye"></i>
 </button>
 
 <button
   class="btn btn-warning btn-sm"
-  (click)="editTax(tax.id); $event.stopPropagation()"
+  (click)="editTax(tax.id);"
   title="Edit">
   <i class="bi bi-pencil-square"></i>
 </button>

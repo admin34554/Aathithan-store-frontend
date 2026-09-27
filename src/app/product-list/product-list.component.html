@@ -45,7 +45,7 @@
 
 <ng-container *ngFor="let product of paginatedProducts; let i = index">
 
-    <tr>
+    <tr [class.selected-row]="i === selectedIndex">
 
         <!-- S.No -->
         <td>

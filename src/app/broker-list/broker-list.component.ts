@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Broker, BrokerService } from '../services/broker.service';
@@ -21,6 +21,7 @@ export class BrokerListComponent implements OnInit {
 
   currentPage = 1;
   pageSize = 5;
+  selectedIndex = 0;
 
   constructor(private brokerService: BrokerService, 
     private translate: TranslateService,
@@ -31,6 +32,119 @@ export class BrokerListComponent implements OnInit {
   this.translate.setDefaultLang('en');
   this.translate.use(lang);
     
+  }
+
+
+  @HostListener('document:keydown', ['$event'])
+  handleKeyboardEvent(event: KeyboardEvent) {
+  
+    const target = event.target as HTMLElement;
+  
+    // Allow normal typing inside search/input fields
+    if (
+      target.tagName === 'INPUT' ||
+      target.tagName === 'TEXTAREA' ||
+      target.tagName === 'SELECT'
+    ) {
+      return;
+    }
+  
+    const customers = this.paginatedBroker;
+  
+    if (!customers || customers.length === 0) {
+      return;
+    }
+  
+    // DOWN ARROW
+    if (event.key === 'ArrowDown') {
+  
+      event.preventDefault();
+  
+      if (this.selectedIndex < customers.length - 1) {
+        this.selectedIndex++;
+      } 
+      else if (this.currentPage < this.totalPages) {
+        this.currentPage++;
+        this.selectedIndex = 0;
+      }
+  
+      return;
+    }
+  
+    // UP ARROW
+    if (event.key === 'ArrowUp') {
+  
+      event.preventDefault();
+  
+      if (this.selectedIndex > 0) {
+        this.selectedIndex--;
+      } 
+      else if (this.currentPage > 1) {
+        this.currentPage--;
+        this.selectedIndex = this.pageSize - 1;
+  
+        // Make sure index is valid on the previous page
+        if (this.selectedIndex >= this.paginatedBroker.length) {
+          this.selectedIndex = this.paginatedBroker.length - 1;
+        }
+      }
+  
+      return;
+    }
+  
+
+        // + = ADD NEW
+if (event.key === '+') {
+
+  event.preventDefault();
+
+  this.router.navigate(['/broker']);
+
+  return;
+}
+
+
+    // E = EDIT
+    if (event.key.toLowerCase() === 'e') {
+  
+      event.preventDefault();
+  
+      const customer = customers[this.selectedIndex];
+  
+      if (customer?.id) {
+        this.editBroker(customer.id);
+      }
+  
+      return;
+    }
+  
+    // V = VIEW
+    if (event.key.toLowerCase() === 'v') {
+  
+      event.preventDefault();
+  
+      const customer = customers[this.selectedIndex];
+  
+      if (customer?.id) {
+        this.viewBroker(customer.id);
+      }
+  
+      return;
+    }
+  
+    // ENTER = VIEW
+    if (event.key === 'Enter') {
+  
+      event.preventDefault();
+  
+      const customer = customers[this.selectedIndex];
+  
+      if (customer?.id) {
+        this.viewBroker(customer.id);
+      }
+  
+      return;
+    }
   }
 
   ngOnInit(): void {
@@ -57,6 +171,9 @@ export class BrokerListComponent implements OnInit {
       b.brokerName?.toLowerCase().includes(this.searchText.toLowerCase()) ||
       b.code?.toString().includes(this.searchText)
     );
+
+    this.currentPage = 1;
+    this.selectedIndex = 0;
   }
 
   get paginatedBroker() {
@@ -75,5 +192,10 @@ export class BrokerListComponent implements OnInit {
       this.currentPage--;
     }
   }
+
+  get totalPages(): number {
+  return Math.ceil(this.filteredBroker.length / this.pageSize);
+}
+
 
 }

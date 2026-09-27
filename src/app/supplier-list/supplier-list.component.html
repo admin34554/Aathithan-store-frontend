@@ -34,32 +34,43 @@
                 <th>{{ 'Actions' | translate }}</th>
             </tr>
         </thead>
-        <tbody>
-            <tr *ngFor="let supplier of paginatedSupplier; let i = index">
-                <td>{{ (currentPage - 1) * pageSize + i + 1 }}</td>
+ <tbody>
+            <tr
+                *ngFor="let supplier of paginatedSupplier; let i = index"
+                [class.selected-row]="i === selectedIndex"
+            >
+                <td>
+                    {{ (currentPage - 1) * pageSize + i + 1 }}
+                </td>
+
                 <td>{{ supplier.contact }}</td>
+
                 <td>{{ supplier.type }}</td>
 
                 <td>
+                    <button
+                        class="btn btn-info btn-sm me-2"
+                        (click)="viewSupplier(supplier.id!)"
+                        title="View"
+                    >
+                        <i class="bi bi-eye"></i>
+                    </button>
 
-<button
-class="btn btn-info btn-sm me-2"
-(click)="viewSupplier(supplier.id!)"title="View">
-  <i class="bi bi-eye"></i>
-</button>
-
-<button
-class="btn btn-warning btn-sm"
-(click)="editSupplier(supplier.id!)"title="Edit">
-  <i class="bi bi-pencil-square"></i>
-</button>
-
-</td>
-
+                    <button
+                        class="btn btn-warning btn-sm"
+                        (click)="editSupplier(supplier.id!)"
+                        title="Edit"
+                    >
+                        <i class="bi bi-pencil-square"></i>
+                    </button>
+                </td>
             </tr>
-        <tr *ngIf="filteredSupplier.length == 0">
-            <td colspan="3" class="text-center">No supplier found.</td>
-        </tr>
+
+            <tr *ngIf="paginatedSupplier.length === 0">
+                <td colspan="4" class="text-center">
+                    No suppliers found.
+                </td>
+            </tr>
         </tbody>
     </table>
 </div>

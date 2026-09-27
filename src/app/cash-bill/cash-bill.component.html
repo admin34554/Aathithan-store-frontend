@@ -1,395 +1,240 @@
 <div class="page-container">
-  
-  <!-- Header (fixed) -->
-<!-- Header -->
-<div class="page-header">
 
-  <h5>
-    {{ 'Sales' | translate }} > <span class="text-primary">{{ 'Cash Bill' | translate }}</span>
-  </h5>
+  <!-- Header -->
+  <div class="page-header">
+    <h5>{{ 'Sales' | translate }} > <span class="text-primary">{{ 'Cash Bill' | translate }}</span></h5>
 
-  <!-- PRINT BUTTON -->
-  <button
-    type="button"
-    class="btn btn-dark print-btn"
-    (click)="printBill()">
+    <button type="button" class="btn btn-dark print-btn" (click)="printBill()">
+      🖨 {{ 'Print' | translate }}
+    </button>
+  </div>
 
-    🖨 {{ 'Print' | translate }}
-
-  </button>
-
-</div> 
-<div *ngIf="errorMessage" class="alert alert-danger">
-  {{ errorMessage }}
-</div>
+  <div *ngIf="errorMessage" class="alert alert-danger">
+    {{ errorMessage }}
+  </div>
 
   <!-- Scrollable Content Area -->
   <div class="content-area">
     <div class="form-wrapper">
       <form [formGroup]="cashBillForm">
-
         <div class="container-fluid p-0 mt-3">
+
+          <!-- Search Bill No -->
+          <div class="row search-bill-row">
+            <div class="col-md-4">
+              <input
+                class="form-control"
+                placeholder="{{ 'Type Bill No' | translate }}"
+                formControlName="billNo"
+                (keydown.enter)="loadBillByBillNo()"
+                autocomplete="off" />
+            </div>
+          </div>
+
           <!-- Top Form -->
           <div class="row">
             <div class="col-md-4 position-relative">
+              <input
+                class="form-control"
+                placeholder="{{ 'Customer Name' | translate }}"
+                formControlName="name"
+                (input)="searchCustomers($any($event.target).value, cashBillForm.get('companyId')?.value)"
+                (blur)="onCustomerBlur()"
+                (keydown)="onKeyDown($event)"
+                autocomplete="off" />
 
-  <!-- ✅ ONLY ONE INPUT -->
-<input
-  class="form-control"
-  placeholder="{{ 'Customer Name' | translate }}"
-  formControlName="name"
-  (input)="searchCustomers($any($event.target).value, cashBillForm.get('companyId')?.value)"
-  (blur)="onCustomerBlur()"
-  (keydown)="onKeyDown($event)"
-  autocomplete="off"
-/>
-
-  <!-- ✅ DROPDOWN -->
-<ul *ngIf="customers.length > 0" class="dropdown-list">
-  <li
-    *ngFor="let c of customers; let i = index"
-    (mousedown)="selectCustomer(c)"
-    [class.active]="i === customerSelectedIndex"
-  >
-    {{ c.name }}
-    <span *ngIf="c.code">({{ c.code }})</span>
-  </li>
-</ul>
-
-</div>
+              <ul *ngIf="customers.length > 0" class="dropdown-list">
+                <li
+                  *ngFor="let c of customers; let i = index"
+                  (mousedown)="selectCustomer(c)"
+                  [class.active]="i === customerSelectedIndex">
+                  {{ c.name }}
+                  <span *ngIf="c.code">({{ c.code }})</span>
+                </li>
+              </ul>
+            </div>
 
             <div class="col-md-4">
               <select class="form-control" formControlName="lorry">
-              <option value=""disabled>{{ 'Select Lorry' | translate }}</option>
-              <option *ngFor="let l of lorries" [value]="l.id">
-                {{ l.name }}
-              </option>
+                <option value="" disabled>{{ 'Select Lorry' | translate }}</option>
+                <option *ngFor="let l of lorries" [value]="l.id">{{ l.name }}</option>
               </select>
             </div>
 
             <div class="col-md-4">
               <select class="form-control" formControlName="broker">
-                <option value=""disabled>{{ 'Select Broker' | translate }}</option>
-                <option *ngFor="let b of brokers" [value]="b.id">
-                  {{ b.brokerName }}
-                </option>
+                <option value="" disabled>{{ 'Select Broker' | translate }}</option>
+                <option *ngFor="let b of brokers" [value]="b.id">{{ b.brokerName }}</option>
               </select>
             </div>
 
             <div class="col-md-4 mt-3">
-              <input class="form-control" placeholder="{{ 'Bill Number' | translate }}" formControlName="billNo" (keydown.enter)="loadBillByBillNo()">
+              <input
+                class="form-control"
+                placeholder="{{ 'Bill Number' | translate }}"
+                formControlName="billNo" readOnly
+                (keydown.enter)="loadBillByBillNo()" />
             </div>
 
             <div class="col-md-4 mt-3">
-              <input type="date" class="form-control" formControlName="billDate" readOnly>
+              <input type="date" class="form-control" formControlName="billDate" readOnly />
             </div>
           </div>
 
-<!-- TABLE SECTION -->
-<div class="table-responsive mt-4">
+          <!-- Table Section -->
+          <div class="table-responsive mt-4">
+            <table class="table table-bordered">
+              <thead class="table-light">
+                <tr>
+                  <th style="width: 60px;">{{ 'S.No' | translate }}</th>
+                  <th>{{ 'Product Code' | translate }}</th>
+                  <th>{{ 'Item Name' | translate }}</th>
+                  <th>{{ 'Rate' | translate }}</th>
+                  <th>{{ 'Quantity' | translate }}</th>
+                  <th>{{ 'Tax' | translate }}</th>
+                  <th>{{ 'Total' | translate }}</th>
+                  <th>{{ 'HSN No' | translate }}</th>
+                  <th style="width: 80px;">{{ 'Action' | translate }}</th>
+                </tr>
+              </thead>
 
-    <table class="table table-bordered">
+              <tbody formArrayName="items">
+                <tr *ngFor="let row of items.controls; let i = index" [formGroupName]="i">
+                  <td>{{ i + 1 }}</td>
 
-        <thead class="table-light">
-            <tr>
-                <th style="width: 60px;">{{ 'S.No' | translate }}</th>
-                <th>{{ 'Product Code' | translate }}</th>
-                <th>{{ 'Item Name' | translate }}</th>
-                <th>{{ 'Rate' | translate }}</th>
-                <th>{{ 'Quantity' | translate }}</th>
-                <th>{{ 'Tax' | translate }}</th>
-                <th>{{ 'Total' | translate }}</th>
-                <th>{{ 'HSN No' | translate }}</th>
-                <th style="width:80px;">{{ 'Action' | translate }}</th>
-            </tr>
-        </thead>
-
-        <tbody formArrayName="items">
-
-            <tr
-                *ngFor="let row of items.controls; let i = index"
-                [formGroupName]="i">
-
-                <td>{{ i + 1 }}</td>
-
-                <!-- Product Code -->
-                <td class="position-relative">
-
+                  <!-- Product Code -->
+                  <td class="position-relative">
                     <input
-                        class="form-control"
-                        formControlName="productCode"
-                        (input)="onProductSearch($event, i)"
-                        (keydown)="onProductKeyDown($event, i)"
-                        (blur)="onProductBlur(i)"
-                        autocomplete="off">
+                      class="form-control"
+                      formControlName="productCode"
+                      (input)="onProductSearch($event, i)"
+                      (keydown)="onProductKeyDown($event, i)"
+                      (blur)="onProductBlur(i)"
+                      autocomplete="off" />
 
-                    <ul
-                        *ngIf="filteredProducts[i]?.length"
-                        class="dropdown-list">
-
-                        <li
-                            *ngFor="
-                                let p of filteredProducts[i];
-                                let j = index
-                            "
-                            (mousedown)="selectProduct(p, i)"
-                            [class.active]="
-                                productSelectedIndex[i] === j
-                            ">
-
-                            {{ p.productName }}
-                            ({{ p.productCode }})
-
-                        </li>
-
+                    <ul *ngIf="filteredProducts[i]?.length" class="dropdown-list">
+                      <li
+                        *ngFor="let p of filteredProducts[i]; let j = index"
+                        (mousedown)="selectProduct(p, i)"
+                        [class.active]="productSelectedIndex[i] === j">
+                        {{ p.productName }} ({{ p.productCode }})
+                      </li>
                     </ul>
+                  </td>
 
-                </td>
-
-                <!-- Item Name -->
-                <td>
-
-                    <select
-                        class="form-control"
-                        formControlName="productItemId"
-                        (change)="onItemChange($event, i)">
-
-                        <option value="">
-                            Select Item
-                        </option>
-
-                        <option
-                            *ngFor="let item of productItems[i]"
-                            [value]="item.id">
-
-                            {{ item.itemName }}
-
-                        </option>
-
+                  <!-- Item Name -->
+                  <td>
+                    <select class="form-control" formControlName="productItemId" (change)="onItemChange($event, i)">
+                      <option value="">Select Item</option>
+                      <option *ngFor="let item of productItems[i]" [value]="item.id">{{ item.itemName }}</option>
                     </select>
-
-                </td>
-
-                <!-- Rate -->
-                <td>
-
-                    <input
-                        type="number"
-                        class="form-control"
-                        formControlName="rate"
-                        readonly>
-
-                </td>
-
-                <!-- Quantity -->
-                <td>
-
-                    <input
-                        type="number"
-                        class="form-control"
-                        formControlName="quantity">
-
-                </td>
-
-                <!-- Tax -->
-                <td>
-
-                    <textarea
-                        class="form-control tax-cell"
-                        formControlName="taxDetails"
-                        rows="3"
-                        readonly>
-                    </textarea>
-
-                </td>
-
-                <!-- Total -->
-                <td>
-
-                    <input
-                        type="number"
-                        class="form-control"
-                        [value]="getItemGrandTotal(row)"
-                        readonly>
-
-                </td>
-
-                <!-- HSN -->
-                <td>
-
-                    <input
-                        class="form-control"
-                        formControlName="brNo"
-                        readonly>
-
-                </td>
-
-                <!-- Action -->
-                <td class="text-center">
-
-                    <button
-                        type="button"
-                        class="btn btn-danger btn-sm"
-                        (click)="removeRow(i)">
-
-                        ✕
-
-                    </button>
-
-                </td>
-
-            </tr>
-
-        </tbody>
-
-        <tfoot>
-
-            <tr class="table-secondary fw-bold">
-
-                <td colspan="3"></td>
-
-                <td class="text-end">
-                    {{ getTotalRate() | number:'1.2-2' }}
-                </td>
-
-                <td class="text-end">
-                    {{ getTotalQuantity() }}
-                </td>
-
-                <td class="text-end">
-                    {{ getTotalTax() | number:'1.0-2' }}%
-                </td>
-
-                <td class="text-end">
-                    {{ getGrandTotal() | number:'1.2-2' }}
-                </td>
-
-                <td colspan="2"></td>
-
-            </tr>
-
-        </tfoot>
-
-    </table>
-
-</div>
-
-
-
-<div class="bill-bottom-section">
-
-    <!-- Add Row -->
-    <div class="add-row-section">
-
-        <button
-            type="button"
-            class="btn btn-primary btn-sm"
-            (click)="addRow()">
-
-            {{ 'Add Row' | translate }}
-
-        </button>
-
-    </div>
-
-
-    <!-- Summary -->
-   <div class="bill-summary">
-
-    <!-- Sub Total -->
-    <div class="summary-row">
-
-        <span>
-            Sub Total
-        </span>
-
-        <span>
-            ₹ {{ getSubTotal() | number:'1.2-2' }}
-        </span>
-
-    </div>
-
-
-    <!-- SGST -->
-    <div class="summary-row">
-
-        <span>
-            SGST
-        </span>
-
-        <span>
-            ₹ {{ getSgstAmount() | number:'1.2-2' }}
-        </span>
-
-    </div>
-
-
-    <!-- CGST -->
-    <div class="summary-row">
-
-        <span>
-            CGST
-        </span>
-
-        <span>
-            ₹ {{ getCgstAmount() | number:'1.2-2' }}
-        </span>
-
-    </div>
-
-
-    <div class="summary-divider"></div>
-
-
-    <!-- Grand Total -->
-    <div class="summary-row grand-total">
-
-        <span>
-            Grand Total
-        </span>
-
-        <span>
-            ₹ {{ getGrandTotal() | number:'1.2-2' }}
-        </span>
-
-    </div>
-
-</div>
-
-</div>
-          <!-- Bottom Section -->
-          <div class="row mt-4">
-            <!-- Remarks -->
-            <div class="col-md-8">
-              <textarea 
-                class="form-control" 
-                rows="1" 
-                placeholder="{{ 'Remarks' | translate }}"
-                formControlName="remarks">
-              </textarea>
-            </div>
+                  </td>
+
+                  <!-- Rate -->
+                  <td>
+                    <input type="number" class="form-control" formControlName="rate" readonly />
+                  </td>
+
+                  <!-- Quantity -->
+                  <td>
+                    <input type="number" class="form-control" formControlName="quantity" />
+                  </td>
+
+                  <!-- Tax -->
+                  <td>
+                    <textarea class="form-control tax-cell" formControlName="taxDetails" rows="3" readonly></textarea>
+                  </td>
+
+                  <!-- Total -->
+                  <td>
+                    <input type="number" class="form-control" [value]="getItemGrandTotal(row)" readonly />
+                  </td>
+
+                  <!-- HSN -->
+                  <td>
+                    <input class="form-control" formControlName="brNo" readonly />
+                  </td>
+
+                  <!-- Action -->
+                  <td class="text-center">
+                    <button type="button" class="btn btn-danger btn-sm" (click)="removeRow(i)">✕</button>
+                  </td>
+                </tr>
+              </tbody>
+
+              <tfoot>
+                <tr class="table-secondary fw-bold">
+                  <td colspan="3"></td>
+                  <td class="text-end">{{ getTotalRate() | number:'1.2-2' }}</td>
+                  <td class="text-end">{{ getTotalQuantity() }}</td>
+                  <td class="text-end">{{ getTotalTax() | number:'1.0-2' }}%</td>
+                  <td class="text-end">{{ getGrandTotal() | number:'1.2-2' }}</td>
+                  <td colspan="2"></td>
+                </tr>
+              </tfoot>
+            </table>
           </div>
 
-          <!-- Buttons - Moved INSIDE the form and container -->
+          <div class="bill-bottom-section">
+
+            <!-- Add Row -->
+            <div class="add-row-section">
+              <button type="button" class="btn btn-primary btn-sm" (click)="addRow()">
+                {{ 'Add Row' | translate }}
+              </button>
+            </div>
+
+            <!-- Summary -->
+            <div class="bill-summary">
+              <div class="summary-row">
+                <span>Sub Total</span>
+                <span>₹ {{ getSubTotal() | number:'1.2-2' }}</span>
+              </div>
+
+              <div class="summary-row">
+                <span>SGST</span>
+                <span>₹ {{ getSgstAmount() | number:'1.2-2' }}</span>
+              </div>
+
+              <div class="summary-row">
+                <span>CGST</span>
+                <span>₹ {{ getCgstAmount() | number:'1.2-2' }}</span>
+              </div>
+
+              <div class="summary-divider"></div>
+
+              <div class="summary-row grand-total">
+                <span>Grand Total</span>
+                <span>₹ {{ getGrandTotal() | number:'1.2-2' }}</span>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Bottom Section
+          <div class="row mt-4">
+            <div class="col-md-8">
+              <textarea
+                class="form-control"
+                rows="1"
+                placeholder="{{ 'Remarks' | translate }}"
+                formControlName="remarks"></textarea>
+            </div>
+          </div> -->
+
+          <!-- Action Buttons -->
           <div class="button-section mt-4">
-            <button 
-              type="button" 
-              class="btn btn-secondary me-2"
-              (click)="cancelForm()">
+            <button type="button" class="btn btn-secondary me-2" (click)="cancelForm()">
               {{ 'Cancel' | translate }}
             </button>
-            <button 
-              type="button" 
-              class="btn btn-primary"
-              (click)="saveCashBill()">
+            <button type="button" class="btn btn-primary" (click)="saveCashBill()">
               {{ 'Save' | translate }}
             </button>
           </div>
 
-        </div> <!-- Close container-fluid -->
-
+        </div>
       </form>
     </div>
-  </div> <!-- Close content-area -->
+  </div>
 
-</div> <!-- Close page-container -->
+</div>

@@ -1,3 +1,65 @@
+/* Layout */
+:host {
+  display: block;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.page-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: #f8f9fa;
+}
+
+.content-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  overflow: hidden;
+  padding: 4px 20px 12px 20px;
+}
+
+.form-wrapper {
+  width: 100%;
+  max-width: 1400px;
+}
+
+.container-fluid {
+  display: flex;
+  flex-direction: column;
+}
+
+.search-bill-row {
+  margin-top: 0;
+  margin-bottom: 24px;
+}
+
+/* Header */
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 20px 0 20px;
+}
+
+.page-header h5 {
+  margin: 0;
+  padding: 0;
+}
+
+h5 {
+  padding-top: 12px;
+  margin-bottom: 0;
+}
+
+.print-btn {
+  min-width: 110px;
+}
+
+/* Table */
 table {
   background: white;
 }
@@ -16,130 +78,32 @@ textarea {
   border-radius: 8px;
 }
 
-.table td, .table th {
+.table td,
+.table th {
   vertical-align: middle;
 }
 
-.page-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 20px 20px 0 20px;
+.table {
+  width: 100%;
+  table-layout: fixed;
+  margin-bottom: 0;
 }
 
-.page-header h5 {
-  margin: 0;
-  padding: 0;
-}
-
-.print-btn {
-  min-width: 110px;
-}
-
-/* Main container scrollable */
-:host {
-  display: block;
-  height: 100vh;
-  overflow: hidden;
-}
-
-/* Page container with flex layout */
-.page-container {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  background: #f8f9fa;
-}
-
-/* Content area that scrolls */
-.content-area {
-  flex: 1;
-  overflow-y: auto;
-  overflow-x: auto;
-  padding: 0 20px 20px 20px;
-}
-
-/* Style the main scrollbar */
-.content-area::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
-}
-
-.content-area::-webkit-scrollbar-track {
-  background: #f1f1f1;
-  border-radius: 5px;
-}
-
-.content-area::-webkit-scrollbar-thumb {
-  background: #888;
-  border-radius: 5px;
-}
-
-.content-area::-webkit-scrollbar-thumb:hover {
-  background: #555;
-}
-
-/* For Firefox */
-.content-area {
-  scrollbar-width: thin;
-  scrollbar-color: #888 #f1f1f1;
-}
-
-/* Form container */
-.form-wrapper {
-  min-width: fit-content;
-}
-
-/* Table responsive container */
 .table-responsive {
-  overflow-x: auto;
   overflow-y: auto;
-  max-height: 350px;
+  overflow-x: hidden;
+  max-height: 260px;
   border: 1px solid #dee2e6;
   border-radius: 4px;
-  margin-bottom: 20px;
+  margin-bottom: 14px;
   background: white;
 }
 
-/* Keep table header stable */
 .table thead th {
   position: sticky;
   top: 0;
   background: #f8f9fa;
-  z-index: 10;
-  box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.1);
-}
-
-/* Style table scrollbar */
-.table-responsive::-webkit-scrollbar {
-  height: 8px;
-  width: 8px;
-}
-
-.table-responsive::-webkit-scrollbar-track {
-  background: #f1f1f1;
-  border-radius: 4px;
-}
-
-.table-responsive::-webkit-scrollbar-thumb {
-  background: #888;
-  border-radius: 4px;
-}
-
-.table-responsive::-webkit-scrollbar-thumb:hover {
-  background: #555;
-}
-
-/* For Firefox */
-.table-responsive {
-  scrollbar-width: thin;
-  scrollbar-color: #888 #f1f1f1;
-}
-
-/* Ensure table doesn't shrink too much */
-.table {
-  min-width: 1200px;
-  margin-bottom: 0;
+  z-index: 5;
 }
 
 tfoot tr {
@@ -147,69 +111,25 @@ tfoot tr {
 }
 
 tfoot td {
-  position: sticky;
-  bottom: 0;
   font-size: 12px;
-  z-index: 5;
 }
 
-/* Button section - now inside scrollable area */
-.button-section {
-  padding: 20px 0;
-  text-align: right;
-  margin-bottom: 20px;
-  background: transparent;
-  border: none;
-  box-shadow: none;
+.tax-cell {
+  height: 44px;
+  max-height: 44px;
+  resize: none;
+  overflow-y: auto;
+  white-space: pre-line;
+  line-height: 1.3;
 }
 
-.button-section .btn {
-  min-width: 100px;
-  padding: 8px 20px;
+.tax-total-box {
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px;
 }
 
-.button-section .btn-secondary {
-  margin-right: 10px;
-}
-
-/* Header padding */
-h5 {
-  padding-top: 20px;
-  margin-bottom: 0;
-}
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-  .table-responsive {
-    max-height: 250px;
-  }
-  
-  .content-area {
-    padding: 0 10px 10px 10px;
-  }
-  
-  .button-section {
-    padding: 15px;
-  }
-  
-  .button-section .btn {
-    min-width: 80px;
-    padding: 6px 15px;
-  }
-}
-
-/* Ensure buttons are always visible */
-.container-fluid {
-  min-height: 100%;
-  display: flex;
-  flex-direction: column;
-}
-
-.button-section {
-  margin-top: auto;
-}
-
-
+/* Autocomplete dropdown */
 .dropdown-list {
   position: absolute;
   width: 75%;
@@ -238,133 +158,110 @@ h5 {
   color: white;
 }
 
-.tax-cell {
-  height: 70px;
-  max-height: 70px;
-  resize: none;
-  overflow-y: auto;
-  white-space: pre-line;
-  line-height: 1.4;
+/* Bill bottom section (add row + summary) */
+.bill-bottom-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  width: 100%;
 }
 
-.tax-total-box {
-  font-size: 12px;
-  font-weight: 600;
-  padding: 4px;
+.add-row-section {
+  padding-top: 5px;
 }
 
 .bill-summary-container {
-    display: flex;
-    justify-content: flex-end;
-    margin-top: 15px;
-    margin-bottom: 10px;
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 10px;
+  margin-bottom: 8px;
 }
 
 .bill-summary {
-    width: 360px;
-    border: 1px solid #dee2e6;
-    border-radius: 6px;
-    background: #fff;
-    padding: 15px 20px;
+  width: 340px;
+  background: #ffffff;
+  border: 1px solid #d9dee3;
+  border-radius: 8px;
+  padding: 10px 16px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
 }
 
 .summary-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 7px 0;
-    font-size: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px 0;
+  font-size: 14px;
+  color: #333;
 }
-
-.summary-row strong {
-    min-width: 130px;
-    text-align: right;
-}
-
-.bill-summary hr {
-    margin: 8px 0;
-}
-
-.grand-total {
-    font-size: 20px;
-    font-weight: 700;
-}
-
-.bill-bottom-section {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-top: 15px;
-    margin-bottom: 20px;
-    width: 100%;
-}
-
-
-.add-row-section {
-    padding-top: 5px;
-}
-
-
-
-.bill-summary {
-    width: 360px;
-    background: #ffffff;
-
-    border: 1px solid #d9dee3;
-    border-radius: 8px;
-
-    padding: 12px 18px;
-
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
-}
-
-.summary-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
-    padding: 7px 0;
-
-    font-size: 15px;
-    color: #333;
-}
-
 
 .summary-row span:last-child {
-    min-width: 130px;
-    text-align: right;
-    font-weight: 600;
+  min-width: 120px;
+  text-align: right;
+  font-weight: 600;
 }
 
 .summary-divider {
-    border-top: 1px solid #dee2e6;
-    margin: 8px 0;
+  border-top: 1px solid #dee2e6;
+  margin: 6px 0;
 }
+
 .summary-row.grand-total {
-    padding-top: 10px;
-    padding-bottom: 5px;
-
-    font-size: 19px;
-    font-weight: 700;
-
-    color: #000;
+  padding-top: 8px;
+  padding-bottom: 4px;
+  font-size: 17px;
+  font-weight: 700;
+  color: #000;
 }
-
 
 .summary-row.grand-total span:last-child {
-    font-size: 21px;
-    font-weight: 700;
+  font-size: 19px;
+  font-weight: 700;
 }
 
+/* Action buttons */
+.button-section {
+  padding: 10px 0;
+  text-align: right;
+  margin-bottom: 20px;
+  margin-top: auto;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+}
+
+.button-section .btn {
+  min-width: 100px;
+  padding: 8px 20px;
+}
+
+.button-section .btn-secondary {
+  margin-right: 10px;
+}
+
+/* Responsive */
 @media (max-width: 768px) {
+  .content-area {
+    padding: 10px;
+  }
 
-    .bill-bottom-section {
-        flex-direction: column;
-        gap: 15px;
-    }
+  .button-section {
+    padding: 15px;
+  }
 
-    .bill-summary {
-        width: 100%;
-    }
+  .button-section .btn {
+    min-width: 80px;
+    padding: 6px 15px;
+  }
 
+  .bill-bottom-section {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .bill-summary {
+    width: 100%;
+  }
 }

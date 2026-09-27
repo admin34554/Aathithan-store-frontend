@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 
 import {
     FormBuilder,
@@ -107,6 +107,13 @@ export class StockComponent implements OnInit {
             this.loadStock(this.stockId);
         }
 
+    }
+
+
+
+      @HostListener('document:keydown.escape')
+    handleEscape(): void {
+      this.router.navigate(['/stock-master']);
     }
 
 

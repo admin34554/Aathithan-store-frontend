@@ -35,24 +35,42 @@
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let customer of filteredCustomers; let i = index">
-                <td>{{ (currentPage - 1) * pageSize + i + 1 }}</td>
+            <tr
+                *ngFor="let customer of paginatedCustomers; let i = index"
+                [class.selected-row]="i === selectedIndex"
+            >
+                <td>
+                    {{ (currentPage - 1) * pageSize + i + 1 }}
+                </td>
+
                 <td>{{ customer.name }}</td>
+
                 <td>{{ customer.type }}</td>
-                  <td>
 
-                <button class="btn btn-info btn-sm me-2" (click)="viewCustomer(customer.id!)"  title="View">
-  <i class="bi bi-eye"></i>
-</button>
+                <td>
+                    <button
+                        class="btn btn-info btn-sm me-2"
+                        (click)="viewCustomer(customer.id!)"
+                        title="View"
+                    >
+                        <i class="bi bi-eye"></i>
+                    </button>
 
-<button class="btn btn-warning btn-sm" (click)="editCustomer(customer.id!)"  title="Edit">
-  <i class="bi bi-pencil-square"></i>
-</button>
-</td>
+                    <button
+                        class="btn btn-warning btn-sm"
+                        (click)="editCustomer(customer.id!)"
+                        title="Edit"
+                    >
+                        <i class="bi bi-pencil-square"></i>
+                    </button>
+                </td>
             </tr>
-        <tr *ngIf="paginatedCustomers.length == 0">
-            <td colspan="3" class="text-center">No customers found.</td>
-        </tr>
+
+            <tr *ngIf="paginatedCustomers.length === 0">
+                <td colspan="4" class="text-center">
+                    No customers found.
+                </td>
+            </tr>
         </tbody>
     </table>
 </div>

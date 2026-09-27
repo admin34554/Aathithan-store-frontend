@@ -11,14 +11,6 @@
             </span>
         </h5>
         <div>
-            <!-- <button
-                type="button"
-                class="btn btn-light me-2"
-                (click)="printStock()"
-                title="Print">
-
-                <i class="bi bi-printer"></i>
-            </button> -->
 
                     <button class="btn btn-primary" routerLink="/stock">
             + Add New 
@@ -123,7 +115,9 @@
                     <tbody>
 
                     <tr
-                        *ngFor="let stock of paginatedStock; let i = index">
+  *ngFor="let stock of paginatedStock; let i = index"
+  [class.selected-row]="i === selectedIndex"
+>
 
                         <td class="text-center">
                             {{ (currentPage - 1) * pageSize + i + 1 }}

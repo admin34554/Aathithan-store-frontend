@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -54,6 +54,11 @@ export class TaxComponent implements OnInit {
 
     });
 
+  }
+
+    @HostListener('document:keydown.escape')
+  handleEscape(): void {
+    this.router.navigate(['/tax-list']);
   }
 
  ngOnInit(): void {

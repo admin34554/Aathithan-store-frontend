@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -51,6 +51,12 @@ export class BrokerComponent implements OnInit {
       outComm: [''],
       active: [false]
     });
+  }
+
+
+    @HostListener('document:keydown.escape')
+  handleEscape(): void {
+    this.router.navigate(['/broker-list']);
   }
 
 ngOnInit(): void {

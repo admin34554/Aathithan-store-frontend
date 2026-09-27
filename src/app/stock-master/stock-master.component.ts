@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
@@ -32,6 +32,8 @@ export class StockMasterComponent implements OnInit {
     searchText = '';
 
     currentPage = 1;
+    selectedIndex = 0;
+
 
     pageSize = 10;
 
@@ -91,6 +93,8 @@ export class StockMasterComponent implements OnInit {
                 this.stockList = [];
 
                 this.filteredStock = [];
+                this.currentPage = 1;
+                this.selectedIndex = 0;
 
                 this.loading = false;
 
@@ -105,41 +109,30 @@ export class StockMasterComponent implements OnInit {
     // SEARCH
     // ============================
 
-    searchStock(): void {
+searchStock(): void {
 
-        const search =
-            this.searchText
-                .toLowerCase()
-                .trim();
+  const search = this.searchText
+    .toLowerCase()
+    .trim();
 
-        if (!search) {
+  if (!search) {
 
-            this.filteredStock = [...this.stockList];
+    this.filteredStock = [...this.stockList];
 
-            this.currentPage = 1;
+    this.currentPage = 1;
+    this.selectedIndex = 0;
 
-            return;
-        }
+    return;
+  }
 
+  this.filteredStock = this.stockList.filter(stock =>
+    stock.itemName?.toLowerCase().includes(search) ||
+    stock.hsnCode?.toLowerCase().includes(search)
+  );
 
-        this.filteredStock =
-            this.stockList.filter(stock =>
-
-                stock.itemName
-                    ?.toLowerCase()
-                    .includes(search)
-
-                ||
-
-                stock.hsnCode
-                    ?.toLowerCase()
-                    .includes(search)
-
-            );
-
-        this.currentPage = 1;
-
-    }
+  this.currentPage = 1;
+  this.selectedIndex = 0;
+}
 
 
     // ============================
@@ -201,6 +194,155 @@ export class StockMasterComponent implements OnInit {
         );
 
     }
+
+@HostListener('document:keydown', ['$event'])
+handleKeyboardEvent(event: KeyboardEvent): void {
+
+  const target = event.target as HTMLElement;
+
+  // Allow normal typing inside input fields,
+  // BUT still allow ArrowUp / ArrowDown.
+  const isInput =
+    target.tagName === 'INPUT' ||
+    target.tagName === 'TEXTAREA' ||
+    target.tagName === 'SELECT';
+
+  if (
+    isInput &&
+    event.key !== 'ArrowUp' &&
+    event.key !== 'ArrowDown' &&
+    event.key !== 'Enter' &&
+    event.key !== 'Escape'
+  ) {
+    return;
+  }
+
+  const stocks = this.paginatedStock;
+
+  if (!stocks || stocks.length === 0) {
+    return;
+  }
+
+  // ============================
+  // DOWN ARROW
+  // ============================
+
+  if (event.key === 'ArrowDown') {
+
+    event.preventDefault();
+
+    if (this.selectedIndex < stocks.length - 1) {
+
+      this.selectedIndex++;
+
+    } else if (this.currentPage < this.totalPages) {
+
+      this.currentPage++;
+      this.selectedIndex = 0;
+
+    }
+
+    return;
+  }
+
+
+  // ============================
+  // UP ARROW
+  // ============================
+
+  if (event.key === 'ArrowUp') {
+
+    event.preventDefault();
+
+    if (this.selectedIndex > 0) {
+
+      this.selectedIndex--;
+
+    } else if (this.currentPage > 1) {
+
+      this.currentPage--;
+
+      // Go to last item of previous page
+      this.selectedIndex = this.paginatedStock.length - 1;
+
+    }
+
+    return;
+  }
+
+
+  // ============================
+  // + = ADD NEW
+  // ============================
+
+  if (event.key === '+') {
+
+    event.preventDefault();
+
+    this.router.navigate(['/stock']);
+
+    return;
+  }
+
+
+  // ============================
+  // E = EDIT
+  // ============================
+
+  if (event.key.toLowerCase() === 'e') {
+
+    event.preventDefault();
+
+    const stock = stocks[this.selectedIndex];
+
+    if (stock?.id) {
+      this.editStock(stock.id);
+    }
+
+    return;
+  }
+
+
+  // ============================
+  // V = VIEW
+  // ============================
+
+  if (event.key.toLowerCase() === 'v') {
+
+    event.preventDefault();
+
+    const stock = stocks[this.selectedIndex];
+
+    if (stock?.id) {
+      this.viewStock(stock.id);
+    }
+
+    return;
+  }
+
+
+  // ============================
+  // ENTER = VIEW
+  // ============================
+
+  if (event.key === 'Enter') {
+
+    event.preventDefault();
+
+    const stock = stocks[this.selectedIndex];
+
+    if (stock?.id) {
+      this.viewStock(stock.id);
+    }
+
+    return;
+  }
+}
+
+      
+      get totalPages(): number {
+        return Math.ceil(this.filteredStock.length / this.pageSize);
+      }
 
 
 

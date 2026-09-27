@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Product, ProductService } from '../services/product.service';
@@ -114,6 +114,13 @@ addProductItem() {
   );
 
 }
+
+
+
+  @HostListener('document:keydown.escape')
+    handleEscape(): void {
+      this.router.navigate(['/product-list']);
+    }
 
 removeProductItem(index: number) {
   this.productItems.removeAt(index);

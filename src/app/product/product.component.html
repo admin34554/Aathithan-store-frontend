@@ -147,18 +147,31 @@
                                         formControlName="unit">
                             </td>
 
-                            <td class="text-center">
+<td class="text-center">
 
-                                <button
-                                        type="button"
-                                        class="btn btn-outline-danger btn-sm"
-                                        (click)="removeProductItem(i)">
+    <!-- Add Item -->
+    <button
+        type="button"
+        class="btn btn-outline-primary btn-sm me-1"
+        title="Add Item"
+        (click)="addProductItem()">
 
-                                    <i class="bi bi-trash"></i>
+        <i class="bi bi-plus-circle"></i>
 
-                                </button>
+    </button>
 
-                            </td>
+    <!-- Delete Item -->
+    <button
+        type="button"
+        class="btn btn-outline-danger btn-sm"
+        title="Delete Item"
+        (click)="removeProductItem(i)">
+
+        <i class="bi bi-trash"></i>
+
+    </button>
+
+</td>
 
                         </tr>
 
