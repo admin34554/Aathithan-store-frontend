@@ -132,13 +132,27 @@ productSelectedIndex: number[] = [];
   lorry: [''],
   broker: [''],
   billNo: [''],
+  parcel: [false],
   billDate: [today],
   remarks: [''],
 
   items: this.fb.array([])
 
-});
-  }
+    });
+
+  this.cashBillForm.get('parcel')?.valueChanges.subscribe((isParcel: boolean) => {
+
+    console.log('Parcel:', isParcel);
+
+    if (!isParcel) {
+      this.cashBillForm.patchValue({
+        lorry: '',
+        broker: ''
+      }, { emitEvent: false });
+    }
+
+  });
+}
 
   ngOnInit(): void {
     this.addRow(); // ✅ ADD ONE ROW BY DEFAULT
@@ -366,6 +380,7 @@ loadBillByBillNo() {
         name: res.name,
         billNo: res.billNo,
         billDate: res.billDate?.substring(0, 10),
+         parcel: res.parcel === true,
         remarks: res.remarks,
         lorry: res.lorry?.id,
         broker: res.broker?.id

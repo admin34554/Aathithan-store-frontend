@@ -2,14 +2,17 @@
 
   <!-- Header -->
   <div class="page-header">
-    <h5>{{ 'Sales' | translate }} > <span class="text-primary">{{ 'Credit Bill' | translate }}</span></h5>
+    <h5>
+      {{ 'Sales' | translate }} &gt;
+      <span class="text-primary">{{ 'Credit Bill' | translate }}</span>
+    </h5>
 
     <button type="button" class="btn btn-dark print-btn" (click)="printBill()">
       🖨 {{ 'Print' | translate }}
     </button>
   </div>
 
-  <div *ngIf="errorMessage" class="alert alert-danger">
+  <div *ngIf="errorMessage" class="alert alert-danger error-alert">
     {{ errorMessage }}
   </div>
 
@@ -17,10 +20,10 @@
   <div class="content-area">
     <div class="form-wrapper">
       <form [formGroup]="creditBillForm">
-        <div class="container-fluid p-0 mt-3">
+        <div class="container-fluid p-0">
 
           <!-- Search Bill No -->
-          <div class="row search-bill-row">
+          <div class="row g-3 search-bill-row">
             <div class="col-md-4">
               <input
                 class="form-control"
@@ -32,7 +35,9 @@
           </div>
 
           <!-- Top Form -->
-          <div class="row">
+          <div class="row g-3 form-top-row">
+
+            <!-- Customer -->
             <div class="col-md-4 position-relative">
               <input
                 class="form-control"
@@ -54,39 +59,75 @@
               </ul>
             </div>
 
+            <!-- Bill Number -->
             <div class="col-md-4">
+              <input
+                class="form-control"
+                placeholder="{{ 'Bill Number' | translate }}"
+                formControlName="billNo"
+                readonly
+                (keydown.enter)="loadBillByBillNo()" />
+            </div>
+
+            <!-- Bill Date -->
+            <div class="col-md-4">
+              <input
+                type="date"
+                class="form-control"
+                formControlName="billDate"
+                readonly />
+            </div>
+
+            <!-- Parcel -->
+            <div class="col-md-4 d-flex align-items-center">
+              <div class="form-check mb-0">
+                <input
+                  type="checkbox"
+                  class="form-check-input"
+                  id="parcel"
+                  formControlName="parcel" />
+                <label class="form-check-label" for="parcel">
+                  {{ 'Parcel' | translate }}
+                </label>
+              </div>
+            </div>
+
+            <!-- Lorry -->
+            <div class="col-md-4" *ngIf="creditBillForm.get('parcel')?.value === true">
               <select class="form-control" formControlName="lorry">
                 <option value="" disabled>{{ 'Select Lorry' | translate }}</option>
                 <option *ngFor="let l of lorries" [value]="l.id">{{ l.name }}</option>
               </select>
             </div>
 
-            <div class="col-md-4">
+            <!-- Broker -->
+            <div class="col-md-4" *ngIf="creditBillForm.get('parcel')?.value === true">
               <select class="form-control" formControlName="broker">
                 <option value="" disabled>{{ 'Select Broker' | translate }}</option>
                 <option *ngFor="let b of brokers" [value]="b.id">{{ b.brokerName }}</option>
               </select>
             </div>
 
-            <div class="col-md-4 mt-3">
-              <input
-                class="form-control"
-                placeholder="{{ 'Bill Number' | translate }}"
-                formControlName="billNo" readOnly
-                (keydown.enter)="loadBillByBillNo()" />
-            </div>
-
-            <div class="col-md-4 mt-3">
-              <input type="date" class="form-control" formControlName="billDate" readOnly />
-            </div>
           </div>
 
           <!-- Table Section -->
           <div class="table-responsive mt-4">
             <table class="table table-bordered">
+              <colgroup>
+                <col class="col-sno" />
+                <col class="col-code" />
+                <col class="col-item" />
+                <col class="col-rate" />
+                <col class="col-qty" />
+                <col class="col-tax" />
+                <col class="col-total" />
+                <col class="col-hsn" />
+                <col class="col-action" />
+              </colgroup>
+
               <thead class="table-light">
                 <tr>
-                  <th style="width: 60px;">{{ 'S.No' | translate }}</th>
+                  <th>{{ 'S.No' | translate }}</th>
                   <th>{{ 'Product Code' | translate }}</th>
                   <th>{{ 'Item Name' | translate }}</th>
                   <th>{{ 'Rate' | translate }}</th>
@@ -94,12 +135,13 @@
                   <th>{{ 'Tax' | translate }}</th>
                   <th>{{ 'Total' | translate }}</th>
                   <th>{{ 'HSN No' | translate }}</th>
-                  <th style="width: 80px;">{{ 'Action' | translate }}</th>
+                  <th class="text-center">{{ 'Action' | translate }}</th>
                 </tr>
               </thead>
 
               <tbody formArrayName="items">
                 <tr *ngFor="let row of items.controls; let i = index" [formGroupName]="i">
+
                   <td>{{ i + 1 }}</td>
 
                   <!-- Product Code -->
@@ -124,9 +166,14 @@
 
                   <!-- Item Name -->
                   <td>
-                    <select class="form-control" formControlName="productItemId" (change)="onItemChange($event, i)">
+                    <select
+                      class="form-control"
+                      formControlName="productItemId"
+                      (change)="onItemChange($event, i)">
                       <option value="">Select Item</option>
-                      <option *ngFor="let item of productItems[i]" [value]="item.id">{{ item.itemName }}</option>
+                      <option *ngFor="let item of productItems[i]" [value]="item.id">
+                        {{ item.itemName }}
+                      </option>
                     </select>
                   </td>
 
@@ -142,12 +189,20 @@
 
                   <!-- Tax -->
                   <td>
-                    <textarea class="form-control tax-cell" formControlName="taxDetails" rows="3" readonly></textarea>
+                    <textarea
+                      class="form-control tax-cell"
+                      formControlName="taxDetails"
+                      rows="3"
+                      readonly></textarea>
                   </td>
 
                   <!-- Total -->
                   <td>
-                    <input type="number" class="form-control" [value]="getItemGrandTotal(row)" readonly />
+                    <input
+                      type="number"
+                      class="form-control"
+                      [value]="getItemGrandTotal(row)"
+                      readonly />
                   </td>
 
                   <!-- HSN -->
@@ -159,6 +214,7 @@
                   <td class="text-center">
                     <button type="button" class="btn btn-danger btn-sm" (click)="removeRow(i)">✕</button>
                   </td>
+
                 </tr>
               </tbody>
 
@@ -175,16 +231,15 @@
             </table>
           </div>
 
+          <!-- Add Row + Summary -->
           <div class="bill-bottom-section">
 
-            <!-- Add Row -->
             <div class="add-row-section">
               <button type="button" class="btn btn-primary btn-sm" (click)="addRow()">
                 {{ 'Add Row' | translate }}
               </button>
             </div>
 
-            <!-- Summary -->
             <div class="bill-summary">
               <div class="summary-row">
                 <span>Sub Total</span>
@@ -211,20 +266,9 @@
 
           </div>
 
-          <!-- Bottom Section
-          <div class="row mt-4">
-            <div class="col-md-8">
-              <textarea
-                class="form-control"
-                rows="1"
-                placeholder="{{ 'Remarks' | translate }}"
-                formControlName="remarks"></textarea>
-            </div>
-          </div> -->
-
           <!-- Action Buttons -->
-          <div class="button-section mt-4">
-            <button type="button" class="btn btn-secondary me-2" (click)="cancelForm()">
+          <div class="button-section">
+            <button type="button" class="btn btn-secondary" (click)="cancelForm()">
               {{ 'Cancel' | translate }}
             </button>
             <button type="button" class="btn btn-primary" (click)="saveCreditBill()">

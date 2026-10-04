@@ -82,6 +82,9 @@ selectCustomer(customer: any) {
   }, 0);
 }
 
+
+
+
   creditBillForm: FormGroup;
   lorries: any[] = [];
   brokers: any[] = [];
@@ -129,13 +132,27 @@ productSelectedIndex: number[] = [];
   lorry: [''],
   broker: [''],
   billNo: [''],
+  parcel: [false],
   billDate: [today],
   remarks: [''],
 
   items: this.fb.array([])
 
-});
-  }
+    });
+
+  this.creditBillForm.get('parcel')?.valueChanges.subscribe((isParcel: boolean) => {
+
+    console.log('Parcel:', isParcel);
+
+    if (!isParcel) {
+      this.creditBillForm.patchValue({
+        lorry: '',
+        broker: ''
+      }, { emitEvent: false });
+    }
+
+  });
+}
 
   ngOnInit(): void {
     this.addRow(); // ✅ ADD ONE ROW BY DEFAULT
@@ -177,23 +194,32 @@ productSelectedIndex: number[] = [];
     });
   }
 
-    searchCustomers(name: string, companyId: number) {
+searchCustomers(name: string, companyId: number): void {
+
   if (!name || name.trim().length < 2) {
     this.customers = [];
     return;
   }
 
- const selectedCustomer = this.customers.find(
-    c => c.fullName === name
+  const searchName = name.trim();
+
+  const selectedCustomer = this.customers.find(
+    c => c.name?.toLowerCase() === searchName.toLowerCase()
   );
 
   if (selectedCustomer) {
     this.customers = [];
     return;
   }
-  
-  this.customerService.searchCustomers(name).subscribe(res => {
-    this.customers = res;
+
+  this.customerService.searchCustomers(searchName).subscribe({
+    next: (res) => {
+      this.customers = res;
+    },
+    error: (err) => {
+      console.error('Customer search failed:', err);
+      this.customers = [];
+    }
   });
 }
 
@@ -354,6 +380,7 @@ loadBillByBillNo() {
         name: res.name,
         billNo: res.billNo,
         billDate: res.billDate?.substring(0, 10),
+         parcel: res.parcel === true,
         remarks: res.remarks,
         lorry: res.lorry?.id,
         broker: res.broker?.id
@@ -385,7 +412,7 @@ res.items.forEach((item: any, index: number) => {
       quantity: item.quantity,
       tax: item.tax,
         taxDetails:
-      `{item.tax}%`,
+      `${item.tax}%`,
       total: item.total,
       brNo: item.brNo,
       surCh: item.surCh
